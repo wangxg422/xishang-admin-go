@@ -1,0 +1,28 @@
+app:
+  port: 8080
+  mode: debug
+
+mysql:
+  address: 127.0.0.1
+  port: "13306"
+  conn-config: charset=utf8mb4&parseTime=True&loc=Local
+  db-name: ruoyi
+  username: root
+  password: "123456"
+  table-prefix: ""
+  singular: true
+  engine: "InnoDB"
+  max-idle-conn: 10
+  max-open-conn: 100
+  log-mode: info
+  log-zap: false
+zap:
+  level: info
+  prefix: '[backend]'
+  format: console
+  director: log
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 0
+  show-line: true
+  log-in-console: true
