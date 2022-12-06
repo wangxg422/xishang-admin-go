@@ -4,18 +4,19 @@ import (
 	"backend/config"
 	"backend/global"
 	model "backend/model/system"
-	"backend/service"
+	sysSvc "backend/service/system"
 	"backend/utils"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type UserApi struct {
 }
 
-var userSvc = service.AppServiceGroupIns.SysServiceGroup.UserService
+var userSvc sysSvc.UserService = sysSvc.UserService{}
 
 func (u *UserApi) CreateUser(c *gin.Context) {
 	user := model.SysUser{}
@@ -76,4 +77,57 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 	}
 
 	utils.OkWithInfo(user, "查询成功", c)
+}
+
+func (u *UserApi) UpdateUser(c *gin.Context) {
+	user := model.SysUser{}
+
+	err := utils.ReadBodyToModel(&user, c)
+	if err != nil {
+		utils.FailWithMsg("参数解析错误", c)
+		global.Log.Error("parse param error", zap.Error(err))
+		return
+	}
+
+	userid := c.Param("userid")
+	if userid == "" {
+		utils.FailWithCode(config.CodeParamNull, c)
+		global.Log.Error("parse param error", zap.Error(err))
+		return
+	}
+
+	user.UserId, err = strconv.ParseInt(userid, 10, 64)
+	if err != nil {
+		utils.FailWithCode(config.CodeParamNull, c)
+		return
+	}
+
+	err = userSvc.UpdateUser(user)
+	if err != nil {
+		utils.FailWithMsg("更新失败", c)
+		global.Log.Error("update error", zap.Error(err))
+		return
+	}
+
+	utils.Ok(c)
+}
+
+func (u *UserApi) DeleteUser(c *gin.Context) {
+	id := c.Param("userid")
+
+	userId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		utils.FailWithCode(config.CodeParamParseError, c)
+		global.Log.Error("can not parse userid")
+		return
+	}
+
+	err = userSvc.DeleteUser(userId)
+	if err != nil {
+		utils.FailWithMsg("删除失败", c)
+		global.Log.Error("error when delete user", zap.Error(err))
+		return
+	}
+
+	utils.Ok(c)
 }

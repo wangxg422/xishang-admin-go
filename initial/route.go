@@ -2,6 +2,7 @@ package initial
 
 import (
 	"backend/route"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,5 +23,5 @@ func InitRoute() {
 		sysRouteGroup.AddSystemRoute(privateGroup)
 	}
 
-	r.Run()
+	r.Run(":8081")
 }

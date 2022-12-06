@@ -3,7 +3,7 @@ package model
 import "time"
 
 type SysUser struct {
-	UserId      int64     `gorm:"column:user_id" gorm:"primaryKey" json:"userid,omitempty"`
+	UserId      int64     `gorm:"primaryKey;column:user_id" json:"userid,omitempty"`
 	DeptId      int64     `gorm:"column:dept_id" json:"deptId,omitempty"`
 	UserName    string    `gorm:"column:user_name" json:"username,omitempty"`
 	NickName    string    `gorm:"column:nick_name" json:"nickname,omitempty"`
@@ -21,5 +21,5 @@ type SysUser struct {
 	UpdateTime  time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime,omitempty"`
 	CreateBy    string    `gorm:"column:create_by" json:"createBy,omitempty"`
 	UpdateBy    string    `gorm:"column:update_by" json:"updateBy,omitempty"`
-	remark      string    `gorm:"column:remark" json:"remark,omitempty"`
+	Remark      string    `gorm:"column:remark" json:"remark,omitempty"`
 }

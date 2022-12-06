@@ -4,6 +4,7 @@ import (
 	"backend/config"
 	"backend/global"
 	model "backend/model/system"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,12 +20,14 @@ func (u *UserService) CreateUser(user model.SysUser) error {
 	return res.Error
 }
 
-func (u *UserService) UpdateUser(c *gin.Context) {
-
+func (u *UserService) UpdateUser(user model.SysUser) error {
+	res := global.DB.Model(&user).Updates(&user)
+	return res.Error
 }
 
-func (u *UserService) DeleteUser(c *gin.Context) {
-
+func (u *UserService) DeleteUser(userid int64) error {
+	res := global.DB.Model(&model.SysUser{UserId: userid}).Update("del_flag", config.USER_DEL_FLAG_DELETE)
+	return res.Error
 }
 
 func (u *UserService) ListUser() ([]model.SysUser, error) {
