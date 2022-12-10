@@ -20,8 +20,18 @@ func OptCodeDesc(code int32) string {
 	return optCodeMap[code]
 }
 
-type Result struct {
-	Code    int32       `json:"code"`
-	Data    interface{} `json:"data"`
-	Message string      `json:"message"`
+type Result map[string]any
+
+func CreateResult(code int32, data any, msg string) Result {
+	m := make(map[string]any, 10)
+	m["code"] = code
+	m["data"] = data
+	m["msg"] = msg
+	return m
 }
+
+//type Result struct {
+//	Code    int32       `json:"code"`
+//	Data    interface{} `json:"data"`
+//	Message string      `json:"message"`
+//}

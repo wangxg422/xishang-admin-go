@@ -9,11 +9,8 @@ import (
 type Null struct{}
 
 func buildResult(code int32, data any, msg string, c *gin.Context) {
-	c.JSON(http.StatusOK, config.Result{
-		Code:    code,
-		Data:    data,
-		Message: msg,
-	})
+	res := config.CreateResult(code, data, msg)
+	c.JSON(http.StatusOK, res)
 }
 
 func Ok(c *gin.Context) {
