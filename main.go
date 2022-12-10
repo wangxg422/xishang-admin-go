@@ -19,5 +19,6 @@ func main() {
 		}
 	}()
 
+	global.Log.Debug("port is " + global.APP_CONFIG.App.Port)
 	initial.InitRoute()
 }
