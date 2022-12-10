@@ -18,12 +18,12 @@ func Viper() *viper.Viper {
 	flag.StringVar(&config, "c", "", "choose config file.")
 	flag.Parse()
 	if config == "" { // 判断命令行参数是否为空
-		if configEnv := os.Getenv(appConfig.ENV_CONFIG_FILE); configEnv == "" {
-			config = appConfig.DEFAULT_CONFIG_FILE
+		if configEnv := os.Getenv(appConfig.EnvConfigFile); configEnv == "" {
+			config = appConfig.DefaultConfigFile
 			fmt.Println("use default config file")
 		} else {
 			config = configEnv
-			fmt.Println("use config file fro env", appConfig.ENV_CONFIG_FILE)
+			fmt.Println("use config file from env", appConfig.EnvConfigFile)
 		}
 	} else {
 		fmt.Println("use config file", config)

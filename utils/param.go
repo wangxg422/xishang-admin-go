@@ -32,10 +32,3 @@ func ReadBodyToMap(c *gin.Context) (map[string]interface{}, error) {
 
 	return body, nil
 }
-
-func ReadBodyToModel(m any, c *gin.Context) error {
-	if err := c.ShouldBindJSON(&m); err != nil {
-		return err
-	}
-	return nil
-}

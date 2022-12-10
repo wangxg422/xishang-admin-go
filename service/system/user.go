@@ -26,14 +26,14 @@ func (u *UserService) UpdateUser(user model.SysUser) error {
 }
 
 func (u *UserService) DeleteUser(userid int64) error {
-	res := global.DB.Model(&model.SysUser{UserId: userid}).Update("del_flag", config.USER_DEL_FLAG_DELETE)
+	res := global.DB.Model(&model.SysUser{UserId: userid}).Update("del_flag", config.UserDelFlagDelete)
 	return res.Error
 }
 
 func (u *UserService) ListUser() ([]model.SysUser, error) {
 	var list []model.SysUser
 
-	res := global.DB.Where("del_flag = ?", config.USER_DEL_FLAG_NORAL).Find(&list)
+	res := global.DB.Where("del_flag = ?", config.UserDelFlagNormal).Find(&list)
 
 	return list, res.Error
 }
@@ -43,6 +43,6 @@ func (u *UserService) GetUserById(userid int64) (model.SysUser, error) {
 		UserId: userid,
 	}
 
-	res := global.DB.Take(&user, userid).Where("del_flag = ?", config.USER_STATUS_NORMAL)
+	res := global.DB.Take(&user, userid).Where("del_flag = ?", config.UserStatusNormal)
 	return user, res.Error
 }

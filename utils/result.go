@@ -6,54 +6,58 @@ import (
 	"net/http"
 )
 
-func buildResult(code int, data any, msg string, c *gin.Context) {
+type Null struct{}
+
+func buildResult(code int32, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, config.Result{
-		Code:    config.CodeSuccess,
+		Code:    code,
 		Data:    data,
 		Message: msg,
 	})
 }
 
 func Ok(c *gin.Context) {
-	buildResult(config.CodeSuccess, nil, "成功", c)
+	buildResult(config.OptCodeSuccess, nil, "成功", c)
 }
 
 func OkWithData(data any, c *gin.Context) {
-	buildResult(config.CodeSuccess, data, "成功", c)
+	buildResult(config.OptCodeSuccess, data, "成功", c)
 }
 
 func OkWithMsg(msg string, c *gin.Context) {
-	buildResult(config.CodeSuccess, nil, msg, c)
+	buildResult(config.OptCodeSuccess, nil, msg, c)
 }
 
 func OkWithInfo(data any, msg string, c *gin.Context) {
-	buildResult(config.CodeSuccess, data, msg, c)
+	buildResult(config.OptCodeSuccess, data, msg, c)
 }
 
 func OkWithEmptyObj(c *gin.Context) {
-	buildResult(config.CodeSuccess, Null{}, "成功", c)
+	buildResult(config.OptCodeSuccess, Null{}, "成功", c)
 }
 
 func OkWithEmptyList(c *gin.Context) {
-	buildResult(config.CodeSuccess, []Null{}, "成功", c)
+	buildResult(config.OptCodeSuccess, []Null{}, "成功", c)
 }
 
 func Fail(c *gin.Context) {
-	buildResult(config.CodeSysError, nil, "失败", c)
+	buildResult(config.OptCodeSysError, nil, "失败", c)
 }
 
 func FailWithMsg(msg string, c *gin.Context) {
-	buildResult(config.CodeSysError, nil, msg, c)
+	buildResult(config.OptCodeSysError, nil, msg, c)
 }
 
-func FailWithCode(code int, c *gin.Context) {
-	buildResult(code, nil, "失败", c)
+func FailWithCode(code int32, c *gin.Context) {
+	desc := config.OptCodeDesc(code)
+
+	buildResult(code, nil, desc, c)
 }
 
-func FailWithCodeMsg(code int, msg string, c *gin.Context) {
+func FailWithCodeMsg(code int32, msg string, c *gin.Context) {
 	buildResult(code, nil, msg, c)
 }
 
-func FailWithInfo(code int, data any, msg string, c *gin.Context) {
+func FailWithInfo(code int32, data any, msg string, c *gin.Context) {
 	buildResult(code, data, msg, c)
 }

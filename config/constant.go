@@ -1,12 +1,11 @@
 package config
 
 const (
-	USER_STATUS_NORMAL   = "0"
-	USER_STATUS_DISABLED = "1"
-	USER_DEL_FLAG_NORAL  = "0"
-	USER_DEL_FLAG_DELETE = "2"
+	UserStatusNormal   = "0"
+	UserStatusDisabled = "1"
+	UserDelFlagNormal  = "0"
+	UserDelFlagDelete  = "2"
 
-	ENV_CONFIG_FILE = "CONFIG_FILE"
-
-	DEFAULT_CONFIG_FILE = "config.yaml"
+	EnvConfigFile     = "CONFIG_FILE"
+	DefaultConfigFile = "config.yaml"
 )

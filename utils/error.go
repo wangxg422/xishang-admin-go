@@ -6,12 +6,5 @@ import (
 )
 
 func NoRecord(err error) bool {
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return true
-	}
-
-	return false
-}
-
-type Null struct {
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }
