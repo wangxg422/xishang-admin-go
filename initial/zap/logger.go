@@ -1,8 +1,9 @@
-package internal
+package zap
 
 import (
 	"backend/global"
 	"fmt"
+
 	"gorm.io/gorm/logger"
 )
 
@@ -19,7 +20,7 @@ func NewWriter(w logger.Writer) *writer {
 // Printf 格式化打印日志
 // Author [SliverHorn](https://github.com/SliverHorn)
 func (w *writer) Printf(message string, data ...interface{}) {
-	logZap := global.APP_CONFIG.Mysql.LogZap
+	logZap := global.AppConfig.Mysql.LogZap
 
 	if logZap {
 		global.Log.Info(fmt.Sprintf(message+"\n", data...))

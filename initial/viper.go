@@ -5,9 +5,10 @@ import (
 	"backend/global"
 	"flag"
 	"fmt"
+	"os"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"os"
 )
 
 // Viper
@@ -40,17 +41,17 @@ func Viper() *viper.Viper {
 
 	v.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed:", e.Name)
-		if err = v.Unmarshal(&global.APP_CONFIG); err != nil {
+		if err = v.Unmarshal(&global.AppConfig); err != nil {
 			fmt.Println(err)
 		}
 	})
 
-	if err = v.Unmarshal(&global.APP_CONFIG); err != nil {
+	if err = v.Unmarshal(&global.AppConfig); err != nil {
 		fmt.Printf("load app config %s failed\n", config)
 		fmt.Println(err)
 	} else {
 		fmt.Printf("load app config: %s \n", config)
-		fmt.Println(global.APP_CONFIG)
+		fmt.Println(global.AppConfig)
 	}
 
 	return v

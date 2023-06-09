@@ -1,5 +1,5 @@
 app:
-  port: 8081
+  port: 8080
   mode: debug
 
 mysql:
@@ -17,12 +17,11 @@ mysql:
   log-mode: info
   log-zap: false
 zap:
-  level: info
+  level: debug
   prefix: '[backend]'
   format: console
-  director: log
+  director: tmp
   encode-level: LowercaseColorLevelEncoder
   stacktrace-key: stacktrace
   max-age: 0
-  show-line: true
   log-in-console: true

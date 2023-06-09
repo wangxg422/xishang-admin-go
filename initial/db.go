@@ -2,19 +2,16 @@ package initial
 
 import (
 	"backend/global"
-	"backend/initial/internal"
 	"fmt"
+	"log"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"log"
-	"os"
-	"time"
 )
 
 func InitDb() *gorm.DB {
-	dbConfig := global.APP_CONFIG.Mysql
+	dbConfig := global.AppConfig.Mysql
 	dsn := fmt.Sprintf("%s:%s@(%s:%s)/%s?%s", dbConfig.Username, dbConfig.Password, dbConfig.Address, dbConfig.Port, dbConfig.Dbname, dbConfig.ConnConfig)
 
 	db, err := gorm.Open(mysql.New(mysql.Config{
@@ -38,7 +35,7 @@ func InitDb() *gorm.DB {
 }
 
 func gormConfig() *gorm.Config {
-	dbConfig := global.APP_CONFIG.Mysql
+	dbConfig := global.AppConfig.Mysql
 
 	gormConfig := &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -47,23 +44,27 @@ func gormConfig() *gorm.Config {
 		},
 		DisableForeignKeyConstraintWhenMigrating: true,
 	}
-	_default := logger.New(internal.NewWriter(log.New(os.Stdout, "\r\n", log.LstdFlags)), logger.Config{
-		SlowThreshold: 200 * time.Millisecond,
-		LogLevel:      logger.Warn,
-		Colorful:      true,
-	})
+	// _default := logger.New(NewWriter(log.New(os.Stdout, "\r\n", log.LstdFlags)), logger.Config{
+	// 	SlowThreshold: 200 * time.Millisecond,
+	// 	LogLevel:      logger.Warn,
+	// 	Colorful:      true,
+	// })
 
-	switch global.APP_CONFIG.Mysql.LogMode {
-	case "silent", "Silent":
-		gormConfig.Logger = _default.LogMode(logger.Silent)
-	case "error", "Error":
-		gormConfig.Logger = _default.LogMode(logger.Error)
-	case "warn", "Warn":
-		gormConfig.Logger = _default.LogMode(logger.Warn)
-	case "info", "Info":
-		gormConfig.Logger = _default.LogMode(logger.Info)
-	default:
-		gormConfig.Logger = _default.LogMode(logger.Info)
-	}
+	// switch global.AppConfig.Mysql.LogMode {
+	// case "silent", "Silent":
+	// 	gormConfig.Logger = _default.LogMode(logger.Silent)
+	// case "error", "Error":
+	// 	gormConfig.Logger = _default.LogMode(logger.Error)
+	// case "warn", "Warn":
+	// 	gormConfig.Logger = _default.LogMode(logger.Warn)
+	// case "info", "Info":
+	// 	gormConfig.Logger = _default.LogMode(logger.Info)
+	// default:
+	// 	gormConfig.Logger = _default.LogMode(logger.Info)
+	// }
 	return gormConfig
+}
+
+func NewWriter(logger *log.Logger) {
+	panic("unimplemented")
 }
