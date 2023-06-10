@@ -3,6 +3,7 @@ package main
 import (
 	"backend/global"
 	"backend/initial"
+	"time"
 
 	myzap "backend/initial/zap"
 
@@ -25,9 +26,12 @@ func main() {
 	global.Log.Debug("port is " + global.AppConfig.App.Port)
 	//initial.InitRoute()
 
-	for i := 0; i < 10; i++ {
-		global.Log.Debug("i am debug")
-		global.Log.Info("i am info")
-		global.Log.Warn("i am warning")
+	for {
+		for i := 0; i < 1000; i++ {
+			global.Log.Debug("i am debug")
+			global.Log.Info("i am info")
+			global.Log.Warn("i am warning")
+		}
+		time.Sleep(time.Duration(1) * time.Second)
 	}
 }
