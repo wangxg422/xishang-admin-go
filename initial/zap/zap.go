@@ -20,7 +20,7 @@ func GetZapCores() []zapcore.Core {
 
 func getEncoderCore(l zapcore.Level, level zap.LevelEnablerFunc) zapcore.Core {
 	// 使用file-rotatelogs进行日志分割
-	writer, err := FileRotatelogs.GetWriteSyncer(l.String())
+	writer, err := GetWriteSyncer(l.String())
 	if err != nil {
 		fmt.Printf("Get Write Syncer Failed err:%v", err)
 		return nil

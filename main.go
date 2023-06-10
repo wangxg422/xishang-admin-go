@@ -11,7 +11,7 @@ import (
 
 func main() {
 	global.Viper = initial.Viper()
-	global.Log = myzap.GetZap()
+	global.Log = myzap.InitZap()
 	zap.ReplaceGlobals(global.Log)
 
 	// db := initial.InitDb()
