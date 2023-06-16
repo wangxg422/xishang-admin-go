@@ -3,16 +3,15 @@ package main
 import (
 	"backend/global"
 	"backend/initial"
-	"time"
 
-	myzap "backend/initial/zap"
+	"backend/initial/logger"
 
 	"go.uber.org/zap"
 )
 
 func main() {
 	global.Viper = initial.Viper()
-	global.Log = myzap.InitZap()
+	logger.InitZap()
 	zap.ReplaceGlobals(global.Log)
 
 	// db := initial.InitDb()
@@ -23,15 +22,7 @@ func main() {
 	// 	}
 	// }()
 
-	global.Log.Debug("port is " + global.AppConfig.App.Port)
+	global.Log.Debug("port is %s", zap.String("port", global.AppConfig.App.Port))
+	logger.Info("port is %s", zap.String("port", global.AppConfig.App.Port))
 	//initial.InitRoute()
-
-	for {
-		for i := 0; i < 1000; i++ {
-			global.Log.Debug("i am debug")
-			global.Log.Info("i am info")
-			global.Log.Warn("i am warning")
-		}
-		time.Sleep(time.Duration(1) * time.Second)
-	}
 }

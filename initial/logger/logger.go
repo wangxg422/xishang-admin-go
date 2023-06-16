@@ -1,14 +1,12 @@
-package zap
+package logger
 
 import (
 	"backend/global"
-	"backend/utils"
-	"fmt"
-	"os"
 
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
+
+var Log = 
 
 func InitZap() (logger *zap.Logger) {
 	// 如果不存在日志目录，则新建
@@ -21,4 +19,9 @@ func InitZap() (logger *zap.Logger) {
 	logger = zap.New(zapcore.NewTee(cores...), zap.AddCaller())
 
 	return logger
+}
+
+
+func Info(msg string, fields zap.Field) {
+	nfo(msg, fields)
 }
