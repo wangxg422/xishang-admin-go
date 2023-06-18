@@ -25,5 +25,5 @@ func InitRoute() {
 		sysRouteGroup.AddSystemRoute(privateGroup)
 	}
 
-	_ = r.Run(":8081")
+	_ = r.Run(":" + global.AppConfig.App.Port)
 }

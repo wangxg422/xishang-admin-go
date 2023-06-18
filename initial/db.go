@@ -3,7 +3,6 @@ package initial
 import (
 	"backend/global"
 	"fmt"
-	"log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,10 +25,10 @@ func InitDb() *gorm.DB {
 	if err != nil {
 		panic("init gorm ")
 	}
-	sqlDb, err := db.DB()
+	sqlDb, _ := db.DB()
 
-	sqlDb.SetMaxOpenConns(100)
-	sqlDb.SetMaxIdleConns(10)
+	sqlDb.SetMaxOpenConns(global.AppConfig.Mysql.MaxOpenConn)
+	sqlDb.SetMaxIdleConns(global.AppConfig.Mysql.MaxIdleConn)
 
 	return db
 }
@@ -44,27 +43,5 @@ func gormConfig() *gorm.Config {
 		},
 		DisableForeignKeyConstraintWhenMigrating: true,
 	}
-	// _default := logger.New(NewWriter(log.New(os.Stdout, "\r\n", log.LstdFlags)), logger.Config{
-	// 	SlowThreshold: 200 * time.Millisecond,
-	// 	LogLevel:      logger.Warn,
-	// 	Colorful:      true,
-	// })
-
-	// switch global.AppConfig.Mysql.LogMode {
-	// case "silent", "Silent":
-	// 	gormConfig.Logger = _default.LogMode(logger.Silent)
-	// case "error", "Error":
-	// 	gormConfig.Logger = _default.LogMode(logger.Error)
-	// case "warn", "Warn":
-	// 	gormConfig.Logger = _default.LogMode(logger.Warn)
-	// case "info", "Info":
-	// 	gormConfig.Logger = _default.LogMode(logger.Info)
-	// default:
-	// 	gormConfig.Logger = _default.LogMode(logger.Info)
-	// }
 	return gormConfig
-}
-
-func NewWriter(logger *log.Logger) {
-	panic("unimplemented")
 }
