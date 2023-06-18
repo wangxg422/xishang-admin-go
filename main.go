@@ -14,13 +14,13 @@ func main() {
 	logger.InitZap()
 	//zap.ReplaceGlobals()
 
-	db := initial.InitDb()
-	global.DB = db
-	defer func() {
-		if sqlDb, err := db.DB(); err != nil && sqlDb != nil {
-			sqlDb.Close()
-		}
-	}()
+	// db := initial.InitDb()
+	// global.DB = db
+	// defer func() {
+	// 	if sqlDb, err := db.DB(); err != nil && sqlDb != nil {
+	// 		sqlDb.Close()
+	// 	}
+	// }()
 
 	//initial.InitRoute()
 	logger.Info("server run at port %s", zap.String("port", global.AppConfig.App.Port))
