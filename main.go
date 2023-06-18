@@ -12,7 +12,7 @@ import (
 func main() {
 	global.Viper = initial.Viper()
 	logger.InitZap()
-	zap.ReplaceGlobals(global.Log)
+	//zap.ReplaceGlobals()
 
 	db := initial.InitDb()
 	global.DB = db
@@ -23,4 +23,5 @@ func main() {
 	}()
 
 	//initial.InitRoute()
+	logger.Info("server run at port %s", zap.String("port", global.AppConfig.App.Port))
 }
