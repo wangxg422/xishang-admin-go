@@ -22,6 +22,6 @@ func main() {
 	// 	}
 	// }()
 
-	//initial.InitRoute()
+	initial.InitRoute()
 	logger.Info("server run at port %s", zap.String("port", global.AppConfig.App.Port))
 }

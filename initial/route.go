@@ -2,7 +2,8 @@ package initial
 
 import (
 	"backend/global"
-	"backend/route"
+	"backend/route/public"
+	"backend/route/system"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,16 +14,16 @@ func InitRoute() {
 	r := gin.Default()
 
 	// 开放接口，健康检查、注册、忘记密码等
-	publicRouteGroup := route.AppRouteGroupIns.PublicRouteGroup
+	publicRouterGroup := &public.PublicRouterGroup{}
 	publicGroup := r.Group("public")
 	{
-		publicRouteGroup.AddPublicGroup(publicGroup)
+		publicRouterGroup.AddPublicRouterGroup(publicGroup)
 	}
 
-	sysRouteGroup := route.AppRouteGroupIns.SysRouteGroup
-	privateGroup := r.Group("")
+	sysRouterGroup := &system.SysUserRouter{}
+	sysGroup := r.Group("sys")
 	{
-		sysRouteGroup.AddSystemRoute(privateGroup)
+		sysRouterGroup.AddSysUserRouter(sysGroup)
 	}
 
 	_ = r.Run(":" + global.AppConfig.App.Port)

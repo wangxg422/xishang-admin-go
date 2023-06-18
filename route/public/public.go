@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AppPublicRouteGroup struct {
+type PublicRouterGroup struct {
 }
 
-func (p *AppPublicRouteGroup) AddPublicGroup(g *gin.RouterGroup) {
+func (p *PublicRouterGroup) AddPublicRouterGroup(g *gin.RouterGroup) {
 	g.GET("health", func(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"message": "ok",

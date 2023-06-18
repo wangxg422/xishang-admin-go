@@ -6,21 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserRoute struct {
+type SysUserRouter struct {
 }
 
 var userApi = sysApi.UserApi{}
 
-func (s *UserRoute) AddSystemRoute(route *gin.RouterGroup) {
-	systemRoute := route.Group("sys")
+func (s *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
+	userRoute := route.Group("user")
 	{
-		userRoute := systemRoute.Group("user")
-		{
-			userRoute.POST("", userApi.CreateUser)
-			userRoute.GET("list", userApi.ListUser)
-			userRoute.GET(":userid", userApi.GetUserById)
-			userRoute.POST(":userid/update", userApi.UpdateUser)
-			userRoute.DELETE(":userid", userApi.DeleteUser)
-		}
+		userRoute.POST("", userApi.CreateUser)
+		userRoute.GET("list", userApi.ListUser)
+		userRoute.GET(":userid", userApi.GetUserById)
+		userRoute.POST(":userid/update", userApi.UpdateUser)
+		userRoute.DELETE(":userid", userApi.DeleteUser)
 	}
 }

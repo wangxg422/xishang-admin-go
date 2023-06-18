@@ -1,6 +1,7 @@
 package response
 
 import (
+	"backend/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,12 +13,20 @@ type Response struct {
 	Msg  string `json:"msg"`
 }
 
+type Null struct{}
+type EmptyList []string
+
 func Result(code int, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
 		code,
 		data,
 		msg,
 	})
+}
+
+func buildResult(code int32, data any, msg string, c *gin.Context) {
+	res := config.CreateResult(code, data, msg)
+	c.JSON(http.StatusOK, res)
 }
 
 func Ok(c *gin.Context) {
