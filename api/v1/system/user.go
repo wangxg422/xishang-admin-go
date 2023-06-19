@@ -1,7 +1,7 @@
 package system
 
 import (
-	"backend/config"
+	"backend/common/response"
 	"backend/initial/logger"
 	model "backend/model/system"
 	sysSvc "backend/service/system"
@@ -21,48 +21,32 @@ var userSvc = sysSvc.UserService{}
 func (u *UserApi) CreateUser(c *gin.Context) {
 	user := model.SysUser{}
 	if err := c.ShouldBindJSON(&user); err != nil {
-		utils.FailWithCode(config.OptCodeParamParseError, c)
-		logger.Error("parse params failed", zap.Error(err))
 		return
 	}
 
 	user.LoginDate = time.Now()
 	if err := userSvc.CreateUser(user); err != nil {
-		utils.FailWithMsg(err.Error(), c)
 		logger.Error("create user failed", zap.Error(err))
 		return
 	}
 
-	utils.Ok(c)
+	response.Ok(c)
 }
 
 func (u *UserApi) ListUser(c *gin.Context) {
-	list, err := userSvc.ListUser()
-	if err != nil {
-		if utils.NoRecord(err) {
-			utils.OkWithEmptyList(c)
-			return
-		}
-		utils.FailWithMsg("查询失败", c)
-		logger.Error("search user failed", zap.Error(err))
-		return
-	}
-
-	utils.OkWithData(list, c)
+	response.Ok(c)
 }
 
 func (u *UserApi) GetUserById(c *gin.Context) {
 	userid := c.Param("userid")
 
 	if userid == "" {
-		utils.FailWithCode(config.OptCodeParamCanNotNull, c)
 		logger.Error("userid is null")
 		return
 	}
 
 	id, err := strconv.ParseInt(userid, 10, 64)
 	if err != nil {
-		utils.FailWithCodeMsg(config.OptCodeParamParseError, err.Error(), c)
 		logger.Error("search user failed", zap.Error(err))
 		return
 	}
@@ -70,36 +54,31 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 	user, err := userSvc.GetUserById(id)
 	if err != nil {
 		if utils.NoRecord(err) {
-			utils.OkWithEmptyObj(c)
 			return
 		}
-		utils.FailWithMsg("查询失败", c)
 		logger.Error("search user failed", zap.Error(err))
 		return
 	}
 
-	utils.OkWithInfo(user, "查询成功", c)
+	response.OkWithData(user, c)
 }
 
 func (u *UserApi) UpdateUser(c *gin.Context) {
 	user := model.SysUser{}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
-		utils.FailWithCode(config.OptCodeParamParseError, c)
 		logger.Error("parse param error", zap.Error(err))
 		return
 	}
 
 	userid := c.Param("userid")
 	if userid == "" {
-		utils.FailWithCode(config.OptCodeParamCanNotNull, c)
 		logger.Error("userid is null")
 		return
 	}
 
 	userIdInt, err := strconv.ParseInt(userid, 10, 64)
 	if err != nil {
-		utils.FailWithCode(config.OptCodeParamParseError, c)
 		logger.Error("userid parse error", zap.Error(err))
 		return
 	}
@@ -107,12 +86,11 @@ func (u *UserApi) UpdateUser(c *gin.Context) {
 	user.UserId = userIdInt
 
 	if err = userSvc.UpdateUser(user); err != nil {
-		utils.FailWithMsg("更新失败", c)
 		logger.Error("update error", zap.Error(err))
 		return
 	}
 
-	utils.Ok(c)
+	response.Ok(c)
 }
 
 func (u *UserApi) DeleteUser(c *gin.Context) {
@@ -120,16 +98,14 @@ func (u *UserApi) DeleteUser(c *gin.Context) {
 
 	userId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		utils.FailWithCode(config.OptCodeParamParseError, c)
 		logger.Error("parse userid failed", zap.Error(err))
 		return
 	}
 
 	if err := userSvc.DeleteUser(userId); err != nil {
-		utils.FailWithMsg("删除失败", c)
 		logger.Error("delete user failed", zap.Error(err))
 		return
 	}
 
-	utils.Ok(c)
+	response.Ok(c)
 }
