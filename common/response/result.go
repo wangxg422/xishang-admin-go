@@ -32,7 +32,7 @@ func OkWithMessage(message string, c *gin.Context) {
 }
 
 func OkWithData(data any, c *gin.Context) {
-	buildResult(SUCCESS, data, "查询成功", c)
+	buildResult(SUCCESS, data, "成功", c)
 }
 
 func OkWithDetailed(data any, message string, c *gin.Context) {
@@ -44,7 +44,7 @@ func OkWithInfo(code int, data any, message string, c *gin.Context) {
 }
 
 func Fail(c *gin.Context) {
-	buildResult(ERROR, map[string]any{}, "操作失败", c)
+	buildResult(ERROR, map[string]any{}, "失败", c)
 }
 
 func FailWithMessage(message string, c *gin.Context) {

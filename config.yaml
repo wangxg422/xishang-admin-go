@@ -1,10 +1,11 @@
 app:
   name: backend-go
+  addresses: 192.168.100.161
   port: 8080
   mode: debug
 
 mysql:
-  address: 127.0.0.1
+  address: 192.168.216.10
   port: "13306"
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi

@@ -3,7 +3,8 @@ package system
 import (
 	"backend/common/response"
 	"backend/initial/logger"
-	model "backend/model/system"
+	"backend/model/dto"
+	sysModel "backend/model/system"
 	sysSvc "backend/service/system"
 	"backend/utils"
 	"strconv"
@@ -19,14 +20,20 @@ type UserApi struct {
 var userSvc = sysSvc.UserService{}
 
 func (u *UserApi) CreateUser(c *gin.Context) {
-	user := model.SysUser{}
-	if err := c.ShouldBindJSON(&user); err != nil {
+	userDto := dto.SysCreateUserDTO{}
+	if err := c.ShouldBindJSON(&userDto); err != nil {
+		logger.Error("param error", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	user := &sysModel.SysUser{}
+	userDto.CreateUserDtoToModel(user)
 
 	user.LoginDate = time.Now()
 	if err := userSvc.CreateUser(user); err != nil {
 		logger.Error("create user failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
@@ -64,7 +71,7 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 }
 
 func (u *UserApi) UpdateUser(c *gin.Context) {
-	user := model.SysUser{}
+	user := sysModel.SysUser{}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		logger.Error("parse param error", zap.Error(err))
