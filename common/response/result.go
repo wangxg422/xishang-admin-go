@@ -1,7 +1,6 @@
 package response
 
 import (
-	"backend/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +15,7 @@ type Response struct {
 type Null struct{}
 type EmptyList []string
 
-func Result(code int, data any, msg string, c *gin.Context) {
+func buildResult(code int, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
 		code,
 		data,
@@ -24,39 +23,38 @@ func Result(code int, data any, msg string, c *gin.Context) {
 	})
 }
 
-func buildResult(code int32, data any, msg string, c *gin.Context) {
-	res := config.CreateResult(code, data, msg)
-	c.JSON(http.StatusOK, res)
-}
-
 func Ok(c *gin.Context) {
-	Result(SUCCESS, map[string]any{}, "操作成功", c)
+	buildResult(SUCCESS, map[string]any{}, "操作成功", c)
 }
 
 func OkWithMessage(message string, c *gin.Context) {
-	Result(SUCCESS, map[string]any{}, message, c)
+	buildResult(SUCCESS, map[string]any{}, message, c)
 }
 
 func OkWithData(data any, c *gin.Context) {
-	Result(SUCCESS, data, "查询成功", c)
+	buildResult(SUCCESS, data, "查询成功", c)
 }
 
 func OkWithDetailed(data any, message string, c *gin.Context) {
-	Result(SUCCESS, data, message, c)
+	buildResult(SUCCESS, data, message, c)
+}
+
+func OkWithInfo(code int, data any, message string, c *gin.Context) {
+	buildResult(SUCCESS, data, message, c)
 }
 
 func Fail(c *gin.Context) {
-	Result(ERROR, map[string]any{}, "操作失败", c)
+	buildResult(ERROR, map[string]any{}, "操作失败", c)
 }
 
 func FailWithMessage(message string, c *gin.Context) {
-	Result(ERROR, map[string]any{}, message, c)
+	buildResult(ERROR, nil, message, c)
 }
 
 func FailWithDetailed(data any, message string, c *gin.Context) {
-	Result(ERROR, data, message, c)
+	buildResult(ERROR, data, message, c)
 }
 
 func FailWithInfo(code int, data any, message string, c *gin.Context) {
-	Result(ERROR, data, message, c)
+	buildResult(ERROR, data, message, c)
 }
