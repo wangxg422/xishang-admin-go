@@ -49,21 +49,25 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 
 	if userid == "" {
 		logger.Error("userid is null")
+		response.FailWithMessage("user id is null", c)
 		return
 	}
 
 	id, err := strconv.ParseInt(userid, 10, 64)
 	if err != nil {
 		logger.Error("search user failed", zap.Error(err))
+		response.FailWithMessage("user id is null", c)
 		return
 	}
 
 	user, err := userSvc.GetUserById(id)
 	if err != nil {
 		if utils.NoRecord(err) {
+			response.OkWithData([]string{}, c)
 			return
 		}
 		logger.Error("search user failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 

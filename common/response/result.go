@@ -12,7 +12,7 @@ type Response struct {
 	Msg  string `json:"msg"`
 }
 
-type Null struct{}
+type EmptyMap struct{}
 type EmptyList []string
 
 func buildResult(code int, data any, msg string, c *gin.Context) {
