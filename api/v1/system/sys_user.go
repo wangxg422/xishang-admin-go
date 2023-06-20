@@ -14,12 +14,12 @@ import (
 	"go.uber.org/zap"
 )
 
-type UserApi struct {
+type SysUserApi struct {
 }
 
-var userSvc = sysSvc.UserService{}
+var userSvc = sysSvc.SysUserService{}
 
-func (u *UserApi) CreateUser(c *gin.Context) {
+func (u *SysUserApi) CreateUser(c *gin.Context) {
 	userDto := dto.SysCreateUserDTO{}
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("param error", zap.Error(err))
@@ -40,11 +40,11 @@ func (u *UserApi) CreateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *UserApi) ListUser(c *gin.Context) {
+func (u *SysUserApi) ListUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *UserApi) GetUserById(c *gin.Context) {
+func (u *SysUserApi) GetUserById(c *gin.Context) {
 	userid := c.Param("userid")
 
 	if userid == "" {
@@ -72,7 +72,7 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 	response.OkWithData(user, c)
 }
 
-func (u *UserApi) UpdateUser(c *gin.Context) {
+func (u *SysUserApi) UpdateUser(c *gin.Context) {
 	userDto := dto.SysUpdateUserDTO{}
 
 	if err := c.ShouldBindJSON(&userDto); err != nil {
@@ -96,7 +96,7 @@ func (u *UserApi) UpdateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *UserApi) DeleteUser(c *gin.Context) {
+func (u *SysUserApi) DeleteUser(c *gin.Context) {
 	id := c.Param("userid")
 
 	userId, err := strconv.ParseInt(id, 10, 64)
