@@ -28,7 +28,7 @@ func (u *UserApi) CreateUser(c *gin.Context) {
 	}
 
 	user := &sysModel.SysUser{}
-	userDto.CreateUserDtoToModel(user)
+	userDto.Convert(user)
 
 	user.LoginDate = time.Now()
 	if err := userSvc.CreateUser(user); err != nil {
@@ -48,15 +48,13 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 	userid := c.Param("userid")
 
 	if userid == "" {
-		logger.Error("userid is null")
 		response.FailWithMessage("user id is null", c)
 		return
 	}
 
 	id, err := strconv.ParseInt(userid, 10, 64)
 	if err != nil {
-		logger.Error("search user failed", zap.Error(err))
-		response.FailWithMessage("user id is null", c)
+		response.FailWithMessage("user id convert failed", c)
 		return
 	}
 
@@ -75,29 +73,23 @@ func (u *UserApi) GetUserById(c *gin.Context) {
 }
 
 func (u *UserApi) UpdateUser(c *gin.Context) {
-	user := sysModel.SysUser{}
+	userDto := dto.SysUpdateUserDTO{}
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	userid := c.Param("userid")
-	if userid == "" {
-		logger.Error("userid is null")
+	if userDto.UserId == 0 {
+		response.FailWithMessage("user id can not be null", c)
 		return
 	}
 
-	userIdInt, err := strconv.ParseInt(userid, 10, 64)
-	if err != nil {
-		logger.Error("userid parse error", zap.Error(err))
-		return
-	}
-
-	user.UserId = userIdInt
-
-	if err = userSvc.UpdateUser(user); err != nil {
-		logger.Error("update error", zap.Error(err))
+	user := &sysModel.SysUser{}
+	userDto.Convert(user)
+	if err := userSvc.UpdateUser(user); err != nil {
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
@@ -109,12 +101,13 @@ func (u *UserApi) DeleteUser(c *gin.Context) {
 
 	userId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		logger.Error("parse userid failed", zap.Error(err))
+		response.FailWithMessage("user id convert failed", c)
 		return
 	}
 
 	if err := userSvc.DeleteUser(userId); err != nil {
 		logger.Error("delete user failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 

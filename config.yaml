@@ -6,7 +6,7 @@ app:
 
 mysql:
   address: 192.168.216.10
-  port: "13306"
+  port: 13306
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi
   username: root

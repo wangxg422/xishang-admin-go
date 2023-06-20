@@ -20,8 +20,8 @@ func (u *UserService) CreateUser(user *sysModel.SysUser) error {
 	return res.Error
 }
 
-func (u *UserService) UpdateUser(user sysModel.SysUser) error {
-	res := global.DB.Model(&user).Updates(&user)
+func (u *UserService) UpdateUser(user *sysModel.SysUser) error {
+	res := global.DB.Model(&sysModel.SysUser{UserId: user.UserId}).Updates(&user)
 	return res.Error
 }
 
