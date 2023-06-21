@@ -5,7 +5,6 @@ import (
 	"backend/initial/logger"
 	"backend/model/dto"
 	sysModel "backend/model/system"
-	sysSvc "backend/service/system"
 	"backend/utils"
 	"strconv"
 	"time"
@@ -16,8 +15,6 @@ import (
 
 type SysUserApi struct {
 }
-
-var userSvc = sysSvc.SysUserService{}
 
 func (u *SysUserApi) CreateUser(c *gin.Context) {
 	userDto := dto.SysCreateUserDTO{}
@@ -31,7 +28,7 @@ func (u *SysUserApi) CreateUser(c *gin.Context) {
 	userDto.Convert(user)
 
 	user.LoginDate = time.Now()
-	if err := userSvc.CreateUser(user); err != nil {
+	if err := userService.CreateUser(user); err != nil {
 		logger.Error("create user failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -58,7 +55,7 @@ func (u *SysUserApi) GetUserById(c *gin.Context) {
 		return
 	}
 
-	user, err := userSvc.GetUserById(id)
+	user, err := userService.GetUserById(id)
 	if err != nil {
 		if utils.NoRecord(err) {
 			response.OkWithData([]string{}, c)
@@ -88,7 +85,7 @@ func (u *SysUserApi) UpdateUser(c *gin.Context) {
 
 	user := &sysModel.SysUser{}
 	userDto.Convert(user)
-	if err := userSvc.UpdateUser(user); err != nil {
+	if err := userService.UpdateUser(user); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -105,7 +102,7 @@ func (u *SysUserApi) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := userSvc.DeleteUser(userId); err != nil {
+	if err := userService.DeleteUser(userId); err != nil {
 		logger.Error("delete user failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return

@@ -24,7 +24,7 @@ func buildResult(code int, data any, msg string, c *gin.Context) {
 }
 
 func Ok(c *gin.Context) {
-	buildResult(SUCCESS, map[string]any{}, "操作成功", c)
+	buildResult(SUCCESS, map[string]any{}, "成功", c)
 }
 
 func OkWithMessage(message string, c *gin.Context) {

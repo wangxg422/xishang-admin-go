@@ -1,17 +1,13 @@
 package system
 
 import (
-	sysApi "backend/api/v1/system"
-
 	"github.com/gin-gonic/gin"
 )
 
 type SysUserRouter struct {
 }
 
-var userApi = sysApi.UserApi{}
-
-func (s *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
+func (u *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
 	userRoute := route.Group("user")
 	{
 		userRoute.POST("", userApi.CreateUser)
