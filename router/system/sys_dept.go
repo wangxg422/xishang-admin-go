@@ -7,7 +7,7 @@ import (
 type SysDeptRouter struct {
 }
 
-func (s *SysDeptRouter) AddSysDeptRouter(route *gin.RouterGroup) {
+func (m *SysDeptRouter) AddSysDeptRouter(route *gin.RouterGroup) {
 	router := route.Group("dept")
 	{
 		router.POST("", deptApi.CreateDept)

@@ -11,26 +11,26 @@ import (
 type SysUserService struct {
 }
 
-func (u *SysUserService) ChangePassword(c *gin.Context) {
+func (m *SysUserService) ChangePassword(c *gin.Context) {
 }
 
-func (u *SysUserService) CreateUser(user *sysModel.SysUser) error {
+func (m *SysUserService) CreateUser(user *sysModel.SysUser) error {
 	res := global.DB.Create(&user)
 
 	return res.Error
 }
 
-func (u *SysUserService) UpdateUser(user *sysModel.SysUser) error {
+func (m *SysUserService) UpdateUser(user *sysModel.SysUser) error {
 	res := global.DB.Model(&sysModel.SysUser{UserId: user.UserId}).Updates(&user)
 	return res.Error
 }
 
-func (u *SysUserService) DeleteUser(userid int64) error {
+func (m *SysUserService) DeleteUser(userid int64) error {
 	res := global.DB.Model(&sysModel.SysUser{UserId: userid}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
 	return res.Error
 }
 
-func (u *SysUserService) ListUser() ([]sysModel.SysUser, error) {
+func (m *SysUserService) ListUser() ([]sysModel.SysUser, error) {
 	var list []sysModel.SysUser
 
 	res := global.DB.Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode()).Find(&list)
@@ -38,7 +38,7 @@ func (u *SysUserService) ListUser() ([]sysModel.SysUser, error) {
 	return list, res.Error
 }
 
-func (u *SysUserService) GetUserById(userid int64) (sysModel.SysUser, error) {
+func (m *SysUserService) GetUserById(userid int64) (sysModel.SysUser, error) {
 	user := sysModel.SysUser{
 		UserId: userid,
 	}

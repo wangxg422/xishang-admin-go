@@ -27,25 +27,25 @@ type SysCreateUserDTO struct {
 	Remark      string    `json:"remark,omitempty"`
 }
 
-func (u *SysCreateUserDTO) Convert(user *system.SysUser) {
-	user.DeptId = u.DeptId
-	user.UserName = u.UserName
-	user.NickName = u.NickName
-	user.UserType = u.UserType
-	user.Email = u.Email
-	user.PhoneNumber = u.PhoneNumber
-	user.Sex = u.Sex
-	user.Avatar = u.Avatar
-	user.Password = u.Password
-	user.Status = u.Status
-	user.DelFlag = u.DelFlag
-	user.LoginIp = u.LoginIp
-	user.LoginDate = u.LoginDate
-	user.CreateTime = u.CreateTime
-	user.UpdateTime = u.UpdateTime
-	user.CreateBy = u.CreateBy
-	user.UpdateBy = u.UpdateBy
-	user.Remark = u.Remark
+func (m *SysCreateUserDTO) Convert(user *system.SysUser) {
+	user.DeptId = m.DeptId
+	user.UserName = m.UserName
+	user.NickName = m.NickName
+	user.UserType = m.UserType
+	user.Email = m.Email
+	user.PhoneNumber = m.PhoneNumber
+	user.Sex = m.Sex
+	user.Avatar = m.Avatar
+	user.Password = m.Password
+	user.Status = m.Status
+	user.DelFlag = m.DelFlag
+	user.LoginIp = m.LoginIp
+	user.LoginDate = m.LoginDate
+	user.CreateTime = m.CreateTime
+	user.UpdateTime = m.UpdateTime
+	user.CreateBy = m.CreateBy
+	user.UpdateBy = m.UpdateBy
+	user.Remark = m.Remark
 }
 
 type SysUpdateUserDTO struct {
@@ -70,24 +70,24 @@ type SysUpdateUserDTO struct {
 	Remark      string    `json:"remark,omitempty"`
 }
 
-func (u *SysUpdateUserDTO) Convert(user *system.SysUser) {
-	user.UserId = u.UserId
-	user.DeptId = u.DeptId
-	user.UserName = u.UserName
-	user.NickName = u.NickName
-	user.UserType = u.UserType
-	user.Email = u.Email
-	user.PhoneNumber = u.PhoneNumber
-	user.Sex = u.Sex
-	user.Avatar = u.Avatar
-	user.Password = u.Password
-	user.Status = u.Status
-	user.DelFlag = u.DelFlag
-	user.LoginIp = u.LoginIp
-	user.LoginDate = u.LoginDate
-	user.CreateTime = u.CreateTime
-	user.UpdateTime = u.UpdateTime
-	user.CreateBy = u.CreateBy
-	user.UpdateBy = u.UpdateBy
-	user.Remark = u.Remark
+func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
+	user.UserId = m.UserId
+	user.DeptId = m.DeptId
+	user.UserName = m.UserName
+	user.NickName = m.NickName
+	user.UserType = m.UserType
+	user.Email = m.Email
+	user.PhoneNumber = m.PhoneNumber
+	user.Sex = m.Sex
+	user.Avatar = m.Avatar
+	user.Password = m.Password
+	user.Status = m.Status
+	user.DelFlag = m.DelFlag
+	user.LoginIp = m.LoginIp
+	user.LoginDate = m.LoginDate
+	user.CreateTime = m.CreateTime
+	user.UpdateTime = m.UpdateTime
+	user.CreateBy = m.CreateBy
+	user.UpdateBy = m.UpdateBy
+	user.Remark = m.Remark
 }

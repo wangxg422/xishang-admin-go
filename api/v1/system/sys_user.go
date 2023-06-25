@@ -17,7 +17,7 @@ import (
 type SysUserApi struct {
 }
 
-func (u *SysUserApi) CreateUser(c *gin.Context) {
+func (m *SysUserApi) CreateUser(c *gin.Context) {
 	userDto := dto.SysCreateUserDTO{}
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("param error", zap.Error(err))
@@ -41,11 +41,11 @@ func (u *SysUserApi) CreateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *SysUserApi) ListUser(c *gin.Context) {
+func (m *SysUserApi) ListUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *SysUserApi) GetUserById(c *gin.Context) {
+func (m *SysUserApi) GetUserById(c *gin.Context) {
 	userid := c.Param("userid")
 
 	if userid == "" {
@@ -73,7 +73,7 @@ func (u *SysUserApi) GetUserById(c *gin.Context) {
 	response.OkWithData(user, c)
 }
 
-func (u *SysUserApi) UpdateUser(c *gin.Context) {
+func (m *SysUserApi) UpdateUser(c *gin.Context) {
 	userDto := dto.SysUpdateUserDTO{}
 
 	if err := c.ShouldBindJSON(&userDto); err != nil {
@@ -97,7 +97,7 @@ func (u *SysUserApi) UpdateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (u *SysUserApi) DeleteUser(c *gin.Context) {
+func (m *SysUserApi) DeleteUser(c *gin.Context) {
 	id := c.Param("userid")
 
 	userId, err := strconv.ParseInt(id, 10, 64)

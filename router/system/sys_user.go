@@ -7,7 +7,7 @@ import (
 type SysUserRouter struct {
 }
 
-func (u *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
+func (m *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
 	router := route.Group("user")
 	{
 		router.POST("", userApi.CreateUser)

@@ -5,4 +5,6 @@ import "backend/service/system"
 var (
 	userService = system.SysUserService{}
 	deptService = system.SysDeptService{}
+	roleService = system.SysRoleService{}
+	postService = system.SysPostService{}
 )
