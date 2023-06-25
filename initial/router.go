@@ -2,14 +2,14 @@ package initial
 
 import (
 	"backend/global"
-	"backend/route/public"
-	"backend/route/system"
+	"backend/router/public"
+	"backend/router/system"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoute() {
+func InitRouter() {
 	// debug or release
 	gin.SetMode(global.AppConfig.App.Mode)
 	r := gin.Default()
