@@ -29,7 +29,8 @@ func InitRoute() {
 
 	sysGroup := r.Group("sys")
 	{
-		system.SysRouterGroupApp.AddSysUserRouter(sysGroup)
+		system.SysRouterGroupApp.SysUserRouter.AddSysUserRouter(sysGroup)
+		system.SysRouterGroupApp.SysDeptRouter.AddSysDeptRouter(sysGroup)
 	}
 
 	_ = r.Run(":" + global.AppConfig.App.Port)

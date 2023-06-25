@@ -31,3 +31,19 @@ func (d *SysDeptApi) CreateDept(c *gin.Context) {
 
 	response.Ok(c)
 }
+
+func (d *SysDeptApi) GetDeptById(c *gin.Context) {
+
+}
+
+func (d *SysDeptApi) ListDept(c *gin.Context) {
+
+}
+
+func (d *SysDeptApi) UpdateDept(c *gin.Context) {
+
+}
+
+func (d *SysDeptApi) DeleteDept(c *gin.Context) {
+
+}

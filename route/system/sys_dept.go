@@ -8,12 +8,12 @@ type SysDeptRouter struct {
 }
 
 func (s *SysDeptRouter) AddSysDeptRouter(route *gin.RouterGroup) {
-	userRoute := route.Group("user")
+	router := route.Group("dept")
 	{
-		userRoute.POST("", userApi.CreateUser)
-		userRoute.GET("list", userApi.ListUser)
-		userRoute.GET(":userid", userApi.GetUserById)
-		userRoute.POST("update", userApi.UpdateUser)
-		userRoute.DELETE(":userid", userApi.DeleteUser)
+		router.POST("", deptApi.CreateDept)
+		router.GET("list", deptApi.ListDept)
+		router.GET(":deptid", deptApi.GetDeptById)
+		router.POST("update", deptApi.UpdateDept)
+		router.DELETE(":deptid", deptApi.DeleteDept)
 	}
 }

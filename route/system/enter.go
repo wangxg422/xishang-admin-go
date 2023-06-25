@@ -11,4 +11,5 @@ var SysRouterGroupApp = new(SysRouterGroup)
 
 var (
 	userApi = system.SysUserApi{}
+	deptApi = system.SysDeptApi{}
 )
