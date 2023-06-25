@@ -20,11 +20,10 @@ func InitRouter() {
 		r.SetTrustedProxies(strings.Split(global.AppConfig.App.Addresses, ","))
 	}
 
-	// 开放接口,健康检查、注册、忘记密码、接口文档等
-	publicRouterGroup := &public.PublicRouterGroup{}
-	publicGroup := r.Group("public")
+	// 开放接口,健康检查、登录、注册、忘记密码、接口文档等
+	publicGroup := r.Group("")
 	{
-		publicRouterGroup.AddPublicRouterGroup(publicGroup)
+		public.PublicRouterGroupApp.PublicRouter.AddPublicRouter(publicGroup)
 	}
 
 	sysGroup := r.Group("sys")

@@ -1,19 +1,25 @@
 package public
 
 import (
+	"backend/api/v1/public"
+
 	"github.com/gin-gonic/gin"
 )
 
-type PublicRouterGroup struct {
+type PublicRouter struct {
 }
 
-func (p *PublicRouterGroup) AddPublicRouterGroup(g *gin.RouterGroup) {
-	g.GET("health", func(context *gin.Context) {
+var loginAPi = public.LoginApi{}
+
+func (m *PublicRouter) AddPublicRouter(route *gin.RouterGroup) {
+	// 健康检查
+	route.GET("health", func(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"message": "ok",
 		})
 	})
 
-	// userApi := v1.AppApiGroupIns.SysApiGroup.UserApi
-	// g.POST("register", userApi.Register)
+	// 登录注册
+	route.POST("login", loginAPi.Login)
+	route.POST("register", loginAPi.Register)
 }
