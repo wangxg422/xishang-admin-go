@@ -1,7 +1,7 @@
 package system
 
 import (
-	"backend/config"
+	"backend/common/enmu"
 	"backend/global"
 	sysModel "backend/model/system"
 )
@@ -21,14 +21,14 @@ func (u *SysDeptService) UpdateUser(d *sysModel.SysDept) error {
 }
 
 func (u *SysDeptService) DeleteDept(id int64) error {
-	res := global.DB.Model(&sysModel.SysDept{DeptId: id}).Update("del_flag", config.UserDelFlagDelete)
+	res := global.DB.Model(&sysModel.SysDept{DeptId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
 	return res.Error
 }
 
 func (u *SysDeptService) ListUser() ([]sysModel.SysDept, error) {
 	var list []sysModel.SysDept
 
-	res := global.DB.Where("del_flag = ?", config.UserDelFlagNormal).Find(&list)
+	res := global.DB.Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode()).Find(&list)
 
 	return list, res.Error
 }
@@ -38,6 +38,6 @@ func (u *SysDeptService) GetDeptById(id int64) (sysModel.SysDept, error) {
 		DeptId: id,
 	}
 
-	res := global.DB.Take(&user, id).Where("del_flag = ?", config.UserStatusNormal)
+	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
 	return user, res.Error
 }
