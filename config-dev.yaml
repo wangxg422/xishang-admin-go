@@ -1,0 +1,33 @@
+app:
+  name: backend-go
+  addresses: 192.168.100.161
+  port: 8080
+  mode: debug
+
+mysql:
+  address: 127.0.0.1
+  port: 13306
+  conn-config: charset=utf8mb4&parseTime=True&loc=Local
+  db-name: ruoyi
+  username: root
+  password: "123456"
+  table-prefix: ""
+  singular: true
+  engine: "InnoDB"
+  max-idle-conn: 10
+  max-open-conn: 100
+  log-mode: info
+  log-zap: false
+zap:
+  level: debug
+  prefix: ''
+  format: console
+  path: tmp # 日志目录
+  file-shunt: false # 日志文件是否按级别分流
+  max-age: 10 # 日志文件保留最大天数
+  max-backups: 10 # 日志文件最大个数
+  max-size: 1 # 日志文件最大大小
+  log-in-console: true
+  encode-level: LowercaseLevelEncoder
+  stacktrace-key: stacktrace
+  

@@ -1,6 +1,7 @@
 package system
 
 import (
+	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
 	"backend/model/dto"
@@ -22,6 +23,9 @@ func (d *SysDeptApi) CreateDept(c *gin.Context) {
 
 	dept := &sysModel.SysDept{}
 	deptDto.Convert(dept)
+
+	dept.DelFlag = enmu.EnmuGroupApp.DelFlagDelete.GetCode()
+	dept.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
 
 	if err := deptService.CreateDept(dept); err != nil {
 		logger.Error("create user failed", zap.Error(err))

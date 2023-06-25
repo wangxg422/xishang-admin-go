@@ -1,6 +1,7 @@
 package system
 
 import (
+	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
 	"backend/model/dto"
@@ -28,6 +29,9 @@ func (u *SysUserApi) CreateUser(c *gin.Context) {
 	userDto.Convert(user)
 
 	user.LoginDate = time.Now()
+	user.DelFlag = enmu.EnmuGroupApp.DelFlagDelete.GetCode()
+	user.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+
 	if err := userService.CreateUser(user); err != nil {
 		logger.Error("create user failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
