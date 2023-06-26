@@ -9,6 +9,10 @@ type EnmuGroup struct {
 
 	StatusNormal   Status
 	StatusDisabled Status
+
+	MenuTypeM MenuType
+	MenuTypeC MenuType
+	MenuTypeF MenuType
 }
 
 var EnmuGroupApp = new(EnmuGroup)
