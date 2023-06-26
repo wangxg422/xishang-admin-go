@@ -30,7 +30,7 @@ func (m *SysDeptApi) CreateDept(c *gin.Context) {
 	dept.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
 
 	if err := deptService.CreateDept(dept); err != nil {
-		logger.Error("create user failed", zap.Error(err))
+		logger.Error("create dept failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -39,7 +39,7 @@ func (m *SysDeptApi) CreateDept(c *gin.Context) {
 }
 
 func (m *SysDeptApi) GetDeptById(c *gin.Context) {
-	id := c.Param("deptid")
+	id := c.Param("deptId")
 
 	if id == "" {
 		response.FailWithMessage("dept id is null", c)
@@ -48,7 +48,7 @@ func (m *SysDeptApi) GetDeptById(c *gin.Context) {
 
 	deptId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+		response.FailWithMessage("dept id convert failed", c)
 		return
 	}
 
@@ -58,7 +58,7 @@ func (m *SysDeptApi) GetDeptById(c *gin.Context) {
 			response.OkWithData([]string{}, c)
 			return
 		}
-		logger.Error("search user failed", zap.Error(err))
+		logger.Error("search dept failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -95,7 +95,7 @@ func (m *SysDeptApi) UpdateDept(c *gin.Context) {
 }
 
 func (m *SysDeptApi) DeleteDept(c *gin.Context) {
-	id := c.Param("deptid")
+	id := c.Param("deptId")
 
 	deptId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {

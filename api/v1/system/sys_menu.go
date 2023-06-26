@@ -29,7 +29,7 @@ func (m *SysMenuApi) CreateMenu(c *gin.Context) {
 	menu.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
 
 	if err := menuService.CreateMenu(menu); err != nil {
-		logger.Error("create user failed", zap.Error(err))
+		logger.Error("create menu failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -38,7 +38,7 @@ func (m *SysMenuApi) CreateMenu(c *gin.Context) {
 }
 
 func (m *SysMenuApi) GetMenuById(c *gin.Context) {
-	id := c.Param("menuid")
+	id := c.Param("menuId")
 
 	if id == "" {
 		response.FailWithMessage("menu id is null", c)
@@ -47,7 +47,7 @@ func (m *SysMenuApi) GetMenuById(c *gin.Context) {
 
 	menuId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+		response.FailWithMessage("menu id convert failed", c)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (m *SysMenuApi) GetMenuById(c *gin.Context) {
 			response.OkWithData([]string{}, c)
 			return
 		}
-		logger.Error("search user failed", zap.Error(err))
+		logger.Error("search menu failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -94,7 +94,7 @@ func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
 }
 
 func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
-	id := c.Param("menuid")
+	id := c.Param("menuId")
 
 	menuId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {

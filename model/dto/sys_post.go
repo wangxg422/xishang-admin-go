@@ -6,7 +6,7 @@ import (
 )
 
 type SysCreatePostDTO struct {
-	PostId     int64     `json:"postid,omitempty"`
+	PostId     int64     `json:"postId,omitempty"`
 	PostCode   string    `json:"postCode,omitempty" binding:"required"`
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`
@@ -32,7 +32,7 @@ func (m *SysCreatePostDTO) Convert(t *system.SysPost) {
 }
 
 type SysUpdatePostDTO struct {
-	PostId     int64     `json:"postid,omitempty"`
+	PostId     int64     `json:"postId,omitempty"`
 	PostCode   string    `json:"postCode,omitempty" binding:"required"`
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`

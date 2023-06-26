@@ -29,7 +29,7 @@ func (m *SysPostApi) CreatePost(c *gin.Context) {
 	post.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
 
 	if err := postService.CreatePost(post); err != nil {
-		logger.Error("create user failed", zap.Error(err))
+		logger.Error("create post failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -38,7 +38,7 @@ func (m *SysPostApi) CreatePost(c *gin.Context) {
 }
 
 func (m *SysPostApi) GetPostById(c *gin.Context) {
-	id := c.Param("postid")
+	id := c.Param("postId")
 
 	if id == "" {
 		response.FailWithMessage("post id is null", c)
@@ -47,7 +47,7 @@ func (m *SysPostApi) GetPostById(c *gin.Context) {
 
 	postId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+		response.FailWithMessage("post id convert failed", c)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (m *SysPostApi) GetPostById(c *gin.Context) {
 			response.OkWithData([]string{}, c)
 			return
 		}
-		logger.Error("search user failed", zap.Error(err))
+		logger.Error("search post failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -94,7 +94,7 @@ func (m *SysPostApi) UpdatePost(c *gin.Context) {
 }
 
 func (m *SysPostApi) DeletePost(c *gin.Context) {
-	id := c.Param("postid")
+	id := c.Param("postId")
 
 	postId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {

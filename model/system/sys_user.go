@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysUser struct {
-	UserId      int64     `gorm:"primaryKey;column:user_id" json:"userid,omitempty"`
+	UserId      int64     `gorm:"primaryKey;column:user_id" json:"userId,omitempty"`
 	DeptId      int64     `gorm:"column:dept_id" json:"deptId,omitempty"`
 	UserName    string    `gorm:"column:user_name" json:"username,omitempty"`
 	NickName    string    `gorm:"column:nick_name" json:"nickname,omitempty"`

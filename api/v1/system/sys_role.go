@@ -30,7 +30,7 @@ func (m *SysRoleApi) CreateRole(c *gin.Context) {
 	role.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
 
 	if err := roleService.CreateRole(role); err != nil {
-		logger.Error("create user failed", zap.Error(err))
+		logger.Error("create role failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -39,7 +39,7 @@ func (m *SysRoleApi) CreateRole(c *gin.Context) {
 }
 
 func (m *SysRoleApi) GetRoleById(c *gin.Context) {
-	id := c.Param("roleid")
+	id := c.Param("roleId")
 
 	if id == "" {
 		response.FailWithMessage("role id is null", c)
@@ -48,7 +48,7 @@ func (m *SysRoleApi) GetRoleById(c *gin.Context) {
 
 	roleId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+		response.FailWithMessage("role id convert failed", c)
 		return
 	}
 
@@ -58,7 +58,7 @@ func (m *SysRoleApi) GetRoleById(c *gin.Context) {
 			response.OkWithData([]string{}, c)
 			return
 		}
-		logger.Error("search user failed", zap.Error(err))
+		logger.Error("search role failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -95,7 +95,7 @@ func (m *SysRoleApi) UpdateRole(c *gin.Context) {
 }
 
 func (m *SysRoleApi) DeleteRole(c *gin.Context) {
-	id := c.Param("roleid")
+	id := c.Param("roleId")
 
 	roleId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {

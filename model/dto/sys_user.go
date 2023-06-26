@@ -6,7 +6,7 @@ import (
 )
 
 type SysCreateUserDTO struct {
-	UserId      int64     `json:"userid,omitempty"`
+	UserId      int64     `json:"userId,omitempty"`
 	DeptId      int64     `json:"deptId,omitempty"`
 	UserName    string    `json:"username,omitempty" binding:"required"`
 	NickName    string    `json:"nickname,omitempty" binding:"required"`
@@ -49,7 +49,7 @@ func (m *SysCreateUserDTO) Convert(user *system.SysUser) {
 }
 
 type SysUpdateUserDTO struct {
-	UserId      int64     `json:"userid,omitempty" binding:"required"`
+	UserId      int64     `json:"userId,omitempty" binding:"required"`
 	DeptId      int64     `json:"deptId,omitempty"`
 	UserName    string    `json:"username,omitempty"`
 	NickName    string    `json:"nickname,omitempty"`

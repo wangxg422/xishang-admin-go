@@ -46,7 +46,7 @@ func (m *SysUserApi) ListUser(c *gin.Context) {
 }
 
 func (m *SysUserApi) GetUserById(c *gin.Context) {
-	userid := c.Param("userid")
+	userid := c.Param("userId")
 
 	if userid == "" {
 		response.FailWithMessage("user id is null", c)
@@ -98,7 +98,7 @@ func (m *SysUserApi) UpdateUser(c *gin.Context) {
 }
 
 func (m *SysUserApi) DeleteUser(c *gin.Context) {
-	id := c.Param("userid")
+	id := c.Param("userId")
 
 	userId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
