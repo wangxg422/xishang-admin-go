@@ -12,8 +12,8 @@ func (m *SysPostRouter) AddSysPostRouter(route *gin.RouterGroup) {
 	{
 		router.POST("", postApi.CreatePost)
 		router.GET("list", postApi.ListPost)
-		router.GET(":postid", postApi.GetPostById)
+		router.GET(":postId", postApi.GetPostById)
 		router.POST("update", postApi.UpdatePost)
-		router.DELETE(":postid", postApi.DeletePost)
+		router.DELETE(":postId", postApi.DeletePost)
 	}
 }

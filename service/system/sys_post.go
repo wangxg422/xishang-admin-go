@@ -9,19 +9,19 @@ import (
 type SysPostService struct {
 }
 
-func (m *SysPostService) CreatePost(Post *sysModel.SysPost) error {
-	res := global.DB.Create(&Post)
+func (m *SysPostService) CreatePost(post *sysModel.SysPost) error {
+	res := global.DB.Create(&post)
 
 	return res.Error
 }
 
-func (m *SysPostService) UpdatePost(Post *sysModel.SysPost) error {
-	res := global.DB.Model(&sysModel.SysPost{PostId: Post.PostId}).Updates(&Post)
+func (m *SysPostService) UpdatePost(post *sysModel.SysPost) error {
+	res := global.DB.Model(&sysModel.SysPost{PostId: post.PostId}).Updates(&post)
 	return res.Error
 }
 
-func (m *SysPostService) DeletePost(Postid int64) error {
-	res := global.DB.Model(&sysModel.SysPost{PostId: Postid}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
+func (m *SysPostService) DeletePost(id int64) error {
+	res := global.DB.Model(&sysModel.SysPost{PostId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
 	return res.Error
 }
 
@@ -33,11 +33,11 @@ func (m *SysPostService) ListPost() ([]sysModel.SysPost, error) {
 	return list, res.Error
 }
 
-func (m *SysPostService) GetPostById(Postid int64) (sysModel.SysPost, error) {
+func (m *SysPostService) GetPostById(id int64) (sysModel.SysPost, error) {
 	Post := sysModel.SysPost{
-		PostId: Postid,
+		PostId: id,
 	}
 
-	res := global.DB.Take(&Post, Postid).Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode())
+	res := global.DB.Take(&Post, id).Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode())
 	return Post, res.Error
 }

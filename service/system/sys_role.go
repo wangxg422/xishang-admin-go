@@ -4,29 +4,24 @@ import (
 	"backend/common/enmu"
 	"backend/global"
 	sysModel "backend/model/system"
-
-	"github.com/gin-gonic/gin"
 )
 
 type SysRoleService struct {
 }
 
-func (m *SysRoleService) ChangePassword(c *gin.Context) {
-}
-
-func (m *SysRoleService) CreateRole(Role *sysModel.SysRole) error {
-	res := global.DB.Create(&Role)
+func (m *SysRoleService) CreateRole(role *sysModel.SysRole) error {
+	res := global.DB.Create(&role)
 
 	return res.Error
 }
 
-func (m *SysRoleService) UpdateRole(Role *sysModel.SysRole) error {
-	res := global.DB.Model(&sysModel.SysRole{RoleId: Role.RoleId}).Updates(&Role)
+func (m *SysRoleService) UpdateRole(role *sysModel.SysRole) error {
+	res := global.DB.Model(&sysModel.SysRole{RoleId: role.RoleId}).Updates(&role)
 	return res.Error
 }
 
-func (m *SysRoleService) DeleteRole(Roleid int64) error {
-	res := global.DB.Model(&sysModel.SysRole{RoleId: Roleid}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
+func (m *SysRoleService) DeleteRole(id int64) error {
+	res := global.DB.Model(&sysModel.SysRole{RoleId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
 	return res.Error
 }
 
@@ -38,11 +33,11 @@ func (m *SysRoleService) ListRole() ([]sysModel.SysRole, error) {
 	return list, res.Error
 }
 
-func (m *SysRoleService) GetRoleById(Roleid int64) (sysModel.SysRole, error) {
+func (m *SysRoleService) GetRoleById(id int64) (sysModel.SysRole, error) {
 	Role := sysModel.SysRole{
-		RoleId: Roleid,
+		RoleId: id,
 	}
 
-	res := global.DB.Take(&Role, Roleid).Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode())
+	res := global.DB.Take(&Role, id).Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode())
 	return Role, res.Error
 }

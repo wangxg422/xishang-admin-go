@@ -12,8 +12,8 @@ func (m *SysMenuRouter) AddSysMenuRouter(route *gin.RouterGroup) {
 	{
 		router.POST("", menuApi.CreateMenu)
 		router.GET("list", menuApi.ListMenu)
-		router.GET(":deptid", menuApi.GetMenuById)
+		router.GET(":deptId", menuApi.GetMenuById)
 		router.POST("update", menuApi.UpdateMenu)
-		router.DELETE(":deptid", menuApi.DeleteMenu)
+		router.DELETE(":deptId", menuApi.DeleteMenu)
 	}
 }

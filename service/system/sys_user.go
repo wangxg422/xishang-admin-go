@@ -25,8 +25,8 @@ func (m *SysUserService) UpdateUser(user *sysModel.SysUser) error {
 	return res.Error
 }
 
-func (m *SysUserService) DeleteUser(userid int64) error {
-	res := global.DB.Model(&sysModel.SysUser{UserId: userid}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
+func (m *SysUserService) DeleteUser(id int64) error {
+	res := global.DB.Model(&sysModel.SysUser{UserId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
 	return res.Error
 }
 
@@ -38,11 +38,11 @@ func (m *SysUserService) ListUser() ([]sysModel.SysUser, error) {
 	return list, res.Error
 }
 
-func (m *SysUserService) GetUserById(userid int64) (sysModel.SysUser, error) {
+func (m *SysUserService) GetUserById(id int64) (sysModel.SysUser, error) {
 	user := sysModel.SysUser{
-		UserId: userid,
+		UserId: id,
 	}
 
-	res := global.DB.Take(&user, userid).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
+	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
 	return user, res.Error
 }

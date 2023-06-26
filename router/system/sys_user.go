@@ -12,8 +12,8 @@ func (m *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
 	{
 		router.POST("", userApi.CreateUser)
 		router.GET("list", userApi.ListUser)
-		router.GET(":userid", userApi.GetUserById)
+		router.GET(":userId", userApi.GetUserById)
 		router.POST("update", userApi.UpdateUser)
-		router.DELETE(":userid", userApi.DeleteUser)
+		router.DELETE(":userId", userApi.DeleteUser)
 	}
 }

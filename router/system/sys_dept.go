@@ -12,8 +12,8 @@ func (m *SysDeptRouter) AddSysDeptRouter(route *gin.RouterGroup) {
 	{
 		router.POST("", deptApi.CreateDept)
 		router.GET("list", deptApi.ListDept)
-		router.GET(":deptid", deptApi.GetDeptById)
+		router.GET(":deptId", deptApi.GetDeptById)
 		router.POST("update", deptApi.UpdateDept)
-		router.DELETE(":deptid", deptApi.DeleteDept)
+		router.DELETE(":deptId", deptApi.DeleteDept)
 	}
 }
