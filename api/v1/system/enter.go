@@ -7,4 +7,5 @@ var (
 	deptService = system.SysDeptService{}
 	roleService = system.SysRoleService{}
 	postService = system.SysPostService{}
+	menuService = system.SysMenuService{}
 )

@@ -7,6 +7,7 @@ type SysRouterGroup struct {
 	SysDeptRouter
 	SysRoleRouter
 	SysPostRouter
+	SysMenuRouter
 }
 
 var SysRouterGroupApp = new(SysRouterGroup)
@@ -16,4 +17,5 @@ var (
 	deptApi = system.SysDeptApi{}
 	roleApi = system.SysRoleApi{}
 	postApi = system.SysPostApi{}
+	menuApi = system.SysMenuApi{}
 )

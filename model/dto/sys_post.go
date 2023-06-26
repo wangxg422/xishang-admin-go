@@ -18,17 +18,17 @@ type SysCreatePostDTO struct {
 	Remark     string    `json:"remark,omitempty"`
 }
 
-func (m *SysCreatePostDTO) Convert(user *system.SysPost) {
-	user.PostId = m.PostId
-	user.PostCode = m.PostCode
-	user.PostName = m.PostName
-	user.PostSort = m.PostSort
-	user.Status = m.Status
-	user.CreateTime = m.CreateTime
-	user.UpdateTime = m.UpdateTime
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
-	user.Remark = m.Remark
+func (m *SysCreatePostDTO) Convert(t *system.SysPost) {
+	t.PostId = m.PostId
+	t.PostCode = m.PostCode
+	t.PostName = m.PostName
+	t.PostSort = m.PostSort
+	t.Status = m.Status
+	t.CreateTime = m.CreateTime
+	t.UpdateTime = m.UpdateTime
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
+	t.Remark = m.Remark
 }
 
 type SysUpdatePostDTO struct {
@@ -44,15 +44,15 @@ type SysUpdatePostDTO struct {
 	Remark     string    `json:"remark,omitempty"`
 }
 
-func (m *SysUpdatePostDTO) Convert(user *system.SysPost) {
-	user.PostId = m.PostId
-	user.PostCode = m.PostCode
-	user.PostName = m.PostName
-	user.PostSort = m.PostSort
-	user.Status = m.Status
-	user.CreateTime = m.CreateTime
-	user.UpdateTime = m.UpdateTime
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
-	user.Remark = m.Remark
+func (m *SysUpdatePostDTO) Convert(t *system.SysPost) {
+	t.PostId = m.PostId
+	t.PostCode = m.PostCode
+	t.PostName = m.PostName
+	t.PostSort = m.PostSort
+	t.Status = m.Status
+	t.CreateTime = m.CreateTime
+	t.UpdateTime = m.UpdateTime
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
+	t.Remark = m.Remark
 }

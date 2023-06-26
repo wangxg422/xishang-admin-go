@@ -17,18 +17,18 @@ type SysCreateDeptDTO struct {
 	UpdateBy  string `json:"updateBy,omitempty"`
 }
 
-func (m *SysCreateDeptDTO) Convert(user *system.SysDept) {
-	user.DeptName = m.DeptName
-	user.ParentId = m.ParentId
-	user.Ancestors = m.Ancestors
-	user.OrderNum = m.OrderNum
-	user.Leader = m.Leader
-	user.Phone = m.Phone
-	user.Email = m.Email
-	user.Status = m.Status
-	user.DelFlag = m.DelFlag
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
+func (m *SysCreateDeptDTO) Convert(t *system.SysDept) {
+	t.DeptName = m.DeptName
+	t.ParentId = m.ParentId
+	t.Ancestors = m.Ancestors
+	t.OrderNum = m.OrderNum
+	t.Leader = m.Leader
+	t.Phone = m.Phone
+	t.Email = m.Email
+	t.Status = m.Status
+	t.DelFlag = m.DelFlag
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
 }
 
 type SysUpdateDeptDTO struct {
@@ -46,16 +46,16 @@ type SysUpdateDeptDTO struct {
 	UpdateBy  string `json:"updateBy,omitempty"`
 }
 
-func (m *SysUpdateDeptDTO) Convert(user *system.SysDept) {
-	user.DeptName = m.DeptName
-	user.ParentId = m.ParentId
-	user.Ancestors = m.Ancestors
-	user.OrderNum = m.OrderNum
-	user.Leader = m.Leader
-	user.Phone = m.Phone
-	user.Email = m.Email
-	user.Status = m.Status
-	user.DelFlag = m.DelFlag
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
+func (m *SysUpdateDeptDTO) Convert(t *system.SysDept) {
+	t.DeptName = m.DeptName
+	t.ParentId = m.ParentId
+	t.Ancestors = m.Ancestors
+	t.OrderNum = m.OrderNum
+	t.Leader = m.Leader
+	t.Phone = m.Phone
+	t.Email = m.Email
+	t.Status = m.Status
+	t.DelFlag = m.DelFlag
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
 }

@@ -22,20 +22,20 @@ type SysCreateRoleDTO struct {
 	Remark            string    `json:"remark,omitempty"`
 }
 
-func (m *SysCreateRoleDTO) Convert(user *system.SysRole) {
-	user.RoleId = m.RoleId
-	user.RoleName = m.RoleName
-	user.RoleKey = m.RoleKey
-	user.RoleSort = m.RoleSort
-	user.DataScope = m.DataScope
-	user.MenuCheckStrictly = m.MenuCheckStrictly
-	user.DeptCheckStrictly = m.DeptCheckStrictly
-	user.Status = m.Status
-	user.DelFlag = m.DelFlag
-	user.CreateTime = m.CreateTime
-	user.UpdateTime = m.UpdateTime
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
+func (m *SysCreateRoleDTO) Convert(t *system.SysRole) {
+	t.RoleId = m.RoleId
+	t.RoleName = m.RoleName
+	t.RoleKey = m.RoleKey
+	t.RoleSort = m.RoleSort
+	t.DataScope = m.DataScope
+	t.MenuCheckStrictly = m.MenuCheckStrictly
+	t.DeptCheckStrictly = m.DeptCheckStrictly
+	t.Status = m.Status
+	t.DelFlag = m.DelFlag
+	t.CreateTime = m.CreateTime
+	t.UpdateTime = m.UpdateTime
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
 }
 
 type SysUpdateRoleDTO struct {
@@ -55,18 +55,18 @@ type SysUpdateRoleDTO struct {
 	Remark            string    `json:"remark,omitempty"`
 }
 
-func (m *SysUpdateRoleDTO) Convert(user *system.SysRole) {
-	user.RoleId = m.RoleId
-	user.RoleName = m.RoleName
-	user.RoleKey = m.RoleKey
-	user.RoleSort = m.RoleSort
-	user.DataScope = m.DataScope
-	user.MenuCheckStrictly = m.MenuCheckStrictly
-	user.DeptCheckStrictly = m.DeptCheckStrictly
-	user.Status = m.Status
-	user.DelFlag = m.DelFlag
-	user.CreateTime = m.CreateTime
-	user.UpdateTime = m.UpdateTime
-	user.CreateBy = m.CreateBy
-	user.UpdateBy = m.UpdateBy
+func (m *SysUpdateRoleDTO) Convert(t *system.SysRole) {
+	t.RoleId = m.RoleId
+	t.RoleName = m.RoleName
+	t.RoleKey = m.RoleKey
+	t.RoleSort = m.RoleSort
+	t.DataScope = m.DataScope
+	t.MenuCheckStrictly = m.MenuCheckStrictly
+	t.DeptCheckStrictly = m.DeptCheckStrictly
+	t.Status = m.Status
+	t.DelFlag = m.DelFlag
+	t.CreateTime = m.CreateTime
+	t.UpdateTime = m.UpdateTime
+	t.CreateBy = m.CreateBy
+	t.UpdateBy = m.UpdateBy
 }
