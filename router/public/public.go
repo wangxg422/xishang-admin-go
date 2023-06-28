@@ -1,15 +1,11 @@
 package public
 
 import (
-	"backend/api/v1/public"
-
 	"github.com/gin-gonic/gin"
 )
 
 type PublicRouter struct {
 }
-
-var loginAPi = public.LoginApi{}
 
 func (m *PublicRouter) AddPublicRouter(route *gin.RouterGroup) {
 	// 健康检查
@@ -19,7 +15,14 @@ func (m *PublicRouter) AddPublicRouter(route *gin.RouterGroup) {
 		})
 	})
 
-	// 登录注册
-	route.POST("login", loginAPi.Login)
-	route.POST("register", loginAPi.Register)
+	// 登录、注销、注册
+	route.POST("login", loginApi.Login)
+	route.POST("logout", loginApi.Logout)
+	route.POST("register", loginApi.Register)
+
+	// 获取用户信息
+	route.GET("getInfo", loginApi.GetInfo)
+
+	// 获取验证码
+	route.GET("captcha", captchaApi.GenCaptcha)
 }

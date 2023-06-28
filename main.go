@@ -14,6 +14,8 @@ func main() {
 	global.Log = logger.InitZap()
 	//zap.ReplaceGlobals()
 
+	initial.Redis()
+
 	db := initial.InitDb()
 	global.DB = db
 	defer func() {

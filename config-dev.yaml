@@ -1,11 +1,11 @@
 app:
   name: backend-go
-  addresses: 192.168.100.161
+  #addresses: 192.168.100.161
   port: 8080
   mode: debug
 
 mysql:
-  address: 127.0.0.1
+  address: 192.168.216.10
   port: 13306
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi
@@ -31,3 +31,15 @@ zap:
   encode-level: LowercaseLevelEncoder
   stacktrace-key: stacktrace
   
+captcha:
+  key-long: 4
+  img-width: 240
+  img-height: 80
+  expiration: 180 # 过期时间，单位秒
+  prekey: CAPTCHA_ # 存储到redis的前缀
+
+redis:
+  address: 192.168.216.10
+  port: 6379
+  password: 123456
+  db: 0

@@ -22,4 +22,7 @@ type SysUser struct {
 	CreateBy    string    `gorm:"column:create_by" json:"createBy,omitempty"`
 	UpdateBy    string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark      string    `gorm:"column:remark" json:"remark,omitempty"`
+
+	SysRole []SysRole `gorm:"many2many:sys_user_role;" json:"sysRole,omitempty"`
+	SysPost []SysPost `gorm:"many2many:sys_user_post;" json:"sysPost,omitempty"`
 }
