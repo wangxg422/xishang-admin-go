@@ -4,6 +4,7 @@ import (
 	"backend/global"
 	"backend/initial/logger"
 	"context"
+	"fmt"
 	"sync"
 	"time"
 
@@ -68,6 +69,7 @@ func (rs *RedisStore) Get(key string, clear bool) string {
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
 	key := rs.PreKey + id
+	fmt.Println(key)
 	v := rs.Get(key, clear)
 	return v == answer
 }

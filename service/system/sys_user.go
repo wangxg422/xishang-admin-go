@@ -53,3 +53,10 @@ func (m *SysUserService) GetUserById(id int64) (system.SysUser, error) {
 	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
 	return user, res.Error
 }
+
+func (m *SysUserService) GetUserByUserName(userName string) (system.SysUser, error) {
+	user := system.SysUser{}
+
+	res := global.DB.Take(&user, "user_name = ?", userName).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
+	return user, res.Error
+}

@@ -1,24 +1,26 @@
 package enmu
 
-import "strconv"
-
-type Status int
+type Status string
 
 const (
-	STATUS_NORMAL = iota
-	STATUS_DISABLED
+	STATUS_NORMAL   = "0"
+	STATUS_DISABLED = "1"
 )
 
 var statusDesc = [...]string{"正常", "", "停用"}
 
 func (m Status) GetDesc() string {
-	return statusDesc[m]
+	return ""
 }
 
 func (m Status) GetCode() string {
-	return strconv.Itoa(int(m))
+	return string(m)
 }
 
 func (m Status) Size() int {
-	return len(statusDesc)
+	return 2
+}
+
+func (m Status) Compare(value string) bool {
+	return string(m) == value
 }

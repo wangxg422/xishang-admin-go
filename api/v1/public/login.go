@@ -1,12 +1,12 @@
 package public
 
 import (
+	"backend/common/enmu"
 	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
-	"backend/model/system"
+	"backend/model/dto"
 	"backend/utils/captcha"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -15,43 +15,39 @@ import (
 type LoginApi struct{}
 
 func (m *LoginApi) Login(c *gin.Context) {
-	var l systemReq.Login
-	err := c.ShouldBindJSON(&l)
-	key := c.ClientIP()
-
-	if err != nil {
-		response.FailWithMessage(err.Error(), c)
-		return
-	}
-	err = utils.Verify(l, utils.LoginVerify)
-	if err != nil {
+	loginDto := dto.SysLoginDTO{}
+	if err := c.ShouldBindJSON(&loginDto); err != nil {
+		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
 	// 判断验证码是否开启
-	captchaEnabled := global.AppConfig.Captcha.Enabled           // 是否开启验证码
+	captchaEnabled := global.AppConfig.Captcha.Enabled
 
-	if captchaEnabled && captcha.GetRedisStore().Verify(l.CaptchaId, l.Captcha, true) {
-		u := &system.SysUser{Username: l.Username, Password: l.Password}
-		user, err := userService.Login(u)
-		if err != nil {
-			logger.Error("登陆失败! 用户名不存在或者密码错误!", zap.Error(err))
-			response.FailWithMessage("用户名不存在或者密码错误", c)
+	// 检查验证码
+	if captchaEnabled {
+		// 检查验证码是否正确
+		captchaMatch := captcha.GetRedisStore().Verify(loginDto.CaptchaId, loginDto.CaptchaCode, true)
+		if !captchaMatch {
+			response.FailWithMessage("验证码错误", c)
 			return
 		}
-		if user.Enable != 1 {
-			logger.Error("登陆失败! 用户被禁止登录!")
-			response.FailWithMessage("用户被禁止登录", c)
-			return
-		}
-		jwtService.SignToken(c,*user)
-		return
-	} else {
-		response.FailWithMessage("验证码错误", c)
 	}
-	
-	response.Ok(c)
+
+	user, err := userService.GetUserByUserName(loginDto.UserName)
+	if err != nil {
+		logger.Error("登陆失败! 用户名密码错误!", zap.Error(err))
+		response.FailWithMessage("用户名密码错误", c)
+		return
+	}
+	if enmu.EnmuGroupApp.StatusNormal.Compare(user.Status) {
+		logger.Error("登陆失败! 用户被禁止登录!")
+		response.FailWithMessage("用户被禁止登录", c)
+		return
+	}
+
+	jwtService.SignToken(c, user)
 }
 
 func (m *LoginApi) Logout(c *gin.Context) {
