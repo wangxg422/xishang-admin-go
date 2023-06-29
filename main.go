@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	global.Viper = initial.Viper()
+	initial.Viper()
 	global.Log = logger.InitZap()
 	//zap.ReplaceGlobals()
 

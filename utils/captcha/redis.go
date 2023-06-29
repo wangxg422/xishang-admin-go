@@ -4,17 +4,30 @@ import (
 	"backend/global"
 	"backend/initial/logger"
 	"context"
+	"sync"
 	"time"
 
 	"github.com/mojocn/base64Captcha"
 	"go.uber.org/zap"
 )
 
-func NewDefaultRedisStore() *RedisStore {
-	return &RedisStore{
-		Expiration: time.Second * time.Duration(global.AppConfig.Captcha.Expiration),
-		PreKey:     global.AppConfig.Captcha.PreKey,
-	}
+/**
+单例模式
+*/
+
+var redisStoreInstance *RedisStore
+
+var once sync.Once
+
+func GetRedisStore() *RedisStore {
+	once.Do(func() {
+		redisStoreInstance = &RedisStore{
+			Expiration: time.Duration(global.AppConfig.Captcha.Expiration * int64(time.Second)),
+			PreKey:     global.AppConfig.Captcha.PreKey,
+		}
+	})
+
+	return redisStoreInstance
 }
 
 type RedisStore struct {

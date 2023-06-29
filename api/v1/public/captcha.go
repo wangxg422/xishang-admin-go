@@ -12,8 +12,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var store = captcha.NewDefaultRedisStore()
-
 type CaptchaApi struct {
 }
 
@@ -23,7 +21,7 @@ func (m *CaptchaApi) GenCaptcha(c *gin.Context) {
 	// 字符,公式,验证码配置
 	// 生成默认数字的driver
 	driver := base64Captcha.NewDriverDigit(config.ImgHeight, config.ImgWidth, config.KeyLong, 0.7, 80)
-	cp := base64Captcha.NewCaptcha(driver, store.UseWithCtx(c))
+	cp := base64Captcha.NewCaptcha(driver, captcha.GetRedisStore().UseWithCtx(c))
 
 	id, b64s, err := cp.Generate()
 	if err != nil {

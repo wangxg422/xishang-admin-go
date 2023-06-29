@@ -3,6 +3,7 @@ package initial
 import (
 	appConfig "backend/config"
 	"backend/global"
+	"backend/utils"
 	"flag"
 	"fmt"
 	"os"
@@ -13,7 +14,7 @@ import (
 
 // Viper
 // 优先级: 命令行 > 环境变量 > 默认值
-func Viper() *viper.Viper {
+func Viper() {
 	var config string
 
 	flag.StringVar(&config, "c", "", "choose config file.")
@@ -51,8 +52,9 @@ func Viper() *viper.Viper {
 		fmt.Println(err)
 	} else {
 		fmt.Printf("load app config: %s \n", config)
-		fmt.Println(global.AppConfig)
 	}
 
-	return v
+	if global.AppConfig.App.Mode == "debug" {
+		utils.PrintJson(global.AppConfig)
+	}
 }

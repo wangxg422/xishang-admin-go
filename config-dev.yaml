@@ -5,15 +5,15 @@ app:
   mode: debug
 
 mysql:
-  address: 192.168.216.10
+  address: 127.0.0.1
   port: 13306
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi
   username: root
-  password: "123456"
+  password: 123456
   table-prefix: ""
   singular: true
-  engine: "InnoDB"
+  engine: InnoDB
   max-idle-conn: 10
   max-open-conn: 100
   log-mode: info
@@ -36,10 +36,10 @@ captcha:
   img-width: 240
   img-height: 80
   expiration: 180 # 过期时间，单位秒
-  prekey: CAPTCHA_ # 存储到redis的前缀
+  pre-key: "SYS:CAPTCHA:" # 存储到redis的前缀
 
 redis:
-  address: 192.168.216.10
+  address: 172.25.130.17
   port: 6379
   password: 123456
   db: 0

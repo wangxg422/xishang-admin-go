@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -32,4 +35,11 @@ func RandomStr(n int) string {
 	}
 
 	return sb.String()
+}
+
+func PrintJson(o any) {
+	bs, _ := json.Marshal(o)
+	var out bytes.Buffer
+	json.Indent(&out, bs, "", "\t")
+	fmt.Printf(out.String())
 }
