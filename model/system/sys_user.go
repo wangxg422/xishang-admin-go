@@ -12,7 +12,7 @@ type SysUser struct {
 	PhoneNumber string    `gorm:"column:phonenumber" json:"phoneNumber,omitempty"`
 	Sex         string    `gorm:"column:sex" json:"sex,omitempty"`
 	Avatar      string    `gorm:"column:avatar" json:"avatar,omitempty"` //头像地址
-	Password    string    `gorm:"column:password" json:"password,omitempty"`
+	Password    string    `gorm:"column:password" json:"-"`
 	Status      string    `gorm:"column:status;default:0" json:"status,omitempty"`
 	DelFlag     string    `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
 	LoginIp     string    `gorm:"column:login_ip" json:"loginIp,omitempty"`     //最后登录ip
@@ -23,6 +23,7 @@ type SysUser struct {
 	UpdateBy    string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark      string    `gorm:"column:remark" json:"remark,omitempty"`
 
-	SysRole []SysRole `gorm:"many2many:sys_user_role;" json:"sysRole,omitempty"`
-	SysPost []SysPost `gorm:"many2many:sys_user_post;" json:"sysPost,omitempty"`
+	SysDept  SysDept   `gorm:"foreignKey:DeptId;references:DeptId;comment:用户归属部门" json:"dept,omitempty"`
+	SysRoles []SysRole `gorm:"many2many:sys_user_role;foreignKey:UserId;joinForeignKey:user_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
+	SysPosts []SysPost `gorm:"many2many:sys_user_post;foreignKey:UserId;joinForeignKey:user_id;references:PostId;joinReferences:post_id;" json:"posts,omitempty"`
 }

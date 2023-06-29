@@ -14,4 +14,6 @@ type SysPost struct {
 	CreateBy   string    `gorm:"column:create_by" json:"createBy,omitempty"`
 	UpdateBy   string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark     string    `gorm:"column:remark" json:"remark,omitempty"`
+
+	SysUsers []SysUser `gorm:"many2many:sys_user_post;" json:"users,omitempty"`
 }

@@ -11,9 +11,9 @@ import (
 type SysUserService struct {
 }
 
-func (m *SysUserService) GetUserInfoWithDeptRoles(id int64) (system.SysUser, error) {
+func (m *SysUserService) GetUserInfo(id int64) (system.SysUser, error) {
 	user := &system.SysUser{}
-	res := global.DB.Model(&system.SysUser{}).Preload("SysRoles").Preload("SysDept").Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
+	res := global.DB.Preload("SysRoles").Preload("SysPosts").Preload("SysDept").First(&user, "user_id = ?", id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal)
 
 	return *user, res.Error
 }

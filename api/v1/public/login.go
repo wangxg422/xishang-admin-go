@@ -27,7 +27,7 @@ func (m *LoginApi) GetInfo(c *gin.Context) {
 	// 	logger.Error("", zap.Error(err))
 	// }
 
-	userInfo, err := userService.GetUserInfoWithDeptRoles(1)
+	userInfo, err := userService.GetUserInfo(1)
 	if err != nil {
 		logger.Error("", zap.Error(err))
 	}
@@ -35,9 +35,9 @@ func (m *LoginApi) GetInfo(c *gin.Context) {
 	res["permissions"] = []string{"*:*:*"}
 	//res["roles"] = roles
 	res["user"] = userInfo
-	res["roleIds"] = nil
-	res["deptIds"] = nil
-	res["postIds"] = nil
+	//res["roleIds"] = nil
+	//res["deptIds"] = nil
+	//res["postIds"] = nil
 	res["admin"] = true
 
 	logger.Info("注销成功")

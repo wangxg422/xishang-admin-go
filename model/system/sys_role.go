@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysRole struct {
-	RoleId            int64     `gorm:"column:role_id" json:"roleId,omitempty"`
+	RoleId            int64     `gorm:"primaryKey;column:role_id" json:"roleId,omitempty"`
 	RoleName          string    `gorm:"column:role_name" json:"roleName,omitempty"`
 	RoleKey           string    `gorm:"column:role_key" json:"roleKey,omitempty"`
 	RoleSort          int64     `gorm:"column:role_sort" json:"roleSort,omitempty"`
@@ -17,4 +17,7 @@ type SysRole struct {
 	CreateBy          string    `gorm:"column:create_by" json:"createBy,omitempty"`
 	UpdateBy          string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark            string    `gorm:"column:remark" json:"remark,omitempty"`
+
+	SysUsers []SysUser `gorm:"many2many:sys_user_role;" json:"users,omitempty"`
+	SysMenus []SysMenu `gorm:"many2many:sys_menu_role;foreignKey:RoleId;joinForeignKey:role_id;references:MenuId;joinReferences:menu_id;" json:"roles,omitempty"`
 }

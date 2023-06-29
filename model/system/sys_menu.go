@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysMenu struct {
-	MenuId     int64     `gorm:"column:menu_id" json:"menuId,omitempty"`
+	MenuId     int64     `gorm:"primaryKey;column:menu_id" json:"menuId,omitempty"`
 	MenuName   string    `gorm:"column:menu_name" json:"menuName,omitempty"`
 	ParentId   int64     `gorm:"column:parent_id" json:"parentId,omitempty"`
 	OrderNum   int8      `gorm:"column:order_num" json:"order_num,omitempty"`
@@ -22,4 +22,6 @@ type SysMenu struct {
 	CreateBy   string    `gorm:"column:create_by" json:"createBy,omitempty"`
 	UpdateBy   string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark     string    `gorm:"column:remark;default:0" json:"remark,omitempty"`
+
+	SysRoles []SysRole `gorm:"many2many:sys_menu_role;foreignKey:MenuId;joinForeignKey:menu_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
 }

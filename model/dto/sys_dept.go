@@ -6,7 +6,7 @@ type SysCreateDeptDTO struct {
 	DeptId    int64  `json:"deptId,omitempty"`
 	DeptName  string `json:"deptName,omitempty" binding:"required"`
 	ParentId  int64  `json:"parentId,omitempty" binding:"required"`
-	Ancestors int64  `json:"ancestors,omitempty"`
+	Ancestors string `json:"ancestors,omitempty"`
 	OrderNum  int8   `json:"order_num,omitempty"`
 	Leader    string `json:"leader,omitempty"`
 	Phone     string `json:"phone,omitempty" binding:"required"`
@@ -35,7 +35,7 @@ type SysUpdateDeptDTO struct {
 	DeptId    int64  `json:"deptId,omitempty" binding:"required"`
 	DeptName  string `json:"deptName,omitempty"`
 	ParentId  int64  `json:"parentId,omitempty"`
-	Ancestors int64  `json:"ancestors,omitempty"`
+	Ancestors string `json:"ancestors,omitempty"`
 	OrderNum  int8   `json:"order_num,omitempty"`
 	Leader    string `json:"leader,omitempty"`
 	Phone     string `json:"phone,omitempty"`
