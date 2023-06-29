@@ -6,4 +6,5 @@ type AppConfig struct {
 	Mysql   Mysql   `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
 	Captcha Captcha `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
 	Redis   Redis   `mapstructure:"redis" json:"redis" yaml:"redis"`
+	Jwt     Jwt     `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
 }
