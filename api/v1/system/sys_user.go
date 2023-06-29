@@ -7,6 +7,7 @@ import (
 	"backend/model/dto"
 	sysModel "backend/model/system"
 	"backend/utils"
+	"backend/utils/jwt"
 	"strconv"
 	"time"
 
@@ -98,6 +99,28 @@ func (m *SysUserApi) UpdateUser(c *gin.Context) {
 }
 
 func (m *SysUserApi) DeleteUser(c *gin.Context) {
+	id := c.Param("userId")
+
+	userId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		response.FailWithMessage("user id convert failed", c)
+		return
+	}
+
+	if err := userService.DeleteUser(userId); err != nil {
+		logger.Error("delete user failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.Ok(c)
+}
+
+func (m *SysUserApi) GetProfile(c *gin.Context) {
+	userId := jwt.GetUserID(c)
+
+	
+
 	id := c.Param("userId")
 
 	userId, err := strconv.ParseInt(id, 10, 64)
