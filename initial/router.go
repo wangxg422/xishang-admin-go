@@ -2,6 +2,7 @@ package initial
 
 import (
 	"backend/global"
+	"backend/middleware"
 	"backend/router/public"
 	"backend/router/system"
 	"strings"
@@ -26,7 +27,10 @@ func InitRouter() {
 		public.PublicRouterGroupApp.PublicRouter.AddPublicRouter(publicGroup)
 	}
 
-	sysGroup := r.Group("sys")
+	authGroup := r.Group("")
+	authGroup.Use(middleware.JWTAuth())
+
+	sysGroup := authGroup.Group("sys")
 	{
 		system.SysRouterGroupApp.SysUserRouter.AddSysUserRouter(sysGroup)
 		system.SysRouterGroupApp.SysDeptRouter.AddSysDeptRouter(sysGroup)

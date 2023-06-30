@@ -7,13 +7,18 @@ import (
 type SysMenuRouter struct {
 }
 
-func (m *SysMenuRouter) AddSysMenuRouter(route *gin.RouterGroup) {
-	router := route.Group("menu")
+func (m *SysMenuRouter) AddSysMenuRouter(router *gin.RouterGroup) {
+	menuRouter := router.Group("menu")
 	{
-		router.POST("", menuApi.CreateMenu)
-		router.GET("list", menuApi.ListMenu)
-		router.GET(":deptId", menuApi.GetMenuById)
-		router.POST("update", menuApi.UpdateMenu)
-		router.DELETE(":deptId", menuApi.DeleteMenu)
+		menuRouter.POST("", menuApi.CreateMenu)
+		menuRouter.GET("list", menuApi.ListMenu)
+		menuRouter.GET(":menuId", menuApi.GetMenuById)
+		menuRouter.POST("update", menuApi.UpdateMenu)
+		menuRouter.DELETE(":menuId", menuApi.DeleteMenu)
+	}
+
+	dynamicRouter := router.Group("router")
+	{
+		dynamicRouter.GET("", menuApi.GetMenuByUser)
 	}
 }

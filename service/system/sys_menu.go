@@ -41,3 +41,12 @@ func (m *SysMenuService) GetMenuById(id int64) (sysModel.SysMenu, error) {
 	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
 	return user, res.Error
 }
+
+func (m *SysMenuService) GetMenuByUser(userId int64) (sysModel.SysMenu, error) {
+	user := sysModel.SysMenu{
+		MenuId: userId,
+	}
+
+	res := global.DB.Take(&user, userId).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
+	return user, res.Error
+}

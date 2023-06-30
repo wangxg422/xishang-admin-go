@@ -8,8 +8,8 @@ import (
 type SysCreateUserDTO struct {
 	UserId      int64     `json:"userId,omitempty"`
 	DeptId      int64     `json:"deptId,omitempty"`
-	UserName    string    `json:"username,omitempty" binding:"required"`
-	NickName    string    `json:"nickname,omitempty" binding:"required"`
+	UserName    string    `json:"userName,omitempty" binding:"required"`
+	NickName    string    `json:"nickName,omitempty" binding:"required"`
 	UserType    string    `json:"userType,omitempty"`
 	Email       string    `json:"email,omitempty" binding:"required,email"`
 	PhoneNumber string    `json:"phoneNumber,omitempty"`
@@ -51,8 +51,8 @@ func (m *SysCreateUserDTO) Convert(user *system.SysUser) {
 type SysUpdateUserDTO struct {
 	UserId      int64     `json:"userId,omitempty" binding:"required"`
 	DeptId      int64     `json:"deptId,omitempty"`
-	UserName    string    `json:"username,omitempty"`
-	NickName    string    `json:"nickname,omitempty"`
+	UserName    string    `json:"userName,omitempty"`
+	NickName    string    `json:"nickName,omitempty"`
 	UserType    string    `json:"userType,omitempty"`
 	Email       string    `json:"email,omitempty"`
 	PhoneNumber string    `json:"phoneNumber,omitempty"`

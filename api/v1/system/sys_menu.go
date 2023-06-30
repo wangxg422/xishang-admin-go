@@ -7,6 +7,7 @@ import (
 	"backend/model/dto"
 	sysModel "backend/model/system"
 	"backend/utils"
+	"backend/utils/jwt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -47,6 +48,7 @@ func (m *SysMenuApi) GetMenuById(c *gin.Context) {
 
 	menuId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
+		logger.Error("menu id convert failed", zap.Error(err))
 		response.FailWithMessage("menu id convert failed", c)
 		return
 	}
@@ -109,4 +111,17 @@ func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 	}
 
 	response.Ok(c)
+}
+
+func (m *SysMenuApi) GetMenuByUser(c *gin.Context) {
+	userId := jwt.GetUserID(c)
+
+	menus, err := menuService.GetMenuByUser(userId)
+	if err != nil {
+		logger.Error("get menu failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(menus, c)
 }

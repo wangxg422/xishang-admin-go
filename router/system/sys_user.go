@@ -8,14 +8,17 @@ type SysUserRouter struct {
 }
 
 func (m *SysUserRouter) AddSysUserRouter(route *gin.RouterGroup) {
-	router := route.Group("user")
+	userRouter := route.Group("user")
 	{
-		router.POST("", userApi.CreateUser)
-		router.GET("list", userApi.ListUser)
-		router.GET(":userId", userApi.GetUserById)
-		router.POST("update", userApi.UpdateUser)
-		router.DELETE(":userId", userApi.DeleteUser)
-		
-		route.GET("profile", userApi.GetProfile)
+		userRouter.POST("", userApi.CreateUser)
+		userRouter.GET("list", userApi.ListUser)
+		userRouter.GET(":userId", userApi.GetUserById)
+		userRouter.POST("update", userApi.UpdateUser)
+		userRouter.DELETE(":userId", userApi.DeleteUser)
+	}
+
+	profileRoute := userRouter.Group("profile")
+	{
+		profileRoute.GET("profile", userApi.GetProfile)
 	}
 }

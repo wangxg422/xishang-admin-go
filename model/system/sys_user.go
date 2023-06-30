@@ -5,8 +5,8 @@ import "time"
 type SysUser struct {
 	UserId      int64     `gorm:"primaryKey;column:user_id" json:"userId,omitempty"`
 	DeptId      int64     `gorm:"column:dept_id" json:"deptId,omitempty"`
-	UserName    string    `gorm:"column:user_name" json:"username,omitempty"`
-	NickName    string    `gorm:"column:nick_name" json:"nickname,omitempty"`
+	UserName    string    `gorm:"column:user_name" json:"userName,omitempty"`
+	NickName    string    `gorm:"column:nick_name" json:"nickName,omitempty"`
 	UserType    string    `gorm:"column:user_type" json:"userType,omitempty"`
 	Email       string    `gorm:"column:email" json:"email,omitempty"`
 	PhoneNumber string    `gorm:"column:phonenumber" json:"phoneNumber,omitempty"`
