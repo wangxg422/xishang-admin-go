@@ -1,4 +1,4 @@
-package vo
+package system
 
 import "backend/model/system"
 

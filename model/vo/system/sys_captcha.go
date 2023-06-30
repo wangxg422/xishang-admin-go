@@ -1,4 +1,4 @@
-package vo
+package system
 
 type SysCaptchaVO struct {
 	CaptchaEnabled bool   `json:"captchaEnabled"`

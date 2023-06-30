@@ -10,10 +10,10 @@ type SysMenu struct {
 	Path       string    `gorm:"column:path" json:"leader,omitempty"`
 	Component  string    `gorm:"column:component" json:"component,omitempty"`
 	Query      string    `gorm:"column:query" json:"query,omitempty"`
-	IsFrame    string    `gorm:"column:is_frame" json:"isFrame,omitempty"`   // 是否为外链
-	IsCache    string    `gorm:"column:is_cache" json:"isCache,omitempty"`   // 是否缓存
+	IsFrame    int8      `gorm:"column:is_frame" json:"isFrame,omitempty"`   // 是否为外链
+	IsCache    int8      `gorm:"column:is_cache" json:"isCache,omitempty"`   // 是否缓存
 	MenuType   string    `gorm:"column:menu_type" json:"menuType,omitempty"` // M目录 C菜单 F按钮
-	Visible    string    `gorm:"column:visible" json:"visible,omitempty"`
+	Visible    int8      `gorm:"column:visible" json:"visible,omitempty"`
 	Status     int8      `gorm:"column:status;default:0" json:"status,omitempty"`
 	Perms      string    `gorm:"column:perms" json:"perms,omitempty"`
 	Icon       string    `gorm:"column:icon" json:"icon,omitempty"`
@@ -24,4 +24,6 @@ type SysMenu struct {
 	Remark     string    `gorm:"column:remark;default:0" json:"remark,omitempty"`
 
 	SysRoles []SysRole `gorm:"many2many:sys_menu_role;foreignKey:MenuId;joinForeignKey:menu_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
+	// 子菜单
+	Children []SysMenu `json:"children,omitempty"`
 }

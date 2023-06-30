@@ -4,7 +4,7 @@ import (
 	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
-	"backend/model/vo"
+	"backend/model/vo/system"
 	"backend/utils/captcha"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +29,7 @@ func (m *CaptchaApi) GenCaptcha(c *gin.Context) {
 		response.FailWithMessage("验证码获取失败", c)
 		return
 	}
-	response.OkWithDetailed(vo.SysCaptchaVO{
+	response.OkWithDetailed(system.SysCaptchaVO{
 		CaptchaEnabled: true,
 		CaptchaId:      id,
 		PicPath:        b64s,

@@ -6,7 +6,7 @@ import (
 	"backend/global"
 	"backend/initial/logger"
 	"backend/model/system"
-	"backend/model/vo"
+	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"context"
 
@@ -53,7 +53,7 @@ func (m *JwtService) SignToken(c *gin.Context, user system.SysUser) {
 	}
 
 	if !global.AppConfig.App.UseMultipoint {
-		response.OkWithDetailed(vo.LoginVO{
+		response.OkWithDetailed(sysVo.LoginVO{
 			User:      user,
 			Token:     token,
 			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
@@ -67,7 +67,7 @@ func (m *JwtService) SignToken(c *gin.Context, user system.SysUser) {
 			response.FailWithMessage("设置登录状态失败", c)
 			return
 		}
-		response.OkWithDetailed(vo.LoginVO{
+		response.OkWithDetailed(sysVo.LoginVO{
 			User:      user,
 			Token:     token,
 			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
@@ -86,7 +86,7 @@ func (m *JwtService) SignToken(c *gin.Context, user system.SysUser) {
 			response.FailWithMessage("设置登录状态失败", c)
 			return
 		}
-		response.OkWithDetailed(vo.LoginVO{
+		response.OkWithDetailed(sysVo.LoginVO{
 			User:      user,
 			Token:     token,
 			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,

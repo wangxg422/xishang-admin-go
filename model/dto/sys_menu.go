@@ -13,8 +13,8 @@ type SysCreateMenuDTO struct {
 	Path       string    `json:"leader,omitempty" binding:"required"`
 	Component  string    `json:"component,omitempty"`
 	Query      string    `json:"query,omitempty"`
-	IsFrame    string    `json:"isFrame,omitempty"`
-	IsCache    string    `json:"isCache,omitempty"`
+	IsFrame    int8      `json:"isFrame,omitempty"`
+	IsCache    int8      `json:"isCache,omitempty"`
 	MenuType   string    `json:"menuType,omitempty" binding:"required"`
 	Visible    string    `json:"visible,omitempty" binding:"required"`
 	Status     int8      `json:"status,omitempty"`
@@ -57,8 +57,8 @@ type SysUpdateMenuDTO struct {
 	Path       string    `json:"leader,omitempty" binding:"required"`
 	Component  string    `json:"component,omitempty"`
 	Query      string    `json:"query,omitempty"`
-	IsFrame    string    `json:"isFrame,omitempty"`
-	IsCache    string    `json:"isCache,omitempty"`
+	IsFrame    int8      `json:"isFrame,omitempty"`
+	IsCache    int8      `json:"isCache,omitempty"`
 	MenuType   string    `json:"menuType,omitempty" binding:"required"`
 	Visible    string    `json:"visible,omitempty" binding:"required"`
 	Status     int8      `json:"status,omitempty"`
