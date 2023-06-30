@@ -13,8 +13,8 @@ type SysUser struct {
 	Sex         string    `gorm:"column:sex" json:"sex,omitempty"`
 	Avatar      string    `gorm:"column:avatar" json:"avatar,omitempty"` //头像地址
 	Password    string    `gorm:"column:password" json:"-"`
-	Status      string    `gorm:"column:status;default:0" json:"status,omitempty"`
-	DelFlag     string    `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
+	Status      int8      `gorm:"column:status;default:0" json:"status,omitempty"`
+	DelFlag     int8      `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
 	LoginIp     string    `gorm:"column:login_ip" json:"loginIp,omitempty"`     //最后登录ip
 	LoginDate   time.Time `gorm:"column:login_date" json:"loginDate,omitempty"` //最后登录时间
 	CreateTime  time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`

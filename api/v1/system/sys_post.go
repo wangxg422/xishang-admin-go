@@ -26,7 +26,7 @@ func (m *SysPostApi) CreatePost(c *gin.Context) {
 	post := &sysModel.SysPost{}
 	postDto.Convert(post)
 
-	post.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+	post.Status = enmu.StatusNormal.Value()
 
 	if err := postService.CreatePost(post); err != nil {
 		logger.Error("create post failed", zap.Error(err))

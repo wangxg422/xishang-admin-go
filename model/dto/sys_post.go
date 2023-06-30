@@ -10,7 +10,7 @@ type SysCreatePostDTO struct {
 	PostCode   string    `json:"postCode,omitempty" binding:"required"`
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`
-	Status     string    `json:"status,omitempty"`
+	Status     int8      `json:"status,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`
@@ -36,7 +36,7 @@ type SysUpdatePostDTO struct {
 	PostCode   string    `json:"postCode,omitempty" binding:"required"`
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`
-	Status     string    `json:"status,omitempty"`
+	Status     int8      `json:"status,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`

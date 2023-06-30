@@ -11,8 +11,8 @@ type SysCreateDeptDTO struct {
 	Leader    string `json:"leader,omitempty"`
 	Phone     string `json:"phone,omitempty" binding:"required"`
 	Email     string `json:"email,omitempty" binding:"required.email"`
-	Status    string `json:"status,omitempty"`
-	DelFlag   string `json:"delFlag,omitempty"`
+	Status    int8   `json:"status,omitempty"`
+	DelFlag   int8   `json:"delFlag,omitempty"`
 	CreateBy  string `json:"createBy,omitempty"`
 	UpdateBy  string `json:"updateBy,omitempty"`
 }
@@ -40,8 +40,8 @@ type SysUpdateDeptDTO struct {
 	Leader    string `json:"leader,omitempty"`
 	Phone     string `json:"phone,omitempty"`
 	Email     string `json:"email,omitempty"`
-	Status    string `json:"status,omitempty"`
-	DelFlag   string `json:"delFlag,omitempty"`
+	Status    int8   `json:"status,omitempty"`
+	DelFlag   int8   `json:"delFlag,omitempty"`
 	CreateBy  string `json:"createBy,omitempty"`
 	UpdateBy  string `json:"updateBy,omitempty"`
 }

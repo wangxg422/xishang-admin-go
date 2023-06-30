@@ -14,7 +14,7 @@ type SysMenu struct {
 	IsCache    string    `gorm:"column:is_cache" json:"isCache,omitempty"`   // 是否缓存
 	MenuType   string    `gorm:"column:menu_type" json:"menuType,omitempty"` // M目录 C菜单 F按钮
 	Visible    string    `gorm:"column:visible" json:"visible,omitempty"`
-	Status     string    `gorm:"column:status;default:0" json:"status,omitempty"`
+	Status     int8      `gorm:"column:status;default:0" json:"status,omitempty"`
 	Perms      string    `gorm:"column:perms" json:"perms,omitempty"`
 	Icon       string    `gorm:"column:icon" json:"icon,omitempty"`
 	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`

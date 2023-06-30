@@ -26,8 +26,8 @@ func (m *SysRoleApi) CreateRole(c *gin.Context) {
 	role := &sysModel.SysRole{}
 	roleDto.Convert(role)
 
-	role.DelFlag = enmu.EnmuGroupApp.DelFlagDelete.GetCode()
-	role.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+	role.DelFlag = enmu.DelFlagDeleted.Value()
+	role.Status = enmu.StatusNormal.Value()
 
 	if err := roleService.CreateRole(role); err != nil {
 		logger.Error("create role failed", zap.Error(err))

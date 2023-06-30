@@ -30,8 +30,8 @@ func (m *SysUserApi) CreateUser(c *gin.Context) {
 	userDto.Convert(user)
 
 	user.LoginDate = time.Now()
-	user.DelFlag = enmu.EnmuGroupApp.DelFlagDelete.GetCode()
-	user.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+	user.DelFlag = enmu.DelFlagDeleted.Value()
+	user.Status = enmu.StatusNormal.Value()
 
 	if err := userService.CreateUser(user); err != nil {
 		logger.Error("create user failed", zap.Error(err))
@@ -118,8 +118,6 @@ func (m *SysUserApi) DeleteUser(c *gin.Context) {
 
 func (m *SysUserApi) GetProfile(c *gin.Context) {
 	userId := jwt.GetUserID(c)
-
-	
 
 	id := c.Param("userId")
 

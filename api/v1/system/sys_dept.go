@@ -26,8 +26,8 @@ func (m *SysDeptApi) CreateDept(c *gin.Context) {
 	dept := &sysModel.SysDept{}
 	deptDto.Convert(dept)
 
-	dept.DelFlag = enmu.EnmuGroupApp.DelFlagDelete.GetCode()
-	dept.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+	dept.DelFlag = enmu.DelFlagDeleted.Value()
+	dept.Status = enmu.StatusNormal.Value()
 
 	if err := deptService.CreateDept(dept); err != nil {
 		logger.Error("create dept failed", zap.Error(err))

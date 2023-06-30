@@ -16,8 +16,8 @@ type SysCreateUserDTO struct {
 	Sex         string    `json:"sex,omitempty" binding:"required"`
 	Avatar      string    `json:"avatar,omitempty"`
 	Password    string    `json:"password,omitempty" binding:"required"`
-	Status      string    `json:"status,omitempty"`
-	DelFlag     string    `json:"delFlag,omitempty"`
+	Status      int8      `json:"status,omitempty"`
+	DelFlag     int8      `json:"delFlag,omitempty"`
 	LoginIp     string    `json:"loginIp,omitempty"`
 	LoginDate   time.Time `json:"loginDate,omitempty"`
 	CreateTime  time.Time `json:"createTime,omitempty"`
@@ -59,8 +59,8 @@ type SysUpdateUserDTO struct {
 	Sex         string    `json:"sex,omitempty"`
 	Avatar      string    `json:"avatar,omitempty"`
 	Password    string    `json:"password,omitempty"`
-	Status      string    `json:"status,omitempty"`
-	DelFlag     string    `json:"delFlag,omitempty"`
+	Status      int8      `json:"status,omitempty"`
+	DelFlag     int8      `json:"delFlag,omitempty"`
 	LoginIp     string    `json:"loginIp,omitempty"`
 	LoginDate   time.Time `json:"loginDate,omitempty"`
 	CreateTime  time.Time `json:"createTime,omitempty"`

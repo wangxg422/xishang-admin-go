@@ -27,7 +27,7 @@ func (m *SysMenuApi) CreateMenu(c *gin.Context) {
 	menu := &sysModel.SysMenu{}
 	menuDto.Convert(menu)
 
-	menu.Status = enmu.EnmuGroupApp.StatusNormal.GetCode()
+	menu.Status = enmu.StatusNormal.Value()
 
 	if err := menuService.CreateMenu(menu); err != nil {
 		logger.Error("create menu failed", zap.Error(err))

@@ -1,6 +1,6 @@
 package enmu
 
-type DelFlag int
+type DelFlag int8
 
 const (
 	DelFlag_Normal  = 0
@@ -15,18 +15,18 @@ func init() {
 	delFlagMap[DelFlag_Deleted] = "已删除"
 }
 
-func (m DelFlag) GetDesc() string {
+func (m DelFlag) Desc() string {
 	return delFlagMap[int(m)]
 }
 
-func (m DelFlag) GetValue() int {
-	return int(m)
+func (m DelFlag) Value() int8 {
+	return int8(m)
 }
 
 func (m DelFlag) Size() int {
 	return len(delFlagMap)
 }
 
-func (m DelFlag) Equals(value int) bool {
-	return int(m) == value
+func (m DelFlag) Equals(value int8) bool {
+	return int8(m) == value
 }

@@ -13,8 +13,8 @@ type SysCreateRoleDTO struct {
 	DataScope         int8      `json:"dataScope,omitempty"`
 	MenuCheckStrictly string    `json:"menuCheckStrictly,omitempty"`
 	DeptCheckStrictly string    `json:"deptCheckStrictly,omitempty"`
-	Status            string    `json:"status,omitempty"`
-	DelFlag           string    `json:"delFlag,omitempty"`
+	Status            int8      `json:"status,omitempty"`
+	DelFlag           int8      `json:"delFlag,omitempty"`
 	CreateTime        time.Time `json:"createTime,omitempty"`
 	UpdateTime        time.Time `json:"updateTime,omitempty"`
 	CreateBy          string    `json:"createBy,omitempty"`
@@ -46,8 +46,8 @@ type SysUpdateRoleDTO struct {
 	DataScope         int8      `json:"dataScope,omitempty"`
 	MenuCheckStrictly string    `json:"menuCheckStrictly,omitempty"`
 	DeptCheckStrictly string    `json:"deptCheckStrictly,omitempty"`
-	Status            string    `json:"status,omitempty"`
-	DelFlag           string    `json:"delFlag,omitempty"`
+	Status            int8      `json:"status,omitempty"`
+	DelFlag           int8      `json:"delFlag,omitempty"`
 	CreateTime        time.Time `json:"createTime,omitempty"`
 	UpdateTime        time.Time `json:"updateTime,omitempty"`
 	CreateBy          string    `json:"createBy,omitempty"`

@@ -1,6 +1,6 @@
 package enmu
 
-type Status int
+type Status int8
 
 const (
 	Status_Normal   = 0
@@ -15,18 +15,18 @@ func init() {
 	statusMap[Status_Disabled] = "停用"
 }
 
-func (m Status) GetDesc() string {
+func (m Status) Desc() string {
 	return statusMap[int(m)]
 }
 
-func (m Status) GetValue() int {
-	return int(m)
+func (m Status) Value() int8 {
+	return int8(m)
 }
 
 func (m Status) Size() int {
 	return len(statusMap)
 }
 
-func (m Status) Equals(value int) bool {
-	return int(m) == value
+func (m Status) Equals(value int8) bool {
+	return int8(m) == value
 }

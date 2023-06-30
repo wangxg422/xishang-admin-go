@@ -21,14 +21,14 @@ func (m *SysDeptService) UpdateDept(d *sysModel.SysDept) error {
 }
 
 func (m *SysDeptService) DeleteDept(id int64) error {
-	res := global.DB.Model(&sysModel.SysDept{DeptId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
+	res := global.DB.Model(&sysModel.SysDept{DeptId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
 	return res.Error
 }
 
 func (m *SysDeptService) ListDept() ([]sysModel.SysDept, error) {
 	var list []sysModel.SysDept
 
-	res := global.DB.Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode()).Find(&list)
+	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
 
 	return list, res.Error
 }
@@ -38,6 +38,6 @@ func (m *SysDeptService) GetDeptById(id int64) (sysModel.SysDept, error) {
 		DeptId: id,
 	}
 
-	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
+	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
 }

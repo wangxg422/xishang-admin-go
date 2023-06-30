@@ -21,14 +21,14 @@ func (m *SysMenuService) UpdateMenu(d *sysModel.SysMenu) error {
 }
 
 func (m *SysMenuService) DeleteMenu(id int64) error {
-	res := global.DB.Model(&sysModel.SysMenu{MenuId: id}).Update("del_flag", enmu.EnmuGroupApp.DelFlagDelete.GetCode())
+	res := global.DB.Model(&sysModel.SysMenu{MenuId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
 	return res.Error
 }
 
 func (m *SysMenuService) ListMenu() ([]sysModel.SysMenu, error) {
 	var list []sysModel.SysMenu
 
-	res := global.DB.Where("del_flag = ?", enmu.EnmuGroupApp.DelFlagNormal.GetCode()).Find(&list)
+	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
 
 	return list, res.Error
 }
@@ -38,7 +38,7 @@ func (m *SysMenuService) GetMenuById(id int64) (sysModel.SysMenu, error) {
 		MenuId: id,
 	}
 
-	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
+	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
 }
 
@@ -47,6 +47,6 @@ func (m *SysMenuService) GetMenuByUser(userId int64) (sysModel.SysMenu, error) {
 		MenuId: userId,
 	}
 
-	res := global.DB.Take(&user, userId).Where("del_flag = ?", enmu.EnmuGroupApp.StatusNormal.GetCode())
+	res := global.DB.Take(&user, userId).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
 }

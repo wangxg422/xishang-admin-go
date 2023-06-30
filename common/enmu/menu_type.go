@@ -17,11 +17,11 @@ func init() {
 	menuTypeMap[MenuType_F] = "按钮"
 }
 
-func (m MenuType) GetDesc() string {
+func (m MenuType) Desc() string {
 	return menuTypeMap[string(m)]
 }
 
-func (m MenuType) GetValue() string {
+func (m MenuType) Value() string {
 	return string(m)
 }
 
