@@ -16,3 +16,7 @@ type EnmuGroup struct {
 }
 
 var EnmuGroupApp = new(EnmuGroup)
+
+
+var a int = 5
+var DelFlagNormal1 DelFlag = DelFlag(1)
