@@ -1,22 +1,11 @@
 package enmu
 
-type EnmuGroup struct {
-	DelFlagNormal DelFlag
-	DelFlagDelete DelFlag
+var DelFlagNormal DelFlag = DelFlag(DelFlag_Normal)
+var DelFlagDeleted DelFlag = DelFlag(DelFlag_Deleted)
 
-	// UserStatusNormal UserStatus
-	// UserStatusDelete UserStatus
+var StatusNormal Status = Status(Status_Normal)
+var StatusDisabled Status = Status(Status_Disabled)
 
-	StatusNormal   Status
-	StatusDisabled Status
-
-	MenuTypeM MenuType
-	MenuTypeC MenuType
-	MenuTypeF MenuType
-}
-
-var EnmuGroupApp = new(EnmuGroup)
-
-
-var a int = 5
-var DelFlagNormal1 DelFlag = DelFlag(1)
+var MenuTypeM MenuType = MenuType(MenuType_M)
+var MenuTypeC MenuType = MenuType(MenuType_C)
+var MenuTypeF MenuType = MenuType(MenuType_F)

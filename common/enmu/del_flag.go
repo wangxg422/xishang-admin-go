@@ -1,25 +1,32 @@
 package enmu
 
-import "strconv"
-
 type DelFlag int
 
 const (
-	DEL_FLAG_NORMAL = iota
-	_
-	DEL_FLAG_DELETE
+	DelFlag_Normal  = 0
+	DelFlag_Deleted = 2
 )
 
-var delFlagDesc = [...]string{"正常", "", "已删除"}
+var delFlagMap map[int]string
 
-func (m DelFlag) GetDesc() string {
-	return delFlagDesc[m]
+func init() {
+	delFlagMap = make(map[int]string)
+	delFlagMap[DelFlag_Normal] = "正常"
+	delFlagMap[DelFlag_Deleted] = "已删除"
 }
 
-func (m DelFlag) GetCode() string {
-	return strconv.Itoa(int(m))
+func (m DelFlag) GetDesc() string {
+	return delFlagMap[int(m)]
+}
+
+func (m DelFlag) GetValue() int {
+	return int(m)
 }
 
 func (m DelFlag) Size() int {
-	return len(delFlagDesc)
+	return len(delFlagMap)
+}
+
+func (m DelFlag) Equals(value int) bool {
+	return int(m) == value
 }

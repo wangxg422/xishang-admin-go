@@ -3,28 +3,32 @@ package enmu
 type MenuType string
 
 const (
-	DIR  = "M"
-	MENU = "C"
-	BTN  = "F"
+	MenuType_M = "M"
+	MenuType_C = "C"
+	MenuType_F = "F"
 )
 
-func (m MenuType) GetDesc() string {
-	switch string(m) {
-	case "M":
-		return "目录"
-	case "C":
-		return "菜单"
-	case "F":
-		return "按钮"
-	default:
-		return "undefined menu type"
-	}
+var menuTypeMap map[string]string
+
+func init() {
+	menuTypeMap = make(map[string]string)
+	menuTypeMap[MenuType_M] = "目录"
+	menuTypeMap[MenuType_C] = "菜单"
+	menuTypeMap[MenuType_F] = "按钮"
 }
 
-func (m MenuType) GetCode() string {
+func (m MenuType) GetDesc() string {
+	return menuTypeMap[string(m)]
+}
+
+func (m MenuType) GetValue() string {
 	return string(m)
 }
 
 func (m MenuType) Size() int {
-	return 3
+	return len(menuTypeMap)
+}
+
+func (m MenuType) Equals(value string) bool {
+	return string(m) == value
 }
