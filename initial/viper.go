@@ -1,7 +1,7 @@
 package initial
 
 import (
-	appConfig "backend/config"
+	"backend/common/constant"
 	"backend/global"
 	"backend/utils"
 	"flag"
@@ -20,12 +20,12 @@ func Viper() {
 	flag.StringVar(&config, "c", "", "choose config file.")
 	flag.Parse()
 	if config == "" { // 判断命令行参数是否为空
-		if configEnv := os.Getenv(appConfig.EnvConfigFile); configEnv == "" {
-			config = appConfig.DefaultConfigFile
+		if configEnv := os.Getenv(constant.EnvConfigFile); configEnv == "" {
+			config = constant.DefaultConfigFile
 			fmt.Println("use default config file")
 		} else {
 			config = configEnv
-			fmt.Println("use config file from env", appConfig.EnvConfigFile)
+			fmt.Println("use config file from env", constant.EnvConfigFile)
 		}
 	} else {
 		fmt.Println("use config file", config)
@@ -36,7 +36,7 @@ func Viper() {
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
 	v.WatchConfig()
 

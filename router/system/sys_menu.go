@@ -19,6 +19,6 @@ func (m *SysMenuRouter) AddSysMenuRouter(router *gin.RouterGroup) {
 
 	dynamicRouter := router.Group("router")
 	{
-		dynamicRouter.GET("", menuApi.GetMenuByUser)
+		dynamicRouter.GET("", menuApi.GetMenuByUserId)
 	}
 }

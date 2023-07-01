@@ -25,5 +25,5 @@ type SysMenu struct {
 
 	SysRoles []SysRole `gorm:"many2many:sys_menu_role;foreignKey:MenuId;joinForeignKey:menu_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
 	// 子菜单
-	Children []SysMenu `json:"children,omitempty"`
+	Children []SysMenu `gorm:"-" json:"children,omitempty"`
 }

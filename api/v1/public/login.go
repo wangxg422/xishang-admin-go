@@ -41,7 +41,7 @@ func (m *LoginApi) Login(c *gin.Context) {
 		response.FailWithMessage("用户名密码错误", c)
 		return
 	}
-	if enmu.StatusNormal.Equals(user.Status) {
+	if enmu.StatusDisabled.Equals(user.Status) {
 		logger.Error("登陆失败! 用户被禁止登录!")
 		response.FailWithMessage("用户被禁止登录", c)
 		return

@@ -42,9 +42,19 @@ func (m *SysMenuService) GetMenuById(id int64) (sysModel.SysMenu, error) {
 	return user, res.Error
 }
 
-func (m *SysMenuService) GetMenuByUser(userId int64) ([]sysModel.SysMenu, error) {
+func (m *SysMenuService) GetMenuByUserId(userId int64) ([]sysModel.SysMenu, error) {
 	user := sysModel.SysMenu{
 		MenuId: userId,
+		Status: enmu.StatusNormal.Value(),
+	}
+
+	var menus []sysModel.SysMenu
+	res := global.DB.Find(&menus).Where(&user)
+	return menus, res.Error
+}
+
+func (m *SysMenuService) GetAllMenu() ([]sysModel.SysMenu, error) {
+	user := sysModel.SysMenu{
 		Status: enmu.StatusNormal.Value(),
 	}
 

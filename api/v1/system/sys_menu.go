@@ -116,13 +116,21 @@ func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (m *SysMenuApi) GetMenuByUser(c *gin.Context) {
+func (m *SysMenuApi) GetMenuByUserId(c *gin.Context) {
 	userId := jwt.GetUserID(c)
 	if userId == 0 {
 		response.FailWithMessage("请先登录", c)
 	}
 
-	menus, err := menuService.GetMenuByUser(userId)
+	var menus []sysModel.SysMenu
+	var err error
+	// 如果是管理员，返回所有菜单
+	if userId == 1 {
+		menus, err = menuService.GetAllMenu()
+	} else {
+		menus, err = menuService.GetMenuByUserId(userId)
+	}
+
 	if err != nil {
 		logger.Error("get menus failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
