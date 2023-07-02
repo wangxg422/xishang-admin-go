@@ -17,6 +17,6 @@ const (
 	MenuIsCache    MenuCache = MenuCache(Menu_Cache)
 	MenuIsNotCache MenuCache = MenuCache(Menu_Not_Cache)
 
-	MenuIsVisible  MenuVisible = MenuVisible(Menu_Visible)
-	MenuIsUnisible MenuVisible = MenuVisible(Menu_Unvisible)
+	MenuIsVisible    MenuVisible = MenuVisible(Menu_Visible)
+	MenuIsNotVisible MenuVisible = MenuVisible(Menu_Unvisible)
 )

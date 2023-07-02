@@ -8,6 +8,7 @@ import (
 	"backend/model/dto"
 	"backend/utils/captcha"
 
+	set "github.com/deckarep/golang-set"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -58,18 +59,20 @@ func (m *LoginApi) Logout(c *gin.Context) {
 func (m *LoginApi) GetInfo(c *gin.Context) {
 	res := make(map[string]any)
 
-	// roles, err := roleService.GetRolesByUserId(1)
-	// if err != nil {
-	// 	logger.Error("", zap.Error(err))
-	// }
-
 	userInfo, err := userService.GetUserInfo(1)
 	if err != nil {
 		logger.Error("", zap.Error(err))
 	}
 
+	roleSet := set.NewSet()
+	if len(userInfo.SysRoles) > 0 {
+		for _, r := range userInfo.SysRoles {
+			roleSet.Add(r.RoleKey)
+		}
+	}
+
 	res["permissions"] = []string{"*:*:*"}
-	//res["roles"] = roles
+	res["roles"] = roleSet
 	res["user"] = userInfo
 	//res["roleIds"] = nil
 	//res["deptIds"] = nil

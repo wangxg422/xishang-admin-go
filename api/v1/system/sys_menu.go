@@ -158,13 +158,13 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 		r := sysVo.RouterVO{
 			Name:      getRouterName(menu),
 			Path:      getRouterPath(menu),
-			Hidden:    enmu.MenuIsVisible.Equals(menu.Visible),
+			Hidden:    enmu.MenuIsNotVisible.Equals(menu.Visible),
 			Component: getComponent(menu),
 			Query:     menu.Query,
 			MetaVo: sysVo.MetaVO{
 				Title:   menu.MenuName,
 				Icon:    menu.Icon,
-				NoCache: enmu.MenuIsCache.Equals(menu.IsCache),
+				NoCache: enmu.MenuIsNotCache.Equals(menu.IsCache),
 				Link:    ifHttpLink(menu.Path),
 			},
 		}
@@ -248,11 +248,12 @@ func (m *SysMenuApi) getChildList(menus []sysModel.SysMenu, menu *sysModel.SysMe
 }
 
 func ifHttpLink(link string) string {
+	var l string
 	if strings.HasPrefix(link, constant.HTTP) || strings.HasPrefix(link, constant.HTTPS) {
-		return link
-	} else {
-		return ""
+		l = link
 	}
+
+	return l
 }
 
 func getComponent(menu sysModel.SysMenu) string {
