@@ -40,6 +40,22 @@ func RandomStr(n int) string {
 func PrintJson(o any) {
 	bs, _ := json.Marshal(o)
 	var out bytes.Buffer
-	json.Indent(&out, bs, "", "\t")
-	fmt.Printf(out.String())
+	_ = json.Indent(&out, bs, "", "\t")
+	fmt.Println(out.String())
+}
+
+// FirstUpper 字符串首字母大写
+func FirstUpper(s string) string {
+	if s == "" {
+		return ""
+	}
+	return strings.ToUpper(s[:1]) + s[1:]
+}
+
+// FirstLower 字符串首字母小写
+func FirstLower(s string) string {
+	if s == "" {
+		return ""
+	}
+	return strings.ToLower(s[:1]) + s[1:]
 }

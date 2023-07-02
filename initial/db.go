@@ -3,6 +3,7 @@ package initial
 import (
 	"backend/global"
 	"fmt"
+	"gorm.io/gorm/logger"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -42,6 +43,7 @@ func gormConfig() *gorm.Config {
 			SingularTable: dbConfig.Singular,
 		},
 		DisableForeignKeyConstraintWhenMigrating: true,
+		Logger:                                   logger.Default.LogMode(logger.Info),
 	}
 	return gormConfig
 }

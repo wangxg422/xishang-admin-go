@@ -35,6 +35,16 @@ func OkWithData(data any, c *gin.Context) {
 	buildResult(SUCCESS, data, "成功", c)
 }
 
+func OkWithEmptyList(c *gin.Context) {
+	data := EmptyList{}
+	buildResult(SUCCESS, data, "成功", c)
+}
+
+func OkWithEmptyMap(c *gin.Context) {
+	data := EmptyMap{}
+	buildResult(SUCCESS, data, "成功", c)
+}
+
 func OkWithDetailed(data any, message string, c *gin.Context) {
 	buildResult(SUCCESS, data, message, c)
 }
