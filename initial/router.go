@@ -37,6 +37,8 @@ func InitRouter() {
 		system.SysRouterGroupApp.SysRoleRouter.AddSysRoleRouter(sysGroup)
 		system.SysRouterGroupApp.SysPostRouter.AddSysPostRouter(sysGroup)
 		system.SysRouterGroupApp.SysMenuRouter.AddSysMenuRouter(sysGroup)
+		system.SysRouterGroupApp.SysDictRouter.AddSysDictRouter(sysGroup)
+		system.SysRouterGroupApp.SysConfigRouter.AddSysConfigRouter(sysGroup)
 	}
 
 	_ = r.Run(":" + global.AppConfig.App.Port)
