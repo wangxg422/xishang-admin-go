@@ -3,7 +3,9 @@ package system
 import (
 	"backend/common/enmu"
 	"backend/global"
+	"backend/model/dto"
 	"backend/model/system"
+	sysVo "backend/model/vo/system"
 
 	"github.com/gin-gonic/gin"
 )
@@ -71,4 +73,30 @@ func (m *SysUserService) GetUserByUserName(userName string) (system.SysUser, err
 
 	res := global.DB.Take(&user, "user_name = ?", userName).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
+}
+
+func (m *SysUserService) ListUserPage(page dto.PageInfo, deptId int64) (sysVo.PageResult, error) {
+	pageResult := sysVo.PageResult{}
+	db := global.DB.Model(&system.SysUser{})
+
+	var total int64
+	err := db.Count(&total).Error
+	if err != nil {
+		return pageResult, err
+	}
+
+	var userList []system.SysUser
+	if deptId == 0 {
+		err = db.Limit(page.Limit).Offset(page.Offset).
+			Where("del_flag = ?", enmu.DelFlagNormal.Value()).
+			Find(&userList).Error
+	} else {
+		err = db.Limit(page.Limit).Offset(page.Offset).
+			Where("dept_id = ? AND del_flag = ?", deptId, enmu.DelFlagNormal.Value()).
+			Find(&userList).Error
+	}
+
+	pageResult.List = userList
+	pageResult.Total = total
+	return pageResult, err
 }

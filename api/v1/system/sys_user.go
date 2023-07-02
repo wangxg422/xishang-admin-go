@@ -1,6 +1,7 @@
 package system
 
 import (
+	"backend/common/constant"
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
@@ -42,8 +43,30 @@ func (m *SysUserApi) CreateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (m *SysUserApi) ListUser(c *gin.Context) {
-	response.Ok(c)
+func (m *SysUserApi) ListUserPage(c *gin.Context) {
+	page, err := dto.NewPageInfo(c)
+	if err != nil {
+		logger.Error("获取分页信息失败", zap.Error(err))
+		response.FailWithMessage("获取分页信息失败", c)
+		return
+	}
+
+	var deptId int64
+	if c.Query(constant.DeptId) != "" {
+		deptId, err = strconv.ParseInt(c.Query(constant.DeptId), 10, 64)
+		if err != nil {
+			response.FailWithMessage("dept id 获取失败", c)
+			return
+		}
+	}
+
+	pageResult, err := userService.ListUserPage(page, deptId)
+	if err != nil {
+		logger.Error("查询用户列表失败", zap.Error(err))
+		response.FailWithMessage("查询用户列表失败", c)
+	}
+
+	response.OkWithData(pageResult, c)
 }
 
 func (m *SysUserApi) GetUserById(c *gin.Context) {

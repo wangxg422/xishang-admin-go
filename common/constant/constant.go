@@ -15,4 +15,9 @@ const (
 	PARENT_VIEW = "ParentView"
 
 	Comma = ","
+
+	PageNum  = "pageNum"
+	PageSize = "pageSize"
+
+	DeptId = "deptId"
 )
