@@ -7,7 +7,7 @@ import (
 
 type SysDictDataCreateDTO struct {
 	DictCode   int64     `json:"dictCode,omitempty"`
-	DictSort   int8      `json:"dict_sort,omitempty"`
+	DictSort   int8      `json:"dictSort,omitempty"`
 	DictLabel  string    `json:"dictLabel,omitempty"`
 	DictValue  string    `json:"dictValue,omitempty"`
 	DictType   string    `json:"dictType,omitempty"`
@@ -41,7 +41,7 @@ func (m *SysDictDataCreateDTO) SysDictTypeUpdateDTO(t *system.SysDictData) {
 
 type SysDictDataUpdateDTO struct {
 	DictCode   int64     `json:"dictCode,omitempty"`
-	DictSort   int8      `json:"dict_sort,omitempty"`
+	DictSort   int8      `json:"dictSort,omitempty"`
 	DictLabel  string    `json:"dictLabel,omitempty"`
 	DictValue  string    `json:"dictValue,omitempty"`
 	DictType   string    `json:"dictType,omitempty"`

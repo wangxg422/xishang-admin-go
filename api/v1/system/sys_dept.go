@@ -6,11 +6,12 @@ import (
 	"backend/initial/logger"
 	"backend/model/dto"
 	sysModel "backend/model/system"
+	sysVo "backend/model/vo/system"
 	"backend/utils"
-	"strconv"
-
+	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 type SysDeptApi struct{}
@@ -110,4 +111,64 @@ func (m *SysDeptApi) DeleteDept(c *gin.Context) {
 	}
 
 	response.Ok(c)
+}
+
+func (m *SysDeptApi) GetDeptTree(c *gin.Context) {
+	userId := jwt.GetUserID(c)
+	if userId == 0 {
+		response.FailWithMessage("请先登录", c)
+	}
+
+	var depts []sysModel.SysDept
+	if userId == 1 {
+		temp, err := deptService.GetAllDept()
+		if err != nil {
+			response.FailWithMessage("查询部门失败", c)
+			return
+		}
+		depts = temp
+	} else {
+		//TODO 根据用户权限查询部门
+		//depts, err := deptService.GetDeptByIds(deptIds)
+		//if err != nil {
+		//	response.FailWithMessage("查询部门失败", c)
+		//}
+	}
+
+	rootDept := &sysModel.SysDept{ParentId: 0}
+	rootDeptVo := &sysVo.SysDeptTreeVO{Id: 0}
+	m.buildDeptTree(depts, rootDept, rootDeptVo)
+	response.OkWithData(rootDeptVo.Children, c)
+}
+
+func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysDept, tree *sysVo.SysDeptTreeVO) {
+	children, voChildren := m.getChildren(depts, dept)
+
+	tree.Id = dept.DeptId
+	tree.Label = dept.DeptName
+	tree.Children = voChildren
+
+	length := len(children)
+	if length > 0 {
+		for i := 0; i < length; i++ {
+			m.buildDeptTree(depts, &children[i], &voChildren[i])
+		}
+	}
+}
+
+func (m *SysDeptApi) getChildren(depts []sysModel.SysDept, dept *sysModel.SysDept) ([]sysModel.SysDept, []sysVo.SysDeptTreeVO) {
+	var list []sysModel.SysDept
+	var voList []sysVo.SysDeptTreeVO
+
+	for _, d := range depts {
+		if d.ParentId == dept.DeptId {
+			list = append(list, d)
+			voList = append(voList, sysVo.SysDeptTreeVO{
+				Id:    d.DeptId,
+				Label: d.DeptName,
+			})
+		}
+	}
+
+	return list, voList
 }

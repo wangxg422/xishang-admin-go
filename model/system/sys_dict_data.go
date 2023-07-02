@@ -4,7 +4,7 @@ import "time"
 
 type SysDictData struct {
 	DictCode   int64     `gorm:"primaryKey;column:dict_code" json:"dictCode,omitempty"`
-	DictSort   int8      `gorm:"column:dict_sort" json:"dict_sort,omitempty"`
+	DictSort   int8      `gorm:"column:dict_sort" json:"dictSort,omitempty"`
 	DictLabel  string    `gorm:"primaryKey;column:dict_label" json:"dictLabel,omitempty"`
 	DictValue  string    `gorm:"primaryKey;column:dict_value" json:"dictValue,omitempty"`
 	DictType   string    `gorm:"primaryKey;column:dict_type" json:"dictType,omitempty"`

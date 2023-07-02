@@ -7,10 +7,12 @@ const (
 	HTTP  = "http://"
 	HTTPS = "https://"
 
-	/** Layout组件标识 */
+	// LAYOUT Layout组件标识
 	LAYOUT = "Layout"
-	/** InnerLink组件标识 */
+	// INNER_LINK InnerLink组件标识
 	INNER_LINK = "InnerLink"
-	/** ParentView组件标识 */
+	// PARENT_VIEW ParentView组件标识
 	PARENT_VIEW = "ParentView"
+
+	Comma = ","
 )

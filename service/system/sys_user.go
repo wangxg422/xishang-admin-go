@@ -11,9 +11,21 @@ import (
 type SysUserService struct {
 }
 
+func (m *SysUserService) GetUserWithDept(id int64) (system.SysUser, error) {
+	user := &system.SysUser{}
+	res := global.DB.Preload("SysDept").
+		Where("del_flag = ?", enmu.StatusNormal.Value()).
+		First(&user, "user_id = ?", id)
+
+	return *user, res.Error
+}
+
 func (m *SysUserService) GetUserInfo(id int64) (system.SysUser, error) {
 	user := &system.SysUser{}
-	res := global.DB.Preload("SysRoles").Preload("SysPosts").Preload("SysDept").First(&user, "user_id = ?", id).Where("del_flag = ?", enmu.StatusNormal.Value())
+	res := global.DB.Preload("SysRoles").
+		Preload("SysPosts").Preload("SysDept").
+		First(&user, "user_id = ?", id).
+		Where("del_flag = ?", enmu.StatusNormal.Value())
 
 	return *user, res.Error
 }

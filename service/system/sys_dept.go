@@ -41,3 +41,21 @@ func (m *SysDeptService) GetDeptById(id int64) (sysModel.SysDept, error) {
 	res := global.DB.Take(&user, id).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
 }
+
+func (m *SysDeptService) GetDeptByIds(ids []string) ([]sysModel.SysDept, error) {
+	var depts []sysModel.SysDept
+	res := global.DB.
+		Where("dept_id IN ? and status = ?", ids, enmu.StatusNormal.Value()).
+		Order("dept_id").
+		Find(&depts)
+	return depts, res.Error
+}
+
+func (m *SysDeptService) GetAllDept() ([]sysModel.SysDept, error) {
+	var depts []sysModel.SysDept
+	res := global.DB.
+		Where("status = ?", enmu.StatusNormal.Value()).
+		Order("dept_id").
+		Find(&depts)
+	return depts, res.Error
+}
