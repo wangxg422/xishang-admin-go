@@ -31,5 +31,5 @@ func (m *SysConfigApi) GetConfigByKey(c *gin.Context) {
 		return
 	}
 
-	response.OkWithData(value, c)
+	response.OkWithData(value.ConfigValue, c)
 }

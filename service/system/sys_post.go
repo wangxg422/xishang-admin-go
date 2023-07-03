@@ -41,3 +41,9 @@ func (m *SysPostService) GetPostById(id int64) (sysModel.SysPost, error) {
 	res := global.DB.Take(&Post, id).Where("del_flag = ?", enmu.DelFlagNormal.Value())
 	return Post, res.Error
 }
+
+func (m *SysPostService) GetAllPost() ([]sysModel.SysPost, error) {
+	var list []sysModel.SysPost
+	res := global.DB.Find(&list)
+	return list, res.Error
+}

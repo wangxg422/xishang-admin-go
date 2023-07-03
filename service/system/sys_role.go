@@ -48,3 +48,9 @@ func (m *SysRoleService) GetRoleById(id int64) (system.SysRole, error) {
 	res := global.DB.Take(&Role, id).Where("del_flag = ?", enmu.DelFlagNormal.Value())
 	return Role, res.Error
 }
+
+func (m *SysRoleService) GetAllRole() ([]system.SysRole, error) {
+	var list []system.SysRole
+	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
+	return list, res.Error
+}
