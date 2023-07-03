@@ -4,7 +4,7 @@ import (
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
-	"backend/model/dto"
+	"backend/model/dto/system"
 	sysModel "backend/model/system"
 	"backend/utils"
 	"strconv"
@@ -16,7 +16,7 @@ import (
 type SysRoleApi struct{}
 
 func (m *SysRoleApi) CreateRole(c *gin.Context) {
-	roleDto := dto.SysCreateRoleDTO{}
+	roleDto := system.SysCreateRoleDTO{}
 	if err := c.ShouldBindJSON(&roleDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -71,7 +71,7 @@ func (m *SysRoleApi) ListRole(c *gin.Context) {
 }
 
 func (m *SysRoleApi) UpdateRole(c *gin.Context) {
-	roleDto := dto.SysUpdateRoleDTO{}
+	roleDto := system.SysUpdateRoleDTO{}
 
 	if err := c.ShouldBindJSON(&roleDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))

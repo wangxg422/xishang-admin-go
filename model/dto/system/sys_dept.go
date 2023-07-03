@@ -1,4 +1,4 @@
-package dto
+package system
 
 import "backend/model/system"
 

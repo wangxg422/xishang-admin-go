@@ -1,11 +1,10 @@
 package system
 
 import (
-	"backend/common/constant"
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
-	"backend/model/dto"
+	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	"backend/utils"
 	"backend/utils/jwt"
@@ -20,7 +19,7 @@ type SysUserApi struct {
 }
 
 func (m *SysUserApi) CreateUser(c *gin.Context) {
-	userDto := dto.SysCreateUserDTO{}
+	userDto := sysDto.SysCreateUserDTO{}
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -44,26 +43,11 @@ func (m *SysUserApi) CreateUser(c *gin.Context) {
 }
 
 func (m *SysUserApi) ListUserPage(c *gin.Context) {
-	page, err := dto.NewPageInfo(c)
-	if err != nil {
-		logger.Error("获取分页信息失败", zap.Error(err))
-		response.FailWithMessage("获取分页信息失败", c)
-		return
-	}
-
-	var deptId int64
-	if c.Query(constant.DeptId) != "" {
-		deptId, err = strconv.ParseInt(c.Query(constant.DeptId), 10, 64)
-		if err != nil {
-			response.FailWithMessage("dept id 获取失败", c)
-			return
-		}
-	}
-
-	pageResult, err := userService.ListUserPage(page, deptId)
+	pageResult, err := userService.ListUserPage(c)
 	if err != nil {
 		logger.Error("查询用户列表失败", zap.Error(err))
 		response.FailWithMessage("查询用户列表失败", c)
+		return
 	}
 
 	response.OkWithData(pageResult, c)
@@ -98,7 +82,7 @@ func (m *SysUserApi) GetUserById(c *gin.Context) {
 }
 
 func (m *SysUserApi) UpdateUser(c *gin.Context) {
-	userDto := dto.SysUpdateUserDTO{}
+	userDto := sysDto.SysUpdateUserDTO{}
 
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))

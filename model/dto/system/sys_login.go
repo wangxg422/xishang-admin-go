@@ -1,4 +1,4 @@
-package dto
+package system
 
 type SysLoginDTO struct {
 	UserName    string `json:"username,omitempty" binding:"required"`

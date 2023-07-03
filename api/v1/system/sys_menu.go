@@ -5,7 +5,7 @@ import (
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
-	"backend/model/dto"
+	"backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
@@ -20,7 +20,7 @@ import (
 type SysMenuApi struct{}
 
 func (m *SysMenuApi) CreateMenu(c *gin.Context) {
-	menuDto := dto.SysCreateMenuDTO{}
+	menuDto := system.SysCreateMenuDTO{}
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -75,7 +75,7 @@ func (m *SysMenuApi) ListMenu(c *gin.Context) {
 }
 
 func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
-	menuDto := dto.SysUpdateMenuDTO{}
+	menuDto := system.SysUpdateMenuDTO{}
 
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))

@@ -1,4 +1,4 @@
-package dto
+package system
 
 import (
 	"backend/model/system"
@@ -90,4 +90,12 @@ func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 	user.CreateBy = m.CreateBy
 	user.UpdateBy = m.UpdateBy
 	user.Remark = m.Remark
+}
+
+type SysUserSearchDTO struct {
+	UserName    string    `json:"userName,omitempty"`
+	PhoneNumber string    `json:"phoneNumber,omitempty"`
+	Status      int8      `json:"status,omitempty"`
+	BeginTime   time.Time `json:"beginTime,omitempty"`
+	EndTime     time.Time `json:"endTime,omitempty"`
 }

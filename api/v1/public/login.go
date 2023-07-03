@@ -5,7 +5,7 @@ import (
 	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
-	"backend/model/dto"
+	"backend/model/dto/system"
 	"backend/utils/captcha"
 
 	set "github.com/deckarep/golang-set"
@@ -16,7 +16,7 @@ import (
 type LoginApi struct{}
 
 func (m *LoginApi) Login(c *gin.Context) {
-	loginDto := dto.SysLoginDTO{}
+	loginDto := system.SysLoginDTO{}
 	if err := c.ShouldBindJSON(&loginDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)

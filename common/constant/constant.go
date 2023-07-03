@@ -18,6 +18,4 @@ const (
 
 	PageNum  = "pageNum"
 	PageSize = "pageSize"
-
-	DeptId = "deptId"
 )

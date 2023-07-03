@@ -4,7 +4,7 @@ import (
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
-	"backend/model/dto"
+	"backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
@@ -17,7 +17,7 @@ import (
 type SysDeptApi struct{}
 
 func (m *SysDeptApi) CreateDept(c *gin.Context) {
-	deptDto := dto.SysCreateDeptDTO{}
+	deptDto := system.SysCreateDeptDTO{}
 	if err := c.ShouldBindJSON(&deptDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -72,7 +72,7 @@ func (m *SysDeptApi) ListDept(c *gin.Context) {
 }
 
 func (m *SysDeptApi) UpdateDept(c *gin.Context) {
-	deptDto := dto.SysUpdateDeptDTO{}
+	deptDto := system.SysUpdateDeptDTO{}
 
 	if err := c.ShouldBindJSON(&deptDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))

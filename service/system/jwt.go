@@ -94,7 +94,7 @@ func (m *JwtService) SignToken(c *gin.Context, user system.SysUser) {
 	}
 }
 
-func (jwtService *JwtService) JsonInBlacklist(jwtList system.JwtBlacklist) (err error) {
+func (m *JwtService) JsonInBlacklist(jwtList system.JwtBlacklist) (err error) {
 	err = global.DB.Create(&jwtList).Error
 	if err != nil {
 		return

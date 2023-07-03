@@ -4,7 +4,7 @@ import (
 	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
-	"backend/model/dto"
+	"backend/model/dto/system"
 	sysModel "backend/model/system"
 	"backend/utils"
 	"strconv"
@@ -16,7 +16,7 @@ import (
 type SysPostApi struct{}
 
 func (m *SysPostApi) CreatePost(c *gin.Context) {
-	postDto := dto.SysCreatePostDTO{}
+	postDto := system.SysCreatePostDTO{}
 	if err := c.ShouldBindJSON(&postDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -70,7 +70,7 @@ func (m *SysPostApi) ListPost(c *gin.Context) {
 }
 
 func (m *SysPostApi) UpdatePost(c *gin.Context) {
-	postDto := dto.SysUpdatePostDTO{}
+	postDto := system.SysUpdatePostDTO{}
 
 	if err := c.ShouldBindJSON(&postDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
