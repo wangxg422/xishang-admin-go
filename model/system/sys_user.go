@@ -9,12 +9,12 @@ type SysUser struct {
 	NickName    string    `gorm:"column:nick_name" json:"nickName,omitempty"`
 	UserType    string    `gorm:"column:user_type" json:"userType,omitempty"`
 	Email       string    `gorm:"column:email" json:"email,omitempty"`
-	PhoneNumber string    `gorm:"column:phonenumber" json:"phoneNumber,omitempty"`
-	Sex         string    `gorm:"column:sex" json:"sex,omitempty"`
+	PhoneNumber string    `gorm:"column:phone_number" json:"phoneNumber,omitempty"`
+	Sex         int8      `gorm:"column:sex" json:"sex"`
 	Avatar      string    `gorm:"column:avatar" json:"avatar,omitempty"` //头像地址
 	Password    string    `gorm:"column:password" json:"-"`
-	Status      int8      `gorm:"column:status;default:0" json:"status,omitempty"`
-	DelFlag     int8      `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
+	Status      int8      `gorm:"column:status;default:0" json:"status"`
+	DelFlag     int8      `gorm:"column:del_flag;default:0" json:"delFlag"`
 	LoginIp     string    `gorm:"column:login_ip" json:"loginIp,omitempty"`     //最后登录ip
 	LoginDate   time.Time `gorm:"column:login_date" json:"loginDate,omitempty"` //最后登录时间
 	CreateTime  time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`

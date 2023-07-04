@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysPost struct {
-	PostId     int64     `gorm:"primaryKey;column:post_id" json:"postiId,omitempty"`
+	PostId     int64     `gorm:"primaryKey;column:post_id" json:"postId,omitempty"`
 	PostCode   string    `gorm:"column:post_code" json:"postCode,omitempty"`
 	PostName   string    `gorm:"column:post_name" json:"postName,omitempty"`
 	PostSort   int       `gorm:"column:post_sort" json:"postSort,omitempty"`

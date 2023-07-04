@@ -19,4 +19,8 @@ const (
 
 	MenuIsVisible    MenuVisible = MenuVisible(Menu_Visible)
 	MenuIsNotVisible MenuVisible = MenuVisible(Menu_Unvisible)
+
+	SexM = Sex(Sex_M)
+	SexF = Sex(Sex_F)
+	SexU = Sex(Sex_U)
 )

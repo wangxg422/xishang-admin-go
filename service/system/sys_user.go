@@ -3,12 +3,16 @@ package system
 import (
 	"backend/common/enmu"
 	"backend/global"
+	"backend/initial/logger"
 	sysDto "backend/model/dto/system"
-	"backend/model/system"
+	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"errors"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +20,8 @@ import (
 type SysUserService struct {
 }
 
-func (m *SysUserService) GetUserWithDept(id int64) (system.SysUser, error) {
-	user := &system.SysUser{}
+func (m *SysUserService) GetUserWithDept(id int64) (sysModel.SysUser, error) {
+	user := &sysModel.SysUser{}
 	res := global.DB.Preload("SysDept").
 		Where("del_flag = ?", enmu.StatusNormal.Value()).
 		First(&user, "user_id = ?", id)
@@ -25,8 +29,8 @@ func (m *SysUserService) GetUserWithDept(id int64) (system.SysUser, error) {
 	return *user, res.Error
 }
 
-func (m *SysUserService) GetUserInfo(id int64) (system.SysUser, error) {
-	user := &system.SysUser{}
+func (m *SysUserService) GetUserInfo(id int64) (sysModel.SysUser, error) {
+	user := &sysModel.SysUser{}
 	res := global.DB.Preload("SysRoles").
 		Preload("SysPosts").Preload("SysDept").
 		First(&user, "user_id = ?", id).
@@ -38,32 +42,68 @@ func (m *SysUserService) GetUserInfo(id int64) (system.SysUser, error) {
 func (m *SysUserService) ChangePassword(c *gin.Context) {
 }
 
-func (m *SysUserService) CreateUser(user *system.SysUser) error {
-	res := global.DB.Create(&user)
+func (m *SysUserService) CreateUser(userDto sysDto.SysCreateUserDTO) error {
+	user := &sysModel.SysUser{}
+	userDto.Convert(user)
 
-	return res.Error
+	user.DelFlag = enmu.DelFlagNormal.Value()
+	user.Status = enmu.StatusNormal.Value()
+	user.Password = utils.EnPassword(user.Password)
+	user.LoginDate = time.Now()
+
+	err := global.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&user).Error; err != nil {
+			logger.Error("create user failed", zap.Error(err))
+			return err
+		}
+
+		if user.UserId == 0 {
+			logger.Error("userId is null")
+			return errors.New("userId is null")
+		}
+
+		if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
+			for _, id := range userDto.RoleIds {
+				if err := tx.Create(&sysModel.SysUserRole{UserId: user.UserId, RoleId: id}).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
+			for _, id := range userDto.PostIds {
+				if err := tx.Create(&sysModel.SysUserPost{UserId: user.UserId, PostId: id}).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		return nil
+	})
+
+	return err
 }
 
-func (m *SysUserService) UpdateUser(user *system.SysUser) error {
-	res := global.DB.Model(&system.SysUser{UserId: user.UserId}).Updates(&user)
+func (m *SysUserService) UpdateUser(user *sysModel.SysUser) error {
+	res := global.DB.Model(&sysModel.SysUser{UserId: user.UserId}).Updates(&user)
 	return res.Error
 }
 
 func (m *SysUserService) DeleteUser(id int64) error {
-	res := global.DB.Model(&system.SysUser{UserId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
+	res := global.DB.Model(&sysModel.SysUser{UserId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
 	return res.Error
 }
 
-func (m *SysUserService) ListUser() ([]system.SysUser, error) {
-	var list []system.SysUser
+func (m *SysUserService) ListUser() ([]sysModel.SysUser, error) {
+	var list []sysModel.SysUser
 
 	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
 
 	return list, res.Error
 }
 
-func (m *SysUserService) GetUserById(id int64) (system.SysUser, error) {
-	user := system.SysUser{
+func (m *SysUserService) GetUserById(id int64) (sysModel.SysUser, error) {
+	user := sysModel.SysUser{
 		UserId: id,
 	}
 
@@ -71,8 +111,8 @@ func (m *SysUserService) GetUserById(id int64) (system.SysUser, error) {
 	return user, res.Error
 }
 
-func (m *SysUserService) GetUserByUserName(userName string) (system.SysUser, error) {
-	user := system.SysUser{}
+func (m *SysUserService) GetUserByUserName(userName string) (sysModel.SysUser, error) {
+	user := sysModel.SysUser{}
 
 	res := global.DB.Take(&user, "user_name = ?", userName).Where("del_flag = ?", enmu.StatusNormal.Value())
 	return user, res.Error
@@ -105,7 +145,7 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 		condition["status"] = status
 	}
 
-	db := global.DB.Model(&system.SysUser{})
+	db := global.DB.Model(&sysModel.SysUser{})
 
 	var total int64
 	err = db.Count(&total).Error
@@ -114,7 +154,7 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 	}
 
 	db = db.Limit(page.Limit).Offset(page.Offset).Where(condition)
-	var userList []system.SysUser
+	var userList []sysModel.SysUser
 	if c.Query("userName") != "" {
 		db.Where("user_name like ?", utils.AddPercentSign(c.Query("userName")))
 	}

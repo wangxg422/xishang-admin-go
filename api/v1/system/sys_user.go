@@ -1,18 +1,14 @@
 package system
 
 import (
-	"backend/common/enmu"
 	"backend/common/response"
 	"backend/initial/logger"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
-	"backend/utils"
 	"backend/utils/jwt"
-	"strconv"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 type SysUserApi struct {
@@ -26,14 +22,7 @@ func (m *SysUserApi) CreateUser(c *gin.Context) {
 		return
 	}
 
-	user := &sysModel.SysUser{}
-	userDto.Convert(user)
-
-	user.LoginDate = time.Now()
-	user.DelFlag = enmu.DelFlagDeleted.Value()
-	user.Status = enmu.StatusNormal.Value()
-
-	if err := userService.CreateUser(user); err != nil {
+	if err := userService.CreateUser(userDto); err != nil {
 		logger.Error("create user failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -54,31 +43,66 @@ func (m *SysUserApi) ListUserPage(c *gin.Context) {
 }
 
 func (m *SysUserApi) GetUserById(c *gin.Context) {
-	userid := c.Param("userId")
+	userIdStr := c.Query("userId")
 
-	if userid == "" {
-		response.FailWithMessage("user id is null", c)
+	// 获取所有职位和角色列表
+	roles, err := roleService.GetAllRole()
+	if err != nil {
+		logger.Error("获取角色列表失败", zap.Error(err))
+		response.FailWithMessage("获取角色列表失败", c)
 		return
 	}
 
-	id, err := strconv.ParseInt(userid, 10, 64)
+	posts, err := postService.GetAllPost()
 	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+		logger.Error("获取职位列表失败", zap.Error(err))
+		response.FailWithMessage("获取职位列表失败", c)
 		return
 	}
 
-	user, err := userService.GetUserById(id)
+	res := make(map[string]any)
+	res["roles"] = roles
+	res["posts"] = posts
+	if userIdStr == "" {
+		response.OkWithData(res, c)
+		return
+	}
+
+	userId, err := strconv.ParseInt(userIdStr, 10, 64)
 	if err != nil {
-		if utils.NoRecord(err) {
-			response.OkWithData([]string{}, c)
-			return
+		logger.Error("userId 转换失败", zap.Error(err))
+		response.FailWithMessage("userId 转换失败", c)
+		return
+	}
+
+	// userId存在，查询用户信息
+	userInfo, err := userService.GetUserInfo(userId)
+	if err != nil {
+		logger.Error("查询用户信息失败,userId:%s", zap.String("userId", userIdStr), zap.Error(err))
+		response.FailWithMessage("查询用户信息失败", c)
+		return
+	}
+	res["userInfo"] = userInfo
+
+	postList := userInfo.SysPosts
+	if postList != nil {
+		var postIds []int64
+		for _, p := range postList {
+			postIds = append(postIds, p.PostId)
 		}
-		logger.Error("search user failed", zap.Error(err))
-		response.FailWithMessage(err.Error(), c)
-		return
+		res["postIds"] = postIds
 	}
 
-	response.OkWithData(user, c)
+	roleList := userInfo.SysRoles
+	if roleList != nil {
+		var roleIds []int64
+		for _, r := range roleList {
+			roleIds = append(roleIds, r.RoleId)
+		}
+		res["roleIds"] = roleIds
+	}
+
+	response.OkWithData(res, c)
 }
 
 func (m *SysUserApi) UpdateUser(c *gin.Context) {
