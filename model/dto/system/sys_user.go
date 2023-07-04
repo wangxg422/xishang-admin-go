@@ -44,8 +44,6 @@ type SysUpdateUserDTO struct {
 	Password    string    `json:"password,omitempty"`
 	Status      int8      `json:"status"`
 	DelFlag     int8      `json:"delFlag"`
-	LoginIp     string    `json:"loginIp,omitempty"`
-	LoginDate   time.Time `json:"loginDate,omitempty"`
 	CreateTime  time.Time `json:"createTime,omitempty"`
 	UpdateTime  time.Time `json:"updateTime,omitempty"`
 	CreateBy    string    `json:"createBy,omitempty"`
@@ -66,8 +64,6 @@ func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 	user.Password = m.Password
 	user.Status = m.Status
 	user.DelFlag = m.DelFlag
-	user.LoginIp = m.LoginIp
-	user.LoginDate = m.LoginDate
 	user.CreateTime = m.CreateTime
 	user.UpdateTime = m.UpdateTime
 	user.CreateBy = m.CreateBy

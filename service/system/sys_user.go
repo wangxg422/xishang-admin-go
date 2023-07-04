@@ -9,12 +9,10 @@ import (
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"strconv"
-	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 type SysUserService struct {
@@ -49,7 +47,6 @@ func (m *SysUserService) CreateUser(userDto sysDto.SysCreateUserDTO) error {
 	user.DelFlag = enmu.DelFlagNormal.Value()
 	user.Status = enmu.StatusNormal.Value()
 	user.Password = utils.EnPassword(user.Password)
-	user.LoginDate = time.Now()
 
 	err := global.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&user).Error; err != nil {

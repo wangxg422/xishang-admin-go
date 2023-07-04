@@ -15,8 +15,6 @@ type SysUser struct {
 	Password    string    `gorm:"column:password" json:"-"`
 	Status      int8      `gorm:"column:status;default:0" json:"status"`
 	DelFlag     int8      `gorm:"column:del_flag;default:0" json:"delFlag"`
-	LoginIp     string    `gorm:"column:login_ip" json:"loginIp,omitempty"`     //最后登录ip
-	LoginDate   time.Time `gorm:"column:login_date" json:"loginDate,omitempty"` //最后登录时间
 	CreateTime  time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`
 	UpdateTime  time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime,omitempty"`
 	CreateBy    string    `gorm:"column:create_by" json:"createBy,omitempty"`
