@@ -142,24 +142,3 @@ func (m *SysUserApi) GetProfile(c *gin.Context) {
 
 	response.Ok(c)
 }
-
-func (m *SysUserApi) GetRoleAndPost(c *gin.Context) {
-	roles, err := roleService.GetAllRole()
-	if err != nil {
-		logger.Error("查询角色失败", zap.Error(err))
-		response.FailWithMessage(err.Error(), c)
-		return
-	}
-
-	posts, err := postService.GetAllPost()
-	if err != nil {
-		logger.Error("查询职位失败", zap.Error(err))
-		response.FailWithMessage(err.Error(), c)
-		return
-	}
-
-	r := make(map[string]any)
-	r["roles"] = roles
-	r["posts"] = posts
-	response.OkWithData(r, c)
-}
