@@ -3,9 +3,7 @@ package system
 import (
 	"backend/initial/logger"
 	"backend/model/common/response"
-	sysVo "backend/model/vo/system"
-	"backend/utils"
-	"fmt"
+	sysDto "backend/model/dto/system"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -38,12 +36,8 @@ func (m *SysConfigApi) GetConfigByKey(c *gin.Context) {
 }
 
 func (m *SysConfigApi) GetConfigPage(c *gin.Context) {
-	//pageInfo, err := request.NewPageInfo(c)
-	params := &sysVo.SysConfigQuery{}
+	params := &sysDto.SysConfigQuery{}
 	err := c.ShouldBind(params)
-
-	fmt.Println(c.Query("pageNum"))
-	utils.PrintJson(params)
 
 	if err != nil {
 		logger.Error("参数解析失败", zap.Error(err))
@@ -51,19 +45,12 @@ func (m *SysConfigApi) GetConfigPage(c *gin.Context) {
 		return
 	}
 
-	//if err != nil {
-	//	logger.Error("获取分页信息失败", zap.Error(err))
-	//	response.FailWithMessage(err.Error(), c)
-	//	return
-	//}
-	//
-	//configs, err := configService.GetConfig(pageInfo)
-	//if err != nil {
-	//	logger.Error("查询配置失败", zap.Error(err))
-	//	response.FailWithMessage(err.Error(), c)
-	//	return
-	//}
-	//
-	//response.OkWithData(configs, c)
-	response.Ok(c)
+	configs, err := configService.GetConfig(params)
+	if err != nil {
+		logger.Error("查询配置失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(configs, c)
 }

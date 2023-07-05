@@ -2,7 +2,7 @@ package system
 
 import (
 	"backend/global"
-	"backend/model/common/request"
+	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 )
@@ -19,7 +19,7 @@ func (m *SysConfigService) GetConfigByKey(key string) (sysModel.SysConfig, error
 	return config, res.Error
 }
 
-func (m *SysConfigService) GetConfig(page request.PageInfo) (sysVo.PageResult, error) {
+func (m *SysConfigService) GetConfig(params *sysDto.SysConfigQuery) (sysVo.PageResult, error) {
 	pageResult := sysVo.PageResult{}
 
 	db := global.DB.Model(&sysModel.SysConfig{})
@@ -30,11 +30,12 @@ func (m *SysConfigService) GetConfig(page request.PageInfo) (sysVo.PageResult, e
 		return pageResult, err
 	}
 
+	limit, offset := params.PageInfo.Paging()
 	var configs []sysModel.SysConfig
-	res := db.Limit(page.Limit).Offset(page.Offset).Find(&configs)
+	res := db.Limit(limit).Offset(offset).Find(&configs)
 
 	pageResult.Total = total
-	pageResult.List = configs
+	pageResult.Rows = configs
 
 	return pageResult, res.Error
 }

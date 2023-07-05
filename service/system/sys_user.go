@@ -151,7 +151,9 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 		return pageResult, err
 	}
 
-	db = db.Limit(page.Limit).Offset(page.Offset).Where(condition)
+	limit, offset := page.Paging()
+
+	db = db.Limit(limit).Offset(offset).Where(condition)
 	var userList []sysModel.SysUser
 	if c.Query("userName") != "" {
 		db.Where("user_name like ?", utils.AddPercentSign(c.Query("userName")))
@@ -166,7 +168,7 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 	}
 
 	err = db.Find(&userList).Error
-	pageResult.List = userList
+	pageResult.Rows = userList
 	pageResult.Total = total
 	return pageResult, err
 }

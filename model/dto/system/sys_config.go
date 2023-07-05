@@ -1,6 +1,7 @@
 package system
 
 import (
+	"backend/model/common/request"
 	"backend/model/system"
 	"time"
 )
@@ -55,4 +56,13 @@ func (m *SysConfigUpdateDTO) SysDictTypeUpdateDTO(t *system.SysConfig) {
 	t.CreateBy = m.CreateBy
 	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
+}
+
+type SysConfigQuery struct {
+	PageInfo   request.PageInfo
+	ConfigName string    `form:"configName" json:"configName"`
+	ConfigKey  string    `form:"configKey" json:"configKey"`
+	ConfigType string    `form:"configType" json:"configType"`
+	BeginTime  time.Time `form:"beginTime" json:"beginTime"`
+	EndTime    time.Time `form:"endTime" json:"endTime"`
 }

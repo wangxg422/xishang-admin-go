@@ -1,6 +1,6 @@
 package system
 
 type PageResult struct {
-	List  any   `json:"list"`
+	Rows  any   `json:"rows"`
 	Total int64 `json:"total"`
 }

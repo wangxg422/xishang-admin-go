@@ -6,7 +6,7 @@ app:
   use-multipoint: false
 
 mysql:
-  address: 192.168.68.10
+  address: 192.168.100.20
   port: 13306
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi
@@ -31,7 +31,7 @@ zap:
   log-in-console: true
   encode-level: LowercaseLevelEncoder
   stacktrace-key: stacktrace
-  
+
 captcha:
   enabled: true
   key-long: 4
@@ -41,7 +41,7 @@ captcha:
   pre-key: "SYS:CAPTCHA:" # 存储到redis的前缀
 
 redis:
-  address: 192.168.68.10
+  address: 192.168.100.20
   port: 6379
   password: 123456
   db: 0
