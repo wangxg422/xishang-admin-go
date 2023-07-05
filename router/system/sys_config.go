@@ -10,7 +10,7 @@ func (m *SysConfigRouter) AddSysConfigRouter(route *gin.RouterGroup) {
 	{
 		//router.POST("", configApi.CreateConfig)
 		//router.GET("list", configApi.ListConfig)
-		router.GET("", configApi.GetConfig)
+		router.GET("", configApi.GetConfigPage)
 		//router.POST("update", configApi.UpdateConfig)
 		//router.DELETE(":deptId", configApi.DeleteConfig)
 
