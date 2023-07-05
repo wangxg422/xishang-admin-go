@@ -4,6 +4,7 @@ import (
 	"backend/common/enmu"
 	"backend/global"
 	"backend/initial/logger"
+	"backend/model/common/request"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
@@ -118,7 +119,7 @@ func (m *SysUserService) GetUserByUserName(userName string) (sysModel.SysUser, e
 func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) {
 	pageResult := sysVo.PageResult{}
 
-	page, err := sysDto.NewPageInfo(c)
+	page, err := request.NewPageInfo(c)
 	if err != nil {
 		return pageResult, errors.New("分页信息获取失败")
 	}
