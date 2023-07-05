@@ -3,8 +3,8 @@ package system
 import (
 	"backend/common/constant"
 	"backend/common/enmu"
-	"backend/common/response"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	"backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"

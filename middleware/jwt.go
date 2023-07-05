@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	"backend/service/system"
 	"backend/utils"
 	"errors"

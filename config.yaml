@@ -1,19 +1,20 @@
 app:
   name: backend-go
-  addresses: 192.168.100.161
+  #addresses: 192.168.100.161
   port: 8080
   mode: debug
+  use-multipoint: false
 
 mysql:
-  address: 192.168.216.10
+  address: 192.168.68.10
   port: 13306
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: ruoyi
   username: root
-  password: "123456"
+  password: 123456
   table-prefix: ""
   singular: true
-  engine: "InnoDB"
+  engine: InnoDB
   max-idle-conn: 10
   max-open-conn: 100
   log-mode: info
@@ -30,4 +31,23 @@ zap:
   log-in-console: true
   encode-level: LowercaseLevelEncoder
   stacktrace-key: stacktrace
-  
+
+captcha:
+  enabled: true
+  key-long: 4
+  img-width: 240
+  img-height: 80
+  expiration: 180 # 过期时间，单位秒
+  pre-key: "SYS:CAPTCHA:" # 存储到redis的前缀
+
+redis:
+  address: 192.168.68.10
+  port: 6379
+  password: 123456
+  db: 0
+
+jwt:
+  signing-key: c39ed162-65f7-4b49-983f-cdda998e9f2c
+  expires-time: 7d
+  buffer-time: 1d
+  issuer: xishang

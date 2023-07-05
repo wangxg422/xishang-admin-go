@@ -2,9 +2,9 @@ package public
 
 import (
 	"backend/common/enmu"
-	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	"backend/model/dto/system"
 	"backend/utils/captcha"
 

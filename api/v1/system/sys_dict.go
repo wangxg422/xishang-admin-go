@@ -1,8 +1,8 @@
 package system
 
 import (
-	"backend/common/response"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )

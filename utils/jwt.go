@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"backend/common/request"
 	"backend/global"
+	"backend/model/common/request"
 	"errors"
 	"time"
 

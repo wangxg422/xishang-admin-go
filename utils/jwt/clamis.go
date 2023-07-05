@@ -1,8 +1,8 @@
 package jwt
 
 import (
-	"backend/common/request"
 	"backend/initial/logger"
+	"backend/model/common/request"
 	"backend/utils"
 
 	"github.com/gin-gonic/gin"

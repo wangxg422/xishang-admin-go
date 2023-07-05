@@ -1,9 +1,9 @@
 package public
 
 import (
-	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	"backend/model/vo/system"
 	"backend/utils/captcha"
 

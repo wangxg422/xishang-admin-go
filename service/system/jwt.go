@@ -1,17 +1,17 @@
 package system
 
 import (
-	"backend/common/request"
-	"backend/common/response"
 	"backend/global"
 	"backend/initial/logger"
+	"backend/model/common/request"
+	"backend/model/common/response"
 	"backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"context"
 
 	"github.com/gin-gonic/gin"
-	redis "github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis/v7"
 	"go.uber.org/zap"
 )
 

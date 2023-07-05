@@ -1,8 +1,8 @@
 package system
 
 import (
-	"backend/common/response"
 	"backend/initial/logger"
+	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	"backend/utils/jwt"
