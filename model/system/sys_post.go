@@ -8,6 +8,7 @@ type SysPost struct {
 	PostName   string    `gorm:"column:post_name" json:"postName,omitempty"`
 	PostSort   int       `gorm:"column:post_sort" json:"postSort,omitempty"`
 	Status     int8      `gorm:"column:status;default:0" json:"status,omitempty"`
+	DelFlag    int8      `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
 	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`
 	UpdateTime time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime,omitempty"`
 	CreateBy   string    `gorm:"column:create_by" json:"createBy,omitempty"`

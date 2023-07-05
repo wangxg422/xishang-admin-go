@@ -11,6 +11,7 @@ type SysCreatePostDTO struct {
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`
 	Status     int8      `json:"status,omitempty"`
+	DelFlag    int8      `json:"delFlag,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`
@@ -37,6 +38,7 @@ type SysUpdatePostDTO struct {
 	PostName   string    `json:"postName,omitempty" binding:"required"`
 	PostSort   int       ` json:"postSort,omitempty"`
 	Status     int8      `json:"status,omitempty"`
+	DelFlag    int8      `json:"delFlag,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`

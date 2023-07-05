@@ -1,17 +1,13 @@
 package utils
 
-func EnPassword(s string) string {
-	if s == "" {
-		return s
-	}
+import "golang.org/x/crypto/bcrypt"
 
-	return s
+func EnPassword(password string) string {
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes)
 }
 
-func DePassword(s string) string {
-	if s == "" {
-		return s
-	}
-
-	return s
+func CheckPassword(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
