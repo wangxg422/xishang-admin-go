@@ -6,7 +6,7 @@ import (
 )
 
 type SysDictTypeCreateDTO struct {
-	DictId     int64     `json:"dictId,omitempty"`
+	DictTypeId int64     `json:"dictTypeId,omitempty"`
 	DictName   string    `json:"dictName,omitempty"`
 	DictType   string    `json:"dictType,omitempty"`
 	Status     int8      `json:"status,omitempty"`
@@ -18,7 +18,7 @@ type SysDictTypeCreateDTO struct {
 }
 
 func (m *SysDictTypeCreateDTO) Convert(t *system.SysDictType) {
-	t.DictId = m.DictId
+	t.DictTypeId = m.DictTypeId
 	t.DictName = m.DictName
 	t.DictType = m.DictType
 	t.Status = m.Status
@@ -30,7 +30,7 @@ func (m *SysDictTypeCreateDTO) Convert(t *system.SysDictType) {
 }
 
 type SysDictTypeUpdateDTO struct {
-	DictId     int64     `json:"dictId,omitempty"`
+	DictTypeId int64     `json:"dictTypeId,omitempty"`
 	DictName   string    `json:"dictName,omitempty"`
 	DictType   string    `json:"dictType,omitempty"`
 	Status     int8      `json:"status,omitempty"`
@@ -42,7 +42,7 @@ type SysDictTypeUpdateDTO struct {
 }
 
 func (m *SysDictTypeCreateDTO) SysDictTypeUpdateDTO(t *system.SysDictType) {
-	t.DictId = m.DictId
+	t.DictTypeId = m.DictTypeId
 	t.DictName = m.DictName
 	t.DictType = m.DictType
 	t.Status = m.Status

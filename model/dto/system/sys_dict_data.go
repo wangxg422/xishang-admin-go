@@ -6,7 +6,7 @@ import (
 )
 
 type SysDictDataCreateDTO struct {
-	DictCode   int64     `json:"dictCode,omitempty"`
+	DictDataId int64     `json:"dictDataId,omitempty"`
 	DictSort   int8      `json:"dictSort,omitempty"`
 	DictLabel  string    `json:"dictLabel,omitempty"`
 	DictValue  string    `json:"dictValue,omitempty"`
@@ -23,7 +23,7 @@ type SysDictDataCreateDTO struct {
 }
 
 func (m *SysDictDataCreateDTO) SysDictTypeUpdateDTO(t *system.SysDictData) {
-	t.DictCode = m.DictCode
+	t.DictDataId = m.DictDataId
 	t.DictSort = m.DictSort
 	t.DictLabel = m.DictLabel
 	t.DictValue = m.DictValue
@@ -40,7 +40,7 @@ func (m *SysDictDataCreateDTO) SysDictTypeUpdateDTO(t *system.SysDictData) {
 }
 
 type SysDictDataUpdateDTO struct {
-	DictCode   int64     `json:"dictCode,omitempty"`
+	DictDataId int64     `json:"dictDataId,omitempty"`
 	DictSort   int8      `json:"dictSort,omitempty"`
 	DictLabel  string    `json:"dictLabel,omitempty"`
 	DictValue  string    `json:"dictValue,omitempty"`
@@ -57,7 +57,7 @@ type SysDictDataUpdateDTO struct {
 }
 
 func (m *SysDictDataUpdateDTO) SysDictDataUpdateDTO(t *system.SysDictData) {
-	t.DictCode = m.DictCode
+	t.DictDataId = m.DictDataId
 	t.DictSort = m.DictSort
 	t.DictLabel = m.DictLabel
 	t.DictValue = m.DictValue

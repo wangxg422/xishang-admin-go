@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysDictData struct {
-	DictCode   int64     `gorm:"primaryKey;column:dict_code" json:"dictCode,omitempty"`
+	DictDataId int64     `gorm:"primaryKey;column:dict_data_id" json:"dictDataId,omitempty"`
 	DictSort   int8      `gorm:"column:dict_sort" json:"dictSort,omitempty"`
 	DictLabel  string    `gorm:"primaryKey;column:dict_label" json:"dictLabel,omitempty"`
 	DictValue  string    `gorm:"primaryKey;column:dict_value" json:"dictValue,omitempty"`
