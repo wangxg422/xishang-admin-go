@@ -45,7 +45,7 @@ func (m *SysConfigApi) GetConfigPage(c *gin.Context) {
 		return
 	}
 
-	configs, err := configService.GetConfig(params)
+	configs, err := configService.GetConfigPage(params)
 	if err != nil {
 		logger.Error("查询配置失败", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)

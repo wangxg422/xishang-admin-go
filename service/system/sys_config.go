@@ -5,6 +5,7 @@ import (
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
+	"backend/utils"
 )
 
 type SysConfigService struct {
@@ -19,7 +20,7 @@ func (m *SysConfigService) GetConfigByKey(key string) (sysModel.SysConfig, error
 	return config, res.Error
 }
 
-func (m *SysConfigService) GetConfig(params *sysDto.SysConfigQuery) (sysVo.PageResult, error) {
+func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.PageResult, error) {
 	pageResult := sysVo.PageResult{}
 
 	db := global.DB.Model(&sysModel.SysConfig{})
@@ -31,8 +32,21 @@ func (m *SysConfigService) GetConfig(params *sysDto.SysConfigQuery) (sysVo.PageR
 	}
 
 	limit, offset := params.PageInfo.Paging()
+	db = db.Limit(limit).Offset(offset)
+
+	likeArr := []string{
+		"config_name",
+		"config_key",
+	}
+	utils.ConcatLikeWhereCondition(db, likeArr, params.ConfigName, params.ConfigKey)
+	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
+
+	if params.ConfigType != "" {
+		db.Where("config_type = ?", params.ConfigType)
+	}
+
 	var configs []sysModel.SysConfig
-	res := db.Limit(limit).Offset(offset).Find(&configs)
+	res := db.Find(&configs)
 
 	pageResult.Total = total
 	pageResult.Rows = configs

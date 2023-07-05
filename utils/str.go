@@ -60,6 +60,6 @@ func FirstLower(s string) string {
 	return strings.ToLower(s[:1]) + s[1:]
 }
 
-func AddPercentSign(s string) string {
+func LikeQuery(s string) string {
 	return "%" + s + "%"
 }

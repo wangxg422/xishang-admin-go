@@ -11,7 +11,7 @@ type SysConfigCreateDTO struct {
 	ConfigName  string    `json:"configName,omitempty"`
 	ConfigKey   string    `json:"configKey,omitempty"`
 	ConfigValue string    `json:"configValue,omitempty"`
-	ConfigType  string    `json:"configType,omitempty"`
+	ConfigType  int8      `json:"configType,omitempty"`
 	CreateTime  time.Time `json:"createTime,omitempty"`
 	UpdateTime  time.Time `json:"updateTime,omitempty"`
 	CreateBy    string    `json:"createBy,omitempty"`
@@ -37,7 +37,7 @@ type SysConfigUpdateDTO struct {
 	ConfigName  string    `json:"configName,omitempty"`
 	ConfigKey   string    `json:"configKey,omitempty"`
 	ConfigValue string    `json:"configValue,omitempty"`
-	ConfigType  string    `json:"configType,omitempty"`
+	ConfigType  int8      `json:"configType,omitempty"`
 	CreateTime  time.Time `json:"createTime,omitempty"`
 	UpdateTime  time.Time `json:"updateTime,omitempty"`
 	CreateBy    string    `json:"createBy,omitempty"`
@@ -60,9 +60,9 @@ func (m *SysConfigUpdateDTO) SysDictTypeUpdateDTO(t *system.SysConfig) {
 
 type SysConfigQuery struct {
 	PageInfo   request.PageInfo
-	ConfigName string    `form:"configName" json:"configName"`
-	ConfigKey  string    `form:"configKey" json:"configKey"`
-	ConfigType string    `form:"configType" json:"configType"`
-	BeginTime  time.Time `form:"beginTime" json:"beginTime"`
-	EndTime    time.Time `form:"endTime" json:"endTime"`
+	ConfigName string `form:"configName" json:"configName"`
+	ConfigKey  string `form:"configKey" json:"configKey"`
+	ConfigType string `form:"configType" json:"configType"`
+	BeginTime  string `form:"beginTime" json:"beginTime"`
+	EndTime    string `form:"endTime" json:"endTime"`
 }

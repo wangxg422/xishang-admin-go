@@ -156,11 +156,11 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 	db = db.Limit(limit).Offset(offset).Where(condition)
 	var userList []sysModel.SysUser
 	if c.Query("userName") != "" {
-		db.Where("user_name like ?", utils.AddPercentSign(c.Query("userName")))
+		db.Where("user_name like ?", utils.LikeQuery(c.Query("userName")))
 	}
 
 	if c.Query("phonenumber") != "" {
-		db.Where("phonenumber like ?", utils.AddPercentSign(c.Query("phonenumber")))
+		db.Where("phonenumber like ?", utils.LikeQuery(c.Query("phonenumber")))
 	}
 
 	if c.Query("beginTime") != "" && c.Query("endTime") != "" {
