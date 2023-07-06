@@ -2,7 +2,7 @@ package constant
 
 const (
 	EnvConfigFile     = "CONFIG_FILE"
-	DefaultConfigFile = "config.yaml"
+	DefaultConfigFile = "config.yml"
 
 	HTTP  = "http://"
 	HTTPS = "https://"

@@ -24,7 +24,7 @@ func ConcatEqualsWhereCondition(db *gorm.DB, conditions []string, values ...stri
 	}
 }
 
-func ConcatOneEqualsWhereCondition(db *gorm.DB, column string, value string) {
+func ConcatOneEqualsWhereCondition(db *gorm.DB, column string, value any) {
 	if value != "" {
 		db.Where(column+" = ?", value)
 	}

@@ -62,7 +62,7 @@ type SysConfigQuery struct {
 	PageInfo   request.PageInfo
 	ConfigName string `form:"configName" json:"configName"`
 	ConfigKey  string `form:"configKey" json:"configKey"`
-	ConfigType string `form:"configType" json:"configType"`
+	ConfigType int8   `form:"configType" json:"configType"`
 	BeginTime  string `form:"beginTime" json:"beginTime"`
 	EndTime    string `form:"endTime" json:"endTime"`
 }

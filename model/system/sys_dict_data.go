@@ -10,7 +10,7 @@ type SysDictData struct {
 	DictType   string    `gorm:"primaryKey;column:dict_type" json:"dictType,omitempty"`
 	CssClass   string    `gorm:"primaryKey;column:css_class" json:"cssClass,omitempty"`
 	ListClass  string    `gorm:"primaryKey;column:list_class" json:"listClass,omitempty"`
-	IsDefault  string    `gorm:"column:is_default;default:0" json:"isDefault,omitempty"`
+	IsDefault  int8      `gorm:"column:is_default;default:0" json:"isDefault,omitempty"`
 	Status     int8      `gorm:"column:status;default:0" json:"status,omitempty"`
 	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`
 	UpdateTime time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime,omitempty"`

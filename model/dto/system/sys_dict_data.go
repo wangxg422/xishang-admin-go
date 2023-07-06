@@ -13,7 +13,7 @@ type SysDictDataCreateDTO struct {
 	DictType   string    `json:"dictType,omitempty"`
 	CssClass   string    `json:"cssClass,omitempty"`
 	ListClass  string    `json:"listClass,omitempty"`
-	IsDefault  string    `json:"isDefault,omitempty"`
+	IsDefault  int8      `json:"isDefault,omitempty"`
 	Status     int8      `json:"status,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
@@ -47,7 +47,7 @@ type SysDictDataUpdateDTO struct {
 	DictType   string    `json:"dictType,omitempty"`
 	CssClass   string    `json:"cssClass,omitempty"`
 	ListClass  string    `json:"listClass,omitempty"`
-	IsDefault  string    `json:"isDefault,omitempty"`
+	IsDefault  int8      `json:"isDefault,omitempty"`
 	Status     int8      `json:"status,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
