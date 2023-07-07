@@ -40,7 +40,7 @@ func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.P
 	}
 	utils.ConcatLikeWhereCondition(db, likeArr, params.ConfigName, params.ConfigKey)
 	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
-	utils.ConcatOneEqualsWhereCondition(db, "config_type", params.ConfigType)
+	utils.ConcatOneEqualsInt8WhereCondition(db, "config_type", params.ConfigType)
 
 	var configs []sysModel.SysConfig
 	res := db.Find(&configs)
