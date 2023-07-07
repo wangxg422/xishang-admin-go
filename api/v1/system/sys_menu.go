@@ -120,6 +120,7 @@ func (m *SysMenuApi) GetMenuByUserId(c *gin.Context) {
 	userId := jwt.GetUserID(c)
 	if userId == 0 {
 		response.FailWithMessage("请先登录", c)
+		return
 	}
 
 	var menus []sysModel.SysMenu
@@ -138,6 +139,7 @@ func (m *SysMenuApi) GetMenuByUserId(c *gin.Context) {
 	}
 	if len(menus) == 0 {
 		response.OkWithEmptyList(c)
+		return
 	}
 
 	// 由菜单构建菜单树，parentId为0的是根节点

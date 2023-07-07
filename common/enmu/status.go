@@ -3,8 +3,8 @@ package enmu
 type Status int8
 
 const (
-	Status_Normal   = 0
-	Status_Disabled = 1
+	Status_Normal   = 1
+	Status_Disabled = 2
 )
 
 var statusMap map[int]string

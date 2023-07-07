@@ -3,8 +3,8 @@ package enmu
 type MenuFrame int8
 
 const (
-	Menu_Frame   = 0
-	Menu_Not_Frame = 1
+	Menu_Frame     = 1
+	Menu_Not_Frame = 2
 )
 
 var menuFrameMap map[int]string

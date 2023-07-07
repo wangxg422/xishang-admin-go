@@ -3,9 +3,9 @@ package enmu
 type Sex int8
 
 const (
-	Sex_M = 0
-	Sex_F = 1
-	Sex_U = 2
+	Sex_M = 1
+	Sex_F = 2
+	Sex_U = 3
 )
 
 var sexMap map[int]string

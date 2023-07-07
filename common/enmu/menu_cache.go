@@ -3,8 +3,8 @@ package enmu
 type MenuCache int8
 
 const (
-	Menu_Cache     = 0
-	Menu_Not_Cache = 1
+	Menu_Cache     = 1
+	Menu_Not_Cache = 2
 )
 
 var menuCacheMap map[int]string

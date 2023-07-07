@@ -3,7 +3,7 @@ package enmu
 type DelFlag int8
 
 const (
-	DelFlag_Normal  = 0
+	DelFlag_Normal  = 1
 	DelFlag_Deleted = 2
 )
 

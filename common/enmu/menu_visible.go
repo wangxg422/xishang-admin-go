@@ -3,8 +3,8 @@ package enmu
 type MenuVisible int8
 
 const (
-	Menu_Visible   = 0
-	Menu_Unvisible = 1
+	Menu_Visible   = 1
+	Menu_Unvisible = 2
 )
 
 var eenuVisibleMap map[int]string
