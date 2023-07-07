@@ -30,6 +30,12 @@ func ConcatOneEqualsInt8WhereCondition(db *gorm.DB, column string, value int8) {
 	}
 }
 
+func ConcatOneEqualsStrWhereCondition(db *gorm.DB, column string, value string) {
+	if value != "" {
+		db.Where(column+" = ?", value)
+	}
+}
+
 func ConcatTimeRangeWhereCondition(db *gorm.DB, start string, end string) {
 	if start == "" && end == "" {
 		return

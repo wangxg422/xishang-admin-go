@@ -6,6 +6,7 @@ import (
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
+	"errors"
 )
 
 type SysConfigService struct {
@@ -40,7 +41,7 @@ func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.P
 	}
 	utils.ConcatLikeWhereCondition(db, likeArr, params.ConfigName, params.ConfigKey)
 	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
-	utils.ConcatOneEqualsInt8WhereCondition(db, "config_type", params.ConfigType)
+	utils.ConcatOneEqualsStrWhereCondition(db, "inner_config", params.InnerConfig)
 
 	var configs []sysModel.SysConfig
 	res := db.Find(&configs)
@@ -49,4 +50,51 @@ func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.P
 	pageResult.Rows = configs
 
 	return pageResult, res.Error
+}
+
+func (m *SysConfigService) CreateConfig(config *sysModel.SysConfig) error {
+	var existConfig sysModel.SysConfig
+	err := global.DB.
+		Where("config_key = ?", config.ConfigKey).
+		Find(&existConfig).Limit(1).Error
+	if err != nil {
+		return err
+	}
+
+	if existConfig.ConfigId != 0 {
+		return errors.New("inner_config " + config.ConfigKey + " exist")
+	}
+
+	return global.DB.Create(config).Error
+}
+
+func (m *SysConfigService) GetConfigById(configId int64) (sysModel.SysConfig, error) {
+	var config sysModel.SysConfig
+	res := global.DB.
+		Where("config_Id = ?", configId).
+		Find(&config)
+
+	return config, res.Error
+}
+
+func (m *SysConfigService) UpdateConfig(config *sysModel.SysConfig) error {
+	// 这里保证零值也能更新
+	return global.DB.Select("config_name", "config_key", "config_value",
+		"inner_config", "update_time", "update_by", "remark").
+		Updates(config).Error
+}
+
+func (m *SysConfigService) DeleteConfig(configId int64) error {
+	// 系统内置配置禁止删除
+	config, err := m.GetConfigById(configId)
+	if err != nil {
+		return err
+	}
+	if config.InnerConfig == "1" {
+		return errors.New("系统内置配置禁止删除")
+	}
+
+	return global.DB.Delete(&sysModel.SysConfig{
+		ConfigId: configId,
+	}).Error
 }
