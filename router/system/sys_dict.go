@@ -17,5 +17,9 @@ func (m *SysDictRouter) AddSysDictRouter(route *gin.RouterGroup) {
 	typeRouter := router.Group("type")
 	{
 		typeRouter.GET("list", dictApi.GetDictTypePage)
+		typeRouter.POST("", dictApi.CreateDictType)
+		typeRouter.GET(":dictTypeId", dictApi.GetDictTypeById)
+		typeRouter.PUT("", dictApi.UpdateDictType)
+		typeRouter.DELETE(":dictTypeId", dictApi.DeleteDictType)
 	}
 }

@@ -24,11 +24,11 @@ func ConcatEqualsWhereCondition(db *gorm.DB, conditions []string, values ...stri
 	}
 }
 
-func ConcatOneEqualsInt8WhereCondition(db *gorm.DB, column string, value int8) {
-	if value != 0 {
-		db.Where(column+" = ?", value)
-	}
-}
+//func ConcatOneEqualsInt8WhereCondition(db *gorm.DB, column string, value int8) {
+//	if value != 0 {
+//		db.Where(column+" = ?", value)
+//	}
+//}
 
 func ConcatOneEqualsStrWhereCondition(db *gorm.DB, column string, value string) {
 	if value != "" {

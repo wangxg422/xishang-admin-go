@@ -62,7 +62,7 @@ func (m *SysConfigService) CreateConfig(config *sysModel.SysConfig) error {
 	}
 
 	if existConfig.ConfigId != 0 {
-		return errors.New("inner_config " + config.ConfigKey + " exist")
+		return errors.New("系统配置 " + config.ConfigKey + " 已经存在")
 	}
 
 	return global.DB.Create(config).Error
@@ -71,7 +71,7 @@ func (m *SysConfigService) CreateConfig(config *sysModel.SysConfig) error {
 func (m *SysConfigService) GetConfigById(configId int64) (sysModel.SysConfig, error) {
 	var config sysModel.SysConfig
 	res := global.DB.
-		Where("config_Id = ?", configId).
+		Where("config_id = ?", configId).
 		Find(&config)
 
 	return config, res.Error
