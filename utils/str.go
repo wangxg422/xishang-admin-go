@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -62,4 +63,21 @@ func FirstLower(s string) string {
 
 func LikeQuery(s string) string {
 	return "%" + s + "%"
+}
+
+func StrToInt64Array(list []string) ([]int64, error) {
+	if len(list) == 0 {
+		return []int64{}, nil
+	}
+
+	var arr []int64
+	for _, s := range list {
+		v, err := strconv.ParseInt(s, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		arr = append(arr, v)
+	}
+
+	return arr, nil
 }

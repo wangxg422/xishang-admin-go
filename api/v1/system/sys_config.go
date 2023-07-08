@@ -1,14 +1,17 @@
 package system
 
 import (
+	"backend/common/constant"
 	"backend/initial/logger"
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
+	"backend/utils"
 	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -137,13 +140,14 @@ func (m *SysConfigApi) DeleteConfig(c *gin.Context) {
 		return
 	}
 
-	configId, err := strconv.ParseInt(configIdStr, 10, 64)
+	ids := strings.Split(configIdStr, constant.Comma)
+	configIds, err := utils.StrToInt64Array(ids)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	err = configService.DeleteConfig(configId)
+	err = configService.DeleteConfig(configIds)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

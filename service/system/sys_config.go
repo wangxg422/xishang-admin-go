@@ -77,6 +77,15 @@ func (m *SysConfigService) GetConfigById(configId int64) (sysModel.SysConfig, er
 	return config, res.Error
 }
 
+func (m *SysConfigService) GetConfigByIds(configIds []int64) ([]sysModel.SysConfig, error) {
+	var config []sysModel.SysConfig
+	res := global.DB.
+		Where("config_Id IN ?", configIds).
+		Find(&config)
+
+	return config, res.Error
+}
+
 func (m *SysConfigService) UpdateConfig(config *sysModel.SysConfig) error {
 	// 这里保证零值也能更新
 	return global.DB.Select("config_name", "config_key", "config_value",
@@ -84,17 +93,18 @@ func (m *SysConfigService) UpdateConfig(config *sysModel.SysConfig) error {
 		Updates(config).Error
 }
 
-func (m *SysConfigService) DeleteConfig(configId int64) error {
+func (m *SysConfigService) DeleteConfig(configIds []int64) error {
 	// 系统内置配置禁止删除
-	config, err := m.GetConfigById(configId)
+	configs, err := m.GetConfigByIds(configIds)
 	if err != nil {
 		return err
 	}
-	if config.InnerConfig == "1" {
-		return errors.New("系统内置配置禁止删除")
+
+	for _, c := range configs {
+		if c.InnerConfig == "1" {
+			return errors.New("系统内置配置禁止删除")
+		}
 	}
 
-	return global.DB.Delete(&sysModel.SysConfig{
-		ConfigId: configId,
-	}).Error
+	return global.DB.Where("config_id IN ?", configIds).Delete(&sysModel.SysConfig{}).Error
 }
