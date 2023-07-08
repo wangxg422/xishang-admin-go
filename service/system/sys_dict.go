@@ -27,6 +27,14 @@ func (m *SysDictService) GetDictTypePage(params *sysDto.SysDictTypeQueryDTO) (sy
 
 	db := global.DB.Model(&sysModel.SysDictType{})
 
+	likeArr := []string{
+		"dict_name",
+		"dict_type",
+	}
+	utils.ConcatLikeWhereCondition(db, likeArr, params.DictName, params.DictType)
+	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
+	utils.ConcatOneEqualsStrWhereCondition(db, "status", params.Status)
+
 	var total int64
 	err := db.Count(&total).Error
 	if err != nil {
@@ -35,14 +43,6 @@ func (m *SysDictService) GetDictTypePage(params *sysDto.SysDictTypeQueryDTO) (sy
 
 	limit, offset := params.PageInfo.Paging()
 	db = db.Limit(limit).Offset(offset)
-
-	likeArr := []string{
-		"dict_name",
-		"dict_type",
-	}
-	utils.ConcatLikeWhereCondition(db, likeArr, params.DictName, params.DictType)
-	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
-	utils.ConcatOneEqualsStrWhereCondition(db, "status", params.Status)
 
 	var types []sysModel.SysDictType
 	res := db.Find(&types)

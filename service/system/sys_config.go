@@ -26,6 +26,15 @@ func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.P
 
 	db := global.DB.Model(&sysModel.SysConfig{})
 
+	likeArr := []string{
+		"config_name",
+		"config_key",
+	}
+
+	utils.ConcatLikeWhereCondition(db, likeArr, params.ConfigName, params.ConfigKey)
+	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
+	utils.ConcatOneEqualsStrWhereCondition(db, "inner_config", params.InnerConfig)
+
 	var total int64
 	err := db.Count(&total).Error
 	if err != nil {
@@ -34,14 +43,6 @@ func (m *SysConfigService) GetConfigPage(params *sysDto.SysConfigQuery) (sysVo.P
 
 	limit, offset := params.PageInfo.Paging()
 	db = db.Limit(limit).Offset(offset)
-
-	likeArr := []string{
-		"config_name",
-		"config_key",
-	}
-	utils.ConcatLikeWhereCondition(db, likeArr, params.ConfigName, params.ConfigKey)
-	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
-	utils.ConcatOneEqualsStrWhereCondition(db, "inner_config", params.InnerConfig)
 
 	var configs []sysModel.SysConfig
 	res := db.Find(&configs)
