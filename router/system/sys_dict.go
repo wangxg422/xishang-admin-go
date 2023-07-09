@@ -21,5 +21,6 @@ func (m *SysDictRouter) AddSysDictRouter(route *gin.RouterGroup) {
 		typeRouter.GET(":dictTypeId", dictApi.GetDictTypeById)
 		typeRouter.PUT("", dictApi.UpdateDictType)
 		typeRouter.DELETE(":dictTypeId", dictApi.DeleteDictType)
+		typeRouter.GET("list/all", dictApi.GetDictTypeAll)
 	}
 }

@@ -149,3 +149,14 @@ func (m *SysDictApi) DeleteDictType(c *gin.Context) {
 
 	response.Ok(c)
 }
+
+func (m *SysDictApi) GetDictTypeAll(c *gin.Context) {
+	dictTypes, err := dictService.GetDictTypeAll()
+	if err != nil {
+		logger.Error("get dict type failed", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(dictTypes, c)
+}

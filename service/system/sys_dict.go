@@ -88,3 +88,10 @@ func (m *SysDictService) GetDictTypeById(typeId int64) (sysModel.SysDictType, er
 func (m *SysDictService) DeleteDictType(ids []int64) error {
 	return global.DB.Where("dict_type_id IN ?", ids).Delete(&sysModel.SysDictType{}).Error
 }
+
+func (m *SysDictService) GetDictTypeAll() ([]sysModel.SysDictType, error) {
+	var dictTypes []sysModel.SysDictType
+	err := global.DB.Find(&dictTypes).Error
+
+	return dictTypes, err
+}
