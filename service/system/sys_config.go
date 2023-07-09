@@ -16,7 +16,7 @@ func (m *SysConfigService) GetConfigByKey(key string) (sysModel.SysConfig, error
 	var config sysModel.SysConfig
 	res := global.DB.
 		Where("config_key = ?", key).
-		Find(&config)
+		Find(&config).Limit(1)
 
 	return config, res.Error
 }
@@ -88,6 +88,16 @@ func (m *SysConfigService) GetConfigByIds(configIds []int64) ([]sysModel.SysConf
 }
 
 func (m *SysConfigService) UpdateConfig(data *sysModel.SysConfig) error {
+	// 查询是否存在configKey的配置
+	existConfig, err := m.GetConfigByKey(data.ConfigKey)
+	if err != nil {
+		return err
+	}
+
+	if existConfig.ConfigId != 0 && existConfig.ConfigId != data.ConfigId {
+		return errors.New("系统配置 " + data.ConfigKey + " 已经存在")
+	}
+
 	vMap, err := utils.StructToMap(data)
 	if err != nil {
 		return err

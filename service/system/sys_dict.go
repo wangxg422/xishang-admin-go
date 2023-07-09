@@ -70,6 +70,16 @@ func (m *SysDictService) CreateDictType(dictType *sysModel.SysDictType) error {
 }
 
 func (m *SysDictService) UpdateDictType(data *sysModel.SysDictType) error {
+	// 查询是否存在postCode的岗位
+	existType, err := m.GetDictTypeByType(data.DictType)
+	if err != nil {
+		return err
+	}
+
+	if existType.DictTypeId != 0 && existType.DictTypeId != data.DictTypeId {
+		return errors.New("职位编码 " + data.DictType + " 已经存在")
+	}
+
 	vMap, err := utils.StructToMap(data)
 	if err != nil {
 		return err
@@ -87,6 +97,12 @@ func (m *SysDictService) GetDictTypeById(typeId int64) (sysModel.SysDictType, er
 		Find(&dictType)
 
 	return dictType, res.Error
+}
+
+func (m *SysDictService) GetDictTypeByType(data string) (sysModel.SysDictType, error) {
+	var dictType sysModel.SysDictType
+
+	return dictType, global.DB.Where("dict_type = ?", data).Find(&dictType).Error
 }
 
 func (m *SysDictService) DeleteDictType(ids []int64) error {

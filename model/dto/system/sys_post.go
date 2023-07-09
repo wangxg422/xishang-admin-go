@@ -1,49 +1,35 @@
 package system
 
 import (
+	"backend/model/common/request"
 	"backend/model/system"
-	"time"
 )
 
 type SysCreatePostDTO struct {
-	PostId     int64     `json:"postId,omitempty"`
-	PostCode   string    `json:"postCode,omitempty" binding:"required"`
-	PostName   string    `json:"postName,omitempty" binding:"required"`
-	PostSort   int       ` json:"postSort,omitempty"`
-	Status     int8      `json:"status,omitempty"`
-	DelFlag    int8      `json:"delFlag,omitempty"`
-	CreateTime time.Time `json:"createTime,omitempty"`
-	UpdateTime time.Time `json:"updateTime,omitempty"`
-	CreateBy   string    `json:"createBy,omitempty"`
-	UpdateBy   string    `json:"updateBy,omitempty"`
-	Remark     string    `json:"remark,omitempty"`
+	PostCode string `json:"postCode" binding:"required"`
+	PostName string `json:"postName" binding:"required"`
+	PostSort int    ` json:"postSort" binding:"required"`
+	Status   string `json:"status" binding:"required"`
+	CreateBy string `json:"createBy"`
+	Remark   string `json:"remark"`
 }
 
 func (m *SysCreatePostDTO) Convert(t *system.SysPost) {
-	t.PostId = m.PostId
 	t.PostCode = m.PostCode
 	t.PostName = m.PostName
 	t.PostSort = m.PostSort
 	t.Status = m.Status
-	t.CreateTime = m.CreateTime
-	t.UpdateTime = m.UpdateTime
 	t.CreateBy = m.CreateBy
-	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
 }
 
 type SysUpdatePostDTO struct {
-	PostId     int64     `json:"postId,omitempty"`
-	PostCode   string    `json:"postCode,omitempty" binding:"required"`
-	PostName   string    `json:"postName,omitempty" binding:"required"`
-	PostSort   int       ` json:"postSort,omitempty"`
-	Status     int8      `json:"status,omitempty"`
-	DelFlag    int8      `json:"delFlag,omitempty"`
-	CreateTime time.Time `json:"createTime,omitempty"`
-	UpdateTime time.Time `json:"updateTime,omitempty"`
-	CreateBy   string    `json:"createBy,omitempty"`
-	UpdateBy   string    `json:"updateBy,omitempty"`
-	Remark     string    `json:"remark,omitempty"`
+	PostId   int64  `json:"postId,omitempty"`
+	PostCode string `json:"postCode,omitempty" binding:"required"`
+	PostName string `json:"postName,omitempty" binding:"required"`
+	PostSort int    ` json:"postSort,omitempty" binding:"required"`
+	Status   string `json:"status,omitempty" binding:"required"`
+	Remark   string `json:"remark,omitempty"`
 }
 
 func (m *SysUpdatePostDTO) Convert(t *system.SysPost) {
@@ -52,9 +38,12 @@ func (m *SysUpdatePostDTO) Convert(t *system.SysPost) {
 	t.PostName = m.PostName
 	t.PostSort = m.PostSort
 	t.Status = m.Status
-	t.CreateTime = m.CreateTime
-	t.UpdateTime = m.UpdateTime
-	t.CreateBy = m.CreateBy
-	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
+}
+
+type SysPostQueryDTO struct {
+	PageInfo request.PageInfo
+	PostCode string `form:"postCode" json:"postCode"`
+	PostName string `form:"postName" json:"postName"`
+	Status   string `form:"status" json:"status"`
 }
