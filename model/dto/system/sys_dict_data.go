@@ -1,74 +1,63 @@
 package system
 
 import (
+	"backend/model/common/request"
 	"backend/model/system"
-	"time"
 )
 
 type SysDictDataCreateDTO struct {
-	DictDataId int64     `json:"dictDataId,omitempty"`
-	DictSort   int8      `json:"dictSort,omitempty"`
-	DictLabel  string    `json:"dictLabel,omitempty"`
-	DictValue  string    `json:"dictValue,omitempty"`
-	DictType   string    `json:"dictType,omitempty"`
-	CssClass   string    `json:"cssClass,omitempty"`
-	ListClass  string    `json:"listClass,omitempty"`
-	IsDefault  int8      `json:"isDefault,omitempty"`
-	Status     int8      `json:"status,omitempty"`
-	CreateTime time.Time `json:"createTime,omitempty"`
-	UpdateTime time.Time `json:"updateTime,omitempty"`
-	CreateBy   string    `json:"createBy,omitempty"`
-	UpdateBy   string    `json:"updateBy,omitempty"`
-	Remark     string    `json:"remark,omitempty"`
+	DictType  string `json:"dictType" binding:"required"`
+	DictLabel string `json:"dictLabel" binding:"required"`
+	DictValue string `json:"dictValue" binding:"required"`
+	DictSort  int8   `json:"dictSort" binding:"required"`
+	CssClass  string `json:"cssClass"`
+	ListClass string `json:"listClass"`
+	IsDefault int8   `json:"isDefault"`
+	Status    string `json:"status"`
+	Remark    string `json:"remark"`
 }
 
-func (m *SysDictDataCreateDTO) SysDictTypeUpdateDTO(t *system.SysDictData) {
-	t.DictDataId = m.DictDataId
-	t.DictSort = m.DictSort
+func (m *SysDictDataCreateDTO) Convert(t *system.SysDictData) {
+	t.DictType = m.DictType
 	t.DictLabel = m.DictLabel
 	t.DictValue = m.DictValue
-	t.DictType = m.DictType
+	t.DictSort = m.DictSort
 	t.CssClass = m.CssClass
 	t.ListClass = m.ListClass
 	t.IsDefault = m.IsDefault
 	t.Status = m.Status
-	t.CreateTime = m.CreateTime
-	t.UpdateTime = m.UpdateTime
-	t.CreateBy = m.CreateBy
-	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
 }
 
 type SysDictDataUpdateDTO struct {
-	DictDataId int64     `json:"dictDataId,omitempty"`
-	DictSort   int8      `json:"dictSort,omitempty"`
-	DictLabel  string    `json:"dictLabel,omitempty"`
-	DictValue  string    `json:"dictValue,omitempty"`
-	DictType   string    `json:"dictType,omitempty"`
-	CssClass   string    `json:"cssClass,omitempty"`
-	ListClass  string    `json:"listClass,omitempty"`
-	IsDefault  int8      `json:"isDefault,omitempty"`
-	Status     int8      `json:"status,omitempty"`
-	CreateTime time.Time `json:"createTime,omitempty"`
-	UpdateTime time.Time `json:"updateTime,omitempty"`
-	CreateBy   string    `json:"createBy,omitempty"`
-	UpdateBy   string    `json:"updateBy,omitempty"`
-	Remark     string    `json:"remark,omitempty"`
+	DictDataId int64  `json:"dictDataId" binding:"required"`
+	DictType   string `json:"dictType" binding:"required"`
+	DictLabel  string `json:"dictLabel"`
+	DictValue  string `json:"dictValue"`
+	DictSort   int8   `json:"dictSort"`
+	CssClass   string `json:"cssClass"`
+	ListClass  string `json:"listClass"`
+	IsDefault  int8   `json:"isDefault"`
+	Status     string `json:"status"`
+	Remark     string `json:"remark"`
 }
 
-func (m *SysDictDataUpdateDTO) SysDictDataUpdateDTO(t *system.SysDictData) {
+func (m *SysDictDataUpdateDTO) Convert(t *system.SysDictData) {
 	t.DictDataId = m.DictDataId
-	t.DictSort = m.DictSort
+	t.DictType = m.DictType
 	t.DictLabel = m.DictLabel
 	t.DictValue = m.DictValue
-	t.DictType = m.DictType
+	t.DictSort = m.DictSort
 	t.CssClass = m.CssClass
 	t.ListClass = m.ListClass
 	t.IsDefault = m.IsDefault
 	t.Status = m.Status
-	t.CreateTime = m.CreateTime
-	t.UpdateTime = m.UpdateTime
-	t.CreateBy = m.CreateBy
-	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
+}
+
+type SysDictDataQueryDTO struct {
+	PageInfo  request.PageInfo
+	DictType  string `form:"dictType" json:"dictType" binding:"required"`
+	DictLabel string `form:"dictLabel" json:"dictLabel"`
+	Status    string `form:"status" json:"status"`
 }

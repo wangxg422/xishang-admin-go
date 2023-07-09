@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"gorm.io/gorm"
+	"reflect"
 )
 
 func ConcatLikeWhereCondition(db *gorm.DB, conditions []string, values ...string) {
@@ -15,11 +17,13 @@ func ConcatLikeWhereCondition(db *gorm.DB, conditions []string, values ...string
 	}
 }
 
-func ConcatEqualsWhereCondition(db *gorm.DB, conditions []string, values ...string) {
+func ConcatEqualsStrWhereCondition(db *gorm.DB, conditions []string, values ...string) {
 	length := len(conditions)
 	if length == len(values) {
 		for i := 0; i < length; i++ {
-			db.Where(conditions[i]+" = ?", values[i])
+			if values[i] != "" {
+				db.Where(conditions[i]+" = ?", values[i])
+			}
 		}
 	}
 }
@@ -48,4 +52,26 @@ func ConcatTimeRangeWhereCondition(db *gorm.DB, start string, end string) {
 	} else {
 		db.Where("create_time >= ? AND create_time <= ?", start+" 00:00:00", end+" 23:59:59")
 	}
+}
+
+func StructToMap(in any) (map[string]any, error) {
+	out := make(map[string]any)
+
+	v := reflect.ValueOf(in)
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+
+	if v.Kind() != reflect.Struct {
+		return nil, fmt.Errorf("ToMap only accepts struct or struct pointer; got %T", v)
+	}
+
+	t := v.Type()
+	// 遍历结构体字段,map的key为结构体字段名称转下划线形式
+	for i := 0; i < v.NumField(); i++ {
+		fi := t.Field(i)
+		out[CamelToCase(fi.Name)] = v.Field(i).Interface()
+	}
+
+	return out, nil
 }

@@ -87,11 +87,14 @@ func (m *SysConfigService) GetConfigByIds(configIds []int64) ([]sysModel.SysConf
 	return config, res.Error
 }
 
-func (m *SysConfigService) UpdateConfig(config *sysModel.SysConfig) error {
-	// 这里保证零值也能更新
-	return global.DB.Select("config_name", "config_key", "config_value",
-		"inner_config", "update_time", "update_by", "remark").
-		Updates(config).Error
+func (m *SysConfigService) UpdateConfig(data *sysModel.SysConfig) error {
+	vMap, err := utils.StructToMap(data)
+	if err != nil {
+		return err
+	}
+
+	utils.DeleteKvWhenUpdate(vMap)
+	return global.DB.Model(&sysModel.SysConfig{ConfigId: data.ConfigId}).Updates(vMap).Error
 }
 
 func (m *SysConfigService) DeleteConfig(configIds []int64) error {

@@ -81,3 +81,34 @@ func StrToInt64Array(list []string) ([]int64, error) {
 
 	return arr, nil
 }
+
+// CamelToCase 驼峰式转下划线
+func CamelToCase(s string) string {
+	if s == "" {
+		return s
+	}
+
+	var v byte = 'a' - 'A'
+
+	length := len(s)
+	var builder strings.Builder
+	for i := 0; i < length; i++ {
+		if s[i] >= 'A' && s[i] <= 'Z' {
+			if i == 0 {
+				builder.WriteByte(s[i] + v)
+			} else {
+				builder.WriteByte('_')
+				builder.WriteByte(s[i] + v)
+			}
+		} else {
+			builder.WriteByte(s[i])
+		}
+	}
+	return builder.String()
+}
+
+// CaseToCamel 下划线转驼峰
+func CaseToCamel(s string) string {
+	// TODO 用到时实现
+	return s
+}

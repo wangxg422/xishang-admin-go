@@ -69,11 +69,15 @@ func (m *SysDictService) CreateDictType(dictType *sysModel.SysDictType) error {
 	return global.DB.Create(dictType).Error
 }
 
-func (m *SysDictService) UpdateDictType(dictType *sysModel.SysDictType) error {
-	// 这里保证零值也能更新
-	return global.DB.Select("dict_name", "dict_type", "status",
-		"update_time", "update_by", "remark").
-		Updates(dictType).Error
+func (m *SysDictService) UpdateDictType(data *sysModel.SysDictType) error {
+	vMap, err := utils.StructToMap(data)
+	if err != nil {
+		return err
+	}
+
+	utils.DeleteKvWhenUpdate(vMap)
+
+	return global.DB.Model(&sysModel.SysDictType{DictTypeId: data.DictTypeId}).Updates(vMap).Error
 }
 
 func (m *SysDictService) GetDictTypeById(typeId int64) (sysModel.SysDictType, error) {
@@ -94,4 +98,89 @@ func (m *SysDictService) GetDictTypeAll() ([]sysModel.SysDictType, error) {
 	err := global.DB.Find(&dictTypes).Error
 
 	return dictTypes, err
+}
+
+func (m *SysDictService) GetDictDataPage(params *sysDto.SysDictDataQueryDTO) (sysVo.PageResult, error) {
+	pageResult := sysVo.PageResult{}
+
+	db := global.DB.Model(&sysModel.SysDictData{})
+
+	likeArr := []string{
+		"dict_label",
+	}
+	equalsArr := []string{
+		"dict_type",
+		"status",
+	}
+	utils.ConcatLikeWhereCondition(db, likeArr, params.DictLabel)
+	utils.ConcatEqualsStrWhereCondition(db, equalsArr, params.DictType, params.Status)
+	db.Order("dict_sort")
+
+	var total int64
+	err := db.Count(&total).Error
+	if err != nil {
+		return pageResult, err
+	}
+
+	limit, offset := params.PageInfo.Paging()
+	db = db.Limit(limit).Offset(offset)
+
+	var types []sysModel.SysDictData
+	res := db.Find(&types)
+
+	pageResult.Total = total
+	pageResult.Rows = types
+
+	return pageResult, res.Error
+}
+
+func (m *SysDictService) CreateDictData(data *sysModel.SysDictData) error {
+	// 根据dictType和dictValue检查数据是否已经存在
+	existData, err := m.GetDictDataByTypeAndValue(data.DictType, data.DictValue)
+	if err != nil {
+		return err
+	}
+	if existData.DictDataId != 0 {
+		return errors.New("字典数据已存在")
+	}
+
+	return global.DB.Create(data).Error
+}
+
+func (m *SysDictService) GetDictDataByTypeAndValue(dictType string, dictValue string) (sysModel.SysDictData, error) {
+	var data sysModel.SysDictData
+	res := global.DB.Where("dict_type = ? and dict_value = ?", dictType, dictValue).Limit(1).Find(&data)
+	return data, res.Error
+}
+
+func (m *SysDictService) UpdateDictData(data *sysModel.SysDictData) error {
+	// 先检查要更新的目标值是否存在
+	existData, err := m.GetDictDataByTypeAndValue(data.DictType, data.DictValue)
+	if err != nil {
+		return err
+	}
+
+	if existData.DictDataId != 0 && existData.DictDataId != data.DictDataId {
+		return errors.New("字典数据 " + data.DictType + ":" + data.DictValue + " 已存在")
+	}
+
+	vMap, err := utils.StructToMap(data)
+	if err != nil {
+		return err
+	}
+
+	utils.DeleteKvWhenUpdate(vMap)
+
+	return global.DB.Model(&sysModel.SysDictData{DictDataId: data.DictDataId}).Updates(vMap).Error
+}
+
+func (m *SysDictService) GetDictDataById(id int64) (sysModel.SysDictData, error) {
+	var dictData sysModel.SysDictData
+	err := global.DB.Where("dict_data_id = ?", id).Find(&dictData).Error
+
+	return dictData, err
+}
+
+func (m *SysDictService) DeleteDictData(ids []int64) error {
+	return global.DB.Where("dict_data_id IN ?", ids).Delete(&sysModel.SysDictData{}).Error
 }

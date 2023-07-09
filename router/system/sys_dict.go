@@ -11,7 +11,11 @@ func (m *SysDictRouter) AddSysDictRouter(route *gin.RouterGroup) {
 	dataRouter := router.Group("data")
 	{
 		dataRouter.GET("type/:dictType", dictApi.GetDictDataByType)
-		//router.GET(":deptId", dictApi.GetDeptById)
+		dataRouter.GET("list", dictApi.GetDictDataPage)
+		dataRouter.POST("", dictApi.CreateDictData)
+		dataRouter.PUT("", dictApi.UpdateDictData)
+		dataRouter.GET(":dictDataId", dictApi.GetDictDataById)
+		dataRouter.DELETE(":dictDataId", dictApi.DeleteDictData)
 	}
 
 	typeRouter := router.Group("type")
