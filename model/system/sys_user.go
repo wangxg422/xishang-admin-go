@@ -6,6 +6,8 @@ type SysUser struct {
 	UserId      int64     `gorm:"primaryKey;column:user_id" json:"userId,omitempty"`
 	DeptId      int64     `gorm:"column:dept_id" json:"deptId,omitempty"`
 	UserName    string    `gorm:"column:user_name" json:"userName,omitempty"`
+	UserNumber  string    `gorm:"column:user_number" json:"userNumber,omitempty"`
+	RealName    string    `gorm:"column:real_name" json:"realName,omitempty"`
 	NickName    string    `gorm:"column:nick_name" json:"nickName,omitempty"`
 	UserType    string    `gorm:"column:user_type" json:"userType,omitempty"`
 	Email       string    `gorm:"column:email" json:"email,omitempty"`
@@ -23,5 +25,5 @@ type SysUser struct {
 
 	SysDept  SysDept   `gorm:"foreignKey:DeptId;references:DeptId;comment:用户归属部门" json:"dept,omitempty"`
 	SysRoles []SysRole `gorm:"many2many:sys_user_role;foreignKey:UserId;joinForeignKey:user_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
-	SysPosts []SysPost `gorm:"many2many:sys_user_post;" json:"posts,omitempty"`
+	SysPosts []SysPost `gorm:"many2many:sys_user_post;foreignKey:UserId;joinForeignKey:UserId;references:PostId;joinReferences:PostId;" json:"posts,omitempty"`
 }

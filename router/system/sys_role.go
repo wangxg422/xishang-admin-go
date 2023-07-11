@@ -15,5 +15,7 @@ func (m *SysRoleRouter) AddSysRoleRouter(route *gin.RouterGroup) {
 		router.GET(":roleId", roleApi.GetRoleById)
 		router.POST("update", roleApi.UpdateRole)
 		router.DELETE(":roleId", roleApi.DeleteRole)
+
+		router.GET("user/options", roleApi.GetAllRole)
 	}
 }

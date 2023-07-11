@@ -6,26 +6,33 @@ import (
 	"time"
 )
 
-type SysCreateUserDTO struct {
-	DeptId      int64   `json:"deptId,omitempty"`
-	UserName    string  `json:"userName,omitempty" binding:"required"`
-	NickName    string  `json:"nickName,omitempty" binding:"required"`
-	Email       string  `json:"email,omitempty"`
-	PhoneNumber string  `json:"phoneNumber,omitempty"`
-	Sex         string  `json:"sex"`
-	Password    string  `json:"password,omitempty" binding:"required"`
-	Status      string  `json:"status,omitempty"`
-	Remark      string  `json:"remark,omitempty"`
-	RoleIds     []int64 `json:"roleIds,omitempty"`
-	PostIds     []int64 `json:"postIds,omitempty"`
+type SysUserCreateDTO struct {
+	DeptId      int64  `json:"deptId"`
+	UserName    string `json:"userName" binding:"required"`
+	UserNumber  string `json:"userNumber" binding:"required"`
+	RealName    string `json:"realName" binding:"required"`
+	NickName    string `json:"nickName" binding:"required"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phoneNumber"`
+	UserType    string `json:"userType"`
+	Sex         string `json:"sex"`
+	Password    string `json:"password" binding:"required"`
+	Status      string `json:"status"`
+	Remark      string `json:"remark"`
+
+	RoleIds []int64 `json:"roleIds,omitempty"`
+	PostIds []int64 `json:"postIds,omitempty"`
 }
 
-func (m *SysCreateUserDTO) Convert(user *system.SysUser) {
+func (m *SysUserCreateDTO) Convert(user *system.SysUser) {
 	user.DeptId = m.DeptId
 	user.UserName = m.UserName
+	user.UserNumber = m.UserNumber
+	user.RealName = m.RealName
 	user.NickName = m.NickName
 	user.Email = m.Email
 	user.PhoneNumber = m.PhoneNumber
+	user.UserType = m.UserType
 	user.Sex = m.Sex
 	user.Password = m.Password
 	user.Status = m.Status
@@ -33,29 +40,33 @@ func (m *SysCreateUserDTO) Convert(user *system.SysUser) {
 }
 
 type SysUpdateUserDTO struct {
-	UserId      int64     `json:"userId,omitempty" binding:"required"`
-	DeptId      int64     `json:"deptId,omitempty"`
-	UserName    string    `json:"userName,omitempty"`
-	NickName    string    `json:"nickName,omitempty"`
-	UserType    string    `json:"userType,omitempty"`
-	Email       string    `json:"email,omitempty"`
-	PhoneNumber string    `json:"phoneNumber,omitempty"`
+	UserId      int64     `json:"userId" binding:"required"`
+	DeptId      int64     `json:"deptId"`
+	UserName    string    `json:"userName" binding:"required"`
+	UserNumber  string    `json:"userNumber" binding:"required"`
+	RealName    string    `json:"realName" binding:"required"`
+	NickName    string    `json:"nickName"`
+	UserType    string    `json:"userType"`
+	Email       string    `json:"email"`
+	PhoneNumber string    `json:"phoneNumber"`
 	Sex         string    `json:"sex"`
-	Avatar      string    `json:"avatar,omitempty"`
-	Password    string    `json:"password,omitempty"`
+	Avatar      string    `json:"avatar"`
+	Password    string    `json:"password" binding:"required"`
 	Status      string    `json:"status"`
 	DelFlag     int8      `json:"delFlag"`
-	CreateTime  time.Time `json:"createTime,omitempty"`
-	UpdateTime  time.Time `json:"updateTime,omitempty"`
-	CreateBy    string    `json:"createBy,omitempty"`
-	UpdateBy    string    `json:"updateBy,omitempty"`
-	Remark      string    `json:"remark,omitempty"`
+	CreateTime  time.Time `json:"createTime"`
+	UpdateTime  time.Time `json:"updateTime"`
+	CreateBy    string    `json:"createBy"`
+	UpdateBy    string    `json:"updateBy"`
+	Remark      string    `json:"remark"`
 }
 
 func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 	user.UserId = m.UserId
 	user.DeptId = m.DeptId
 	user.UserName = m.UserName
+	user.UserName = m.UserNumber
+	user.RealName = m.RealName
 	user.NickName = m.NickName
 	user.UserType = m.UserType
 	user.Email = m.Email
@@ -75,6 +86,8 @@ func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 type SysUserQueryDTO struct {
 	request.PageInfo
 	UserName    string `form:"userName" json:"userName"`
+	UserUmber   string `form:"userNumber" json:"userNumber"`
+	RealName    string `form:"realName" json:"realName"`
 	DeptId      int64  `form:"deptId" json:"deptId"`
 	PhoneNumber string `form:"phoneNumber" json:"phoneNumber"`
 	Status      string `form:"status" json:"status"`

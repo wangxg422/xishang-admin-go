@@ -132,3 +132,13 @@ func (m *SysPostApi) GetPostPage(c *gin.Context) {
 
 	response.OkWithData(posts, c)
 }
+
+func (m *SysPostApi) GetAllPost(c *gin.Context) {
+	posts, err := postService.GetAllPost()
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(posts, c)
+}

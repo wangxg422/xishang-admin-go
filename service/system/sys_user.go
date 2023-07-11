@@ -39,7 +39,7 @@ func (m *SysUserService) GetUserInfo(id int64) (sysModel.SysUser, error) {
 func (m *SysUserService) ChangePassword(c *gin.Context) {
 }
 
-func (m *SysUserService) CreateUser(userDto sysDto.SysCreateUserDTO) error {
+func (m *SysUserService) CreateUser(userDto sysDto.SysUserCreateDTO) error {
 	user := &sysModel.SysUser{}
 	userDto.Convert(user)
 
@@ -90,14 +90,6 @@ func (m *SysUserService) DeleteUser(id int64) error {
 	return res.Error
 }
 
-func (m *SysUserService) ListUser() ([]sysModel.SysUser, error) {
-	var list []sysModel.SysUser
-
-	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
-
-	return list, res.Error
-}
-
 func (m *SysUserService) GetUserById(id int64) (sysModel.SysUser, error) {
 	user := sysModel.SysUser{
 		UserId: id,
@@ -121,6 +113,7 @@ func (m *SysUserService) GetUserPage(params *sysDto.SysUserQueryDTO) (sysVo.Page
 
 	likeArr := []string{
 		"user_name",
+		"user_number",
 		"phone_number",
 	}
 

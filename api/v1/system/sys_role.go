@@ -111,3 +111,13 @@ func (m *SysRoleApi) DeleteRole(c *gin.Context) {
 
 	response.Ok(c)
 }
+
+func (m *SysRoleApi) GetAllRole(c *gin.Context) {
+	roles, err := roleService.GetAllRole()
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(roles, c)
+}

@@ -15,7 +15,7 @@ type SysUserApi struct {
 }
 
 func (m *SysUserApi) CreateUser(c *gin.Context) {
-	userDto := sysDto.SysCreateUserDTO{}
+	userDto := sysDto.SysUserCreateDTO{}
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -52,28 +52,11 @@ func (m *SysUserApi) GetUserPage(c *gin.Context) {
 }
 
 func (m *SysUserApi) GetUserById(c *gin.Context) {
-	userIdStr := c.Query("userId")
-
-	// 获取所有职位和角色列表
-	roles, err := roleService.GetAllRole()
-	if err != nil {
-		logger.Error("获取角色列表失败", zap.Error(err))
-		response.FailWithMessage("获取角色列表失败", c)
-		return
-	}
-
-	posts, err := postService.GetAllPost()
-	if err != nil {
-		logger.Error("获取职位列表失败", zap.Error(err))
-		response.FailWithMessage("获取职位列表失败", c)
-		return
-	}
+	userIdStr := c.Param("userId")
 
 	res := make(map[string]any)
-	res["roles"] = roles
-	res["posts"] = posts
 	if userIdStr == "" {
-		response.OkWithData(res, c)
+		response.FailWithMessage("请先登录", c)
 		return
 	}
 
@@ -84,7 +67,6 @@ func (m *SysUserApi) GetUserById(c *gin.Context) {
 		return
 	}
 
-	// userId存在，查询用户信息
 	userInfo, err := userService.GetUserInfo(userId)
 	if err != nil {
 		logger.Error("查询用户信息失败,userId:%s", zap.String("userId", userIdStr), zap.Error(err))
