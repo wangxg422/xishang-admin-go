@@ -31,15 +31,24 @@ func (m *SysUserApi) CreateUser(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (m *SysUserApi) ListUserPage(c *gin.Context) {
-	pageResult, err := userService.ListUserPage(c)
+func (m *SysUserApi) GetUserPage(c *gin.Context) {
+	params := &sysDto.SysUserQueryDTO{}
+	err := c.ShouldBind(params)
+
 	if err != nil {
-		logger.Error("查询用户列表失败", zap.Error(err))
-		response.FailWithMessage("查询用户列表失败", c)
+		logger.Error("参数解析失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	response.OkWithData(pageResult, c)
+	users, err := userService.GetUserPage(params)
+	if err != nil {
+		logger.Error("查询失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(users, c)
 }
 
 func (m *SysUserApi) GetUserById(c *gin.Context) {

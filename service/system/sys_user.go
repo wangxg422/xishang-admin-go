@@ -4,7 +4,6 @@ import (
 	"backend/common/enmu"
 	"backend/global"
 	"backend/initial/logger"
-	"backend/model/common/request"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
@@ -13,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"strconv"
 )
 
 type SysUserService struct {
@@ -116,60 +114,36 @@ func (m *SysUserService) GetUserByUserName(userName string) (sysModel.SysUser, e
 	return user, res.Error
 }
 
-func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) {
+func (m *SysUserService) GetUserPage(params *sysDto.SysUserQueryDTO) (sysVo.PageResult, error) {
 	pageResult := sysVo.PageResult{}
-
-	page, err := request.NewPageInfo(c)
-	if err != nil {
-		return pageResult, errors.New("分页信息获取失败")
-	}
-
-	condition := make(map[string]any)
-	condition["del_flag"] = enmu.DelFlagNormal.Value()
-
-	if c.Query("deptId") != "" {
-		deptId, err := strconv.ParseInt(c.Query("deptId"), 10, 64)
-		if err != nil {
-			return pageResult, errors.New("dept id获取失败")
-		}
-		condition["dept_id"] = deptId
-	}
-
-	if c.Query("status") != "" {
-		status, err := strconv.ParseInt(c.Query("status"), 10, 8)
-		if err != nil {
-			return pageResult, errors.New("status 解析失败")
-		}
-		condition["status"] = status
-	}
 
 	db := global.DB.Model(&sysModel.SysUser{})
 
+	likeArr := []string{
+		"user_name",
+		"phone_number",
+	}
+
+	utils.ConcatLikeWhereCondition(db, likeArr, params.UserName, params.PhoneNumber)
+	utils.ConcatTimeRangeWhereCondition(db, params.BeginTime, params.EndTime)
+	utils.ConcatOneEqualsStrWhereCondition(db, "status", params.Status)
+	utils.ConcatOneEqualsInt8WhereCondition(db, enmu.DelFlagNormal.Name(), enmu.DelFlagNormal.Value())
+	utils.ConcatOneEqualsInt64WhereCondition(db, "dept_id", params.DeptId)
+
 	var total int64
-	err = db.Count(&total).Error
+	err := db.Count(&total).Error
 	if err != nil {
 		return pageResult, err
 	}
 
-	limit, offset := page.Paging()
+	limit, offset := params.PageInfo.Paging()
+	db = db.Limit(limit).Offset(offset)
 
-	db = db.Limit(limit).Offset(offset).Where(condition)
-	var userList []sysModel.SysUser
-	if c.Query("userName") != "" {
-		db.Where("user_name like ?", utils.LikeQuery(c.Query("userName")))
-	}
+	var users []sysModel.SysUser
+	res := db.Preload("SysDept").Find(&users)
 
-	if c.Query("phoneNumber") != "" {
-		db.Where("phoneNumber like ?", utils.LikeQuery(c.Query("phoneN"+
-			"umber")))
-	}
-
-	if c.Query("beginTime") != "" && c.Query("endTime") != "" {
-		db.Where("create_time >= ? AND create_time <= ?", c.Query("beginTime")+" 00:00:00", c.Query("endTime")+" 23:59:59")
-	}
-
-	err = db.Find(&userList).Error
-	pageResult.Rows = userList
 	pageResult.Total = total
-	return pageResult, err
+	pageResult.Rows = users
+
+	return pageResult, res.Error
 }

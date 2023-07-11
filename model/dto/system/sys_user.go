@@ -74,9 +74,10 @@ func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 
 type SysUserQueryDTO struct {
 	request.PageInfo
-	UserName    string    `json:"userName"`
-	PhoneNumber string    `json:"phoneNumber"`
-	Status      string    `json:"status"`
-	BeginTime   time.Time `json:"beginTime"`
-	EndTime     time.Time `json:"endTime"`
+	UserName    string `form:"userName" json:"userName"`
+	DeptId      int64  `form:"deptId" json:"deptId"`
+	PhoneNumber string `form:"phoneNumber" json:"phoneNumber"`
+	Status      string `form:"status" json:"status"`
+	BeginTime   string `form:"beginTime" json:"beginTime"`
+	EndTime     string `form:"endTime" json:"endTime"`
 }
