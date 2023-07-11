@@ -3,15 +3,11 @@ package system
 import (
 	"backend/common/enmu"
 	"backend/global"
-	"backend/initial/logger"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
-	"errors"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
 )
 
 type SysUserService struct {
@@ -47,35 +43,55 @@ func (m *SysUserService) CreateUser(userDto sysDto.SysUserCreateDTO) error {
 	user.Status = enmu.StatusNormal.Value()
 	user.Password = utils.EnPassword(user.Password)
 
-	err := global.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(&user).Error; err != nil {
-			logger.Error("create user failed", zap.Error(err))
-			return err
+	if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
+		var arr []sysModel.SysRole
+		for _, id := range userDto.RoleIds {
+			arr = append(arr, sysModel.SysRole{RoleId: id})
 		}
 
-		if user.UserId == 0 {
-			logger.Error("userId is null")
-			return errors.New("userId is null")
+		user.SysRoles = arr
+	}
+
+	if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
+		var arr []sysModel.SysPost
+		for _, id := range userDto.PostIds {
+			arr = append(arr, sysModel.SysPost{PostId: id})
 		}
 
-		if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
-			for _, id := range userDto.RoleIds {
-				if err := tx.Create(&sysModel.SysUserRole{UserId: user.UserId, RoleId: id}).Error; err != nil {
-					return err
-				}
-			}
-		}
+		user.SysPosts = arr
+	}
 
-		if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
-			for _, id := range userDto.PostIds {
-				if err := tx.Create(&sysModel.SysUserPost{UserId: user.UserId, PostId: id}).Error; err != nil {
-					return err
-				}
-			}
-		}
+	err := global.DB.Create(user).Error
 
-		return nil
-	})
+	//err := global.DB.Transaction(func(tx *gorm.DB) error {
+	//	if err := tx.Create(&user).Error; err != nil {
+	//		logger.Error("create user failed", zap.Error(err))
+	//		return err
+	//	}
+	//
+	//	if user.UserId == 0 {
+	//		logger.Error("userId is null")
+	//		return errors.New("userId is null")
+	//	}
+	//
+	//	if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
+	//		for _, id := range userDto.RoleIds {
+	//			if err := tx.Create(&sysModel.SysUserRole{UserId: user.UserId, RoleId: id}).Error; err != nil {
+	//				return err
+	//			}
+	//		}
+	//	}
+	//
+	//	if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
+	//		for _, id := range userDto.PostIds {
+	//			if err := tx.Create(&sysModel.SysUserPost{UserId: user.UserId, PostId: id}).Error; err != nil {
+	//				return err
+	//			}
+	//		}
+	//	}
+	//
+	//	return nil
+	//})
 
 	return err
 }

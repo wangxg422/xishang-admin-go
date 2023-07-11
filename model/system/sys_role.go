@@ -18,6 +18,6 @@ type SysRole struct {
 	UpdateBy          string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark            string    `gorm:"column:remark" json:"remark,omitempty"`
 
-	SysUsers []SysUser `gorm:"many2many:sys_user_role;" json:"users,omitempty"`
-	SysMenus []SysMenu `gorm:"many2many:sys_menu_role;foreignKey:RoleId;joinForeignKey:role_id;references:MenuId;joinReferences:menu_id;" json:"roles,omitempty"`
+	SysUsers []SysUser `gorm:"many2many:sys_user_role;foreignKey:RoleId;joinForeignKey:RoleId;references:UserId;joinReferences:UserId;" json:"users,omitempty"`
+	SysMenus []SysMenu `gorm:"many2many:sys_menu_role;foreignKey:RoleId;joinForeignKey:RoleId;references:MenuId;joinReferences:MenuId;" json:"roles,omitempty"`
 }

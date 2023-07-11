@@ -24,6 +24,6 @@ type SysUser struct {
 	Remark      string    `gorm:"column:remark" json:"remark,omitempty"`
 
 	SysDept  SysDept   `gorm:"foreignKey:DeptId;references:DeptId;comment:用户归属部门" json:"dept,omitempty"`
-	SysRoles []SysRole `gorm:"many2many:sys_user_role;foreignKey:UserId;joinForeignKey:user_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
+	SysRoles []SysRole `gorm:"many2many:sys_user_role;foreignKey:UserId;joinForeignKey:UserId;references:RoleId;joinReferences:RoleId;" json:"roles,omitempty"`
 	SysPosts []SysPost `gorm:"many2many:sys_user_post;foreignKey:UserId;joinForeignKey:UserId;references:PostId;joinReferences:PostId;" json:"posts,omitempty"`
 }
