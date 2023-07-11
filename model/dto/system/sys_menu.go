@@ -17,7 +17,7 @@ type SysCreateMenuDTO struct {
 	IsCache    int8      `json:"isCache,omitempty"`
 	MenuType   string    `json:"menuType,omitempty" binding:"required"`
 	Visible    int8      `json:"visible,omitempty" binding:"required"`
-	Status     int8      `json:"status,omitempty"`
+	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
 	Icon       string    `json:"icon,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
@@ -61,7 +61,7 @@ type SysUpdateMenuDTO struct {
 	IsCache    int8      `json:"isCache,omitempty"`
 	MenuType   string    `json:"menuType,omitempty" binding:"required"`
 	Visible    int8      `json:"visible,omitempty" binding:"required"`
-	Status     int8      `json:"status,omitempty"`
+	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
 	Icon       string    `json:"icon,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`

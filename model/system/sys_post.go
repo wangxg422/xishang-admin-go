@@ -15,5 +15,5 @@ type SysPost struct {
 	UpdateBy   string    `gorm:"column:update_by" json:"updateBy,omitempty"`
 	Remark     string    `gorm:"column:remark" json:"remark,omitempty"`
 
-	SysUsers []SysUser `gorm:"many2many:sys_user_post;foreignKey:PostId;joinForeignKey:post_id;references:UserId;joinReferences:user_id;" json:"users,omitempty"`
+	SysUsers []SysUser `gorm:"many2many:sys_user_post;" json:"users,omitempty"`
 }

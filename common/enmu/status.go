@@ -1,32 +1,32 @@
 package enmu
 
-type Status int8
+type Status string
 
 const (
-	Status_Normal   = 1
-	Status_Disabled = 2
+	Status_Normal   = "1"
+	Status_Disabled = "2"
 )
 
-var statusMap map[int]string
+var statusMap map[string]string
 
 func init() {
-	statusMap = make(map[int]string)
+	statusMap = make(map[string]string)
 	statusMap[Status_Normal] = "正常"
 	statusMap[Status_Disabled] = "停用"
 }
 
 func (m Status) Desc() string {
-	return statusMap[int(m)]
+	return statusMap[string(m)]
 }
 
-func (m Status) Value() int8 {
-	return int8(m)
+func (m Status) Value() string {
+	return string(m)
 }
 
 func (m Status) Size() int {
 	return len(statusMap)
 }
 
-func (m Status) Equals(value int8) bool {
-	return int8(m) == value
+func (m Status) Equals(value string) bool {
+	return string(m) == value
 }

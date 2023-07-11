@@ -1,34 +1,34 @@
 package enmu
 
-type Sex int8
+type Sex string
 
 const (
-	Sex_M = 1
-	Sex_F = 2
-	Sex_U = 3
+	Sex_M = "1"
+	Sex_F = "2"
+	Sex_U = "3"
 )
 
-var sexMap map[int]string
+var sexMap map[string]string
 
 func init() {
-	sexMap = make(map[int]string)
+	sexMap = make(map[string]string)
 	sexMap[Sex_M] = "男"
 	sexMap[Sex_F] = "女"
 	sexMap[Sex_U] = "未知"
 }
 
 func (m Sex) Desc() string {
-	return sexMap[int(m)]
+	return sexMap[string(m)]
 }
 
-func (m Sex) Value() int8 {
-	return int8(m)
+func (m Sex) Value() string {
+	return string(m)
 }
 
 func (m Sex) Size() int {
 	return len(sexMap)
 }
 
-func (m Sex) Equals(value int8) bool {
-	return int8(m) == value
+func (m Sex) Equals(value string) bool {
+	return string(m) == value
 }

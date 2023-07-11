@@ -159,8 +159,9 @@ func (m *SysUserService) ListUserPage(c *gin.Context) (sysVo.PageResult, error) 
 		db.Where("user_name like ?", utils.LikeQuery(c.Query("userName")))
 	}
 
-	if c.Query("phonenumber") != "" {
-		db.Where("phonenumber like ?", utils.LikeQuery(c.Query("phonenumber")))
+	if c.Query("phoneNumber") != "" {
+		db.Where("phoneNumber like ?", utils.LikeQuery(c.Query("phoneN"+
+			"umber")))
 	}
 
 	if c.Query("beginTime") != "" && c.Query("endTime") != "" {
