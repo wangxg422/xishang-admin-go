@@ -8,8 +8,8 @@ type SysRole struct {
 	RoleKey           string    `gorm:"column:role_key" json:"roleKey,omitempty"`
 	RoleSort          int64     `gorm:"column:role_sort" json:"roleSort,omitempty"`
 	DataScope         int8      `gorm:"column:data_scope" json:"dataScope,omitempty"`
-	MenuCheckStrictly string    `gorm:"column:menu_check_strictly" json:"menuCheckStrictly,omitempty"`
-	DeptCheckStrictly string    `gorm:"column:dept_check_strictly" json:"deptCheckStrictly,omitempty"`
+	MenuCheckStrictly int8      `gorm:"column:menu_check_strictly" json:"menuCheckStrictly,omitempty"`
+	DeptCheckStrictly int8      `gorm:"column:dept_check_strictly" json:"deptCheckStrictly,omitempty"`
 	Status            string    `gorm:"column:status;default:0" json:"status,omitempty"`
 	DelFlag           int8      `gorm:"column:del_flag;default:0" json:"delFlag,omitempty"`
 	CreateTime        time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`
@@ -19,5 +19,5 @@ type SysRole struct {
 	Remark            string    `gorm:"column:remark" json:"remark,omitempty"`
 
 	SysUsers []SysUser `gorm:"many2many:sys_user_role;foreignKey:RoleId;joinForeignKey:RoleId;references:UserId;joinReferences:UserId;" json:"users,omitempty"`
-	SysMenus []SysMenu `gorm:"many2many:sys_menu_role;foreignKey:RoleId;joinForeignKey:RoleId;references:MenuId;joinReferences:MenuId;" json:"roles,omitempty"`
+	SysMenus []SysMenu `gorm:"many2many:sys_menu_role;foreignKey:RoleId;joinForeignKey:RoleId;references:MenuId;joinReferences:MenuId;" json:"menus,omitempty"`
 }

@@ -4,11 +4,11 @@ import (
 	"backend/initial/logger"
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
-	sysModel "backend/model/system"
 	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
+	"time"
 )
 
 type SysUserApi struct {
@@ -97,7 +97,7 @@ func (m *SysUserApi) GetUserById(c *gin.Context) {
 }
 
 func (m *SysUserApi) UpdateUser(c *gin.Context) {
-	userDto := sysDto.SysUpdateUserDTO{}
+	userDto := sysDto.SysUserUpdateDTO{}
 
 	if err := c.ShouldBindJSON(&userDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
@@ -110,9 +110,10 @@ func (m *SysUserApi) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	user := &sysModel.SysUser{}
-	userDto.Convert(user)
-	if err := userService.UpdateUser(user); err != nil {
+	userDto.UpdateBy = jwt.GetUserName(c)
+	userDto.UpdateTime = time.Now()
+
+	if err := userService.UpdateUser(&userDto); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}

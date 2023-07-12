@@ -7,7 +7,9 @@ import (
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
+	"errors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type SysUserService struct {
@@ -36,6 +38,17 @@ func (m *SysUserService) ChangePassword(c *gin.Context) {
 }
 
 func (m *SysUserService) CreateUser(userDto sysDto.SysUserCreateDTO) error {
+	// 检查用户是否已存在，userName、userNumber保证唯一
+	var existUser sysModel.SysUser
+	err := global.DB.Where("(user_name = ? OR user_number = ?) AND del_flag = ?", userDto.UserName, userDto.UserNumber, enmu.DelFlagNormal.Value()).Find(&existUser).Limit(1).Error
+	if err != nil {
+		return err
+	}
+
+	if existUser.UserId != 0 {
+		return errors.New("用户 " + userDto.UserNumber + "/" + userDto.UserNumber + " 已存在")
+	}
+
 	user := &sysModel.SysUser{}
 	userDto.Convert(user)
 
@@ -61,44 +74,68 @@ func (m *SysUserService) CreateUser(userDto sysDto.SysUserCreateDTO) error {
 		user.SysPosts = arr
 	}
 
-	err := global.DB.Create(user).Error
-
-	//err := global.DB.Transaction(func(tx *gorm.DB) error {
-	//	if err := tx.Create(&user).Error; err != nil {
-	//		logger.Error("create user failed", zap.Error(err))
-	//		return err
-	//	}
-	//
-	//	if user.UserId == 0 {
-	//		logger.Error("userId is null")
-	//		return errors.New("userId is null")
-	//	}
-	//
-	//	if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
-	//		for _, id := range userDto.RoleIds {
-	//			if err := tx.Create(&sysModel.SysUserRole{UserId: user.UserId, RoleId: id}).Error; err != nil {
-	//				return err
-	//			}
-	//		}
-	//	}
-	//
-	//	if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
-	//		for _, id := range userDto.PostIds {
-	//			if err := tx.Create(&sysModel.SysUserPost{UserId: user.UserId, PostId: id}).Error; err != nil {
-	//				return err
-	//			}
-	//		}
-	//	}
-	//
-	//	return nil
-	//})
-
-	return err
+	return global.DB.Create(user).Error
 }
 
-func (m *SysUserService) UpdateUser(user *sysModel.SysUser) error {
-	res := global.DB.Model(&sysModel.SysUser{UserId: user.UserId}).Updates(&user)
-	return res.Error
+func (m *SysUserService) UpdateUser(userDto *sysDto.SysUserUpdateDTO) error {
+	// 检查用户是否已存在，userName、userNumber保证唯一
+	var existUser sysModel.SysUser
+	err := global.DB.Where("(user_name = ? OR user_number = ?) AND del_flag = ?", userDto.UserName, userDto.UserNumber, enmu.DelFlagNormal.Value()).Find(&existUser).Limit(1).Error
+	if err != nil {
+		return err
+	}
+
+	if existUser.UserId == 0 {
+		return errors.New("用户不存在")
+	}
+
+	if existUser.UserId != userDto.UserId {
+		return errors.New("用户 " + userDto.UserNumber + "/" + userDto.UserNumber + " 已存在")
+	}
+
+	//paramMap := make(map[string]any)
+	//paramMap["dept_id"] = userDto.DeptId
+	//paramMap["user_name"] = userDto.UserName
+	//paramMap["user_number"] = userDto.UserNumber
+	//paramMap["real_name"] = userDto.RealName
+	//paramMap["nick_name"] = userDto.NickName
+	//paramMap["user_type"] = userDto.UserType
+	//paramMap["email"] = userDto.Email
+	//paramMap["phone_number"] = userDto.PhoneNumber
+	//paramMap["sex"] = userDto.Sex
+	//paramMap["status"] = userDto.Status
+	//paramMap["remark"] = userDto.Remark
+	//paramMap["update_time"] = userDto.UpdateTime
+	//paramMap["update_by"] = userDto.UpdateBy
+	var user sysModel.SysUser
+	userDto.Convert(&user)
+
+	if userDto.Password != "" {
+		user.Password = utils.EnPassword(userDto.Password)
+	}
+
+	if userDto.RoleIds != nil && len(userDto.RoleIds) > 0 {
+		var arr []sysModel.SysRole
+		for _, id := range userDto.RoleIds {
+			arr = append(arr, sysModel.SysRole{RoleId: id})
+		}
+
+		user.SysRoles = arr
+	}
+
+	if userDto.PostIds != nil && len(userDto.PostIds) > 0 {
+		var arr []sysModel.SysPost
+		for _, id := range userDto.PostIds {
+			arr = append(arr, sysModel.SysPost{PostId: id})
+		}
+
+		user.SysPosts = arr
+	}
+
+	return global.DB.Session(&gorm.Session{FullSaveAssociations: true}).
+		Model(&sysModel.SysUser{}).Omit("create_time", "create_by", "del_flag").
+		Where("user_id = ? AND del_flag = ?", userDto.UserId, enmu.DelFlagNormal.Value()).
+		Save(&user).Error
 }
 
 func (m *SysUserService) DeleteUser(id int64) error {

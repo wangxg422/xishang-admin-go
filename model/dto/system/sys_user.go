@@ -39,7 +39,7 @@ func (m *SysUserCreateDTO) Convert(user *system.SysUser) {
 	user.Remark = m.Remark
 }
 
-type SysUpdateUserDTO struct {
+type SysUserUpdateDTO struct {
 	UserId      int64     `json:"userId" binding:"required"`
 	DeptId      int64     `json:"deptId"`
 	UserName    string    `json:"userName" binding:"required"`
@@ -53,19 +53,19 @@ type SysUpdateUserDTO struct {
 	Avatar      string    `json:"avatar"`
 	Password    string    `json:"password" binding:"required"`
 	Status      string    `json:"status"`
-	DelFlag     int8      `json:"delFlag"`
-	CreateTime  time.Time `json:"createTime"`
 	UpdateTime  time.Time `json:"updateTime"`
-	CreateBy    string    `json:"createBy"`
 	UpdateBy    string    `json:"updateBy"`
 	Remark      string    `json:"remark"`
+
+	RoleIds []int64 `json:"roleIds"`
+	PostIds []int64 `json:"postIds"`
 }
 
-func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
+func (m *SysUserUpdateDTO) Convert(user *system.SysUser) {
 	user.UserId = m.UserId
 	user.DeptId = m.DeptId
 	user.UserName = m.UserName
-	user.UserName = m.UserNumber
+	user.UserNumber = m.UserNumber
 	user.RealName = m.RealName
 	user.NickName = m.NickName
 	user.UserType = m.UserType
@@ -75,10 +75,7 @@ func (m *SysUpdateUserDTO) Convert(user *system.SysUser) {
 	user.Avatar = m.Avatar
 	user.Password = m.Password
 	user.Status = m.Status
-	user.DelFlag = m.DelFlag
-	user.CreateTime = m.CreateTime
 	user.UpdateTime = m.UpdateTime
-	user.CreateBy = m.CreateBy
 	user.UpdateBy = m.UpdateBy
 	user.Remark = m.Remark
 }
