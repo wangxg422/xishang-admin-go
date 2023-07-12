@@ -1,13 +1,17 @@
 package system
 
 import (
+	"backend/common/constant"
 	"backend/initial/logger"
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
+	sysModel "backend/model/system"
+	"backend/utils"
 	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -122,39 +126,81 @@ func (m *SysUserApi) UpdateUser(c *gin.Context) {
 }
 
 func (m *SysUserApi) DeleteUser(c *gin.Context) {
-	id := c.Param("userId")
-
-	userId, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
+	userIdStr := c.Param("userId")
+	if userIdStr == "" {
+		response.FailWithMessage("userId is null", c)
 		return
 	}
 
-	if err := userService.DeleteUser(userId); err != nil {
-		logger.Error("delete user failed", zap.Error(err))
+	ids := strings.Split(userIdStr, constant.Comma)
+	userIds, err := utils.StrToInt64Array(ids)
+	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	err = userService.DeleteUser(userIds)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.Ok(c)
+
+}
+
+func (m *SysUserApi) GetProfile(c *gin.Context) {
+	//userId := jwt.GetUserID(c)
+	//
+	//id := c.Param("userId")
+	//
+	//userId, err := strconv.ParseInt(id, 10, 64)
+	//if err != nil {
+	//	response.FailWithMessage("user id convert failed", c)
+	//	return
+	//}
 
 	response.Ok(c)
 }
 
-func (m *SysUserApi) GetProfile(c *gin.Context) {
-	userId := jwt.GetUserID(c)
+func (m *SysUserApi) ChangeUserStatus(c *gin.Context) {
+	var user sysModel.SysUser
 
-	id := c.Param("userId")
-
-	userId, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		response.FailWithMessage("user id convert failed", c)
-		return
-	}
-
-	if err := userService.DeleteUser(userId); err != nil {
-		logger.Error("delete user failed", zap.Error(err))
+	if err := c.ShouldBindJSON(&user); err != nil {
+		logger.Error("parse param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	response.Ok(c)
+	if user.UserId == 0 {
+		response.FailWithMessage("userId is null", c)
+		return
+	}
+
+	if err := userService.ChangeUserStatus(user); err != nil {
+		logger.Error(err.Error())
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+}
+
+func (m *SysUserApi) ChangeUserPassword(c *gin.Context) {
+	var user sysModel.SysUser
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		logger.Error("parse param error", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	if user.UserId == 0 {
+		response.FailWithMessage("userId is null", c)
+		return
+	}
+
+	if err := userService.ChangeUserPassword(user); err != nil {
+		logger.Error(err.Error())
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 }

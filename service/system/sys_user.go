@@ -138,9 +138,25 @@ func (m *SysUserService) UpdateUser(userDto *sysDto.SysUserUpdateDTO) error {
 		Save(&user).Error
 }
 
-func (m *SysUserService) DeleteUser(id int64) error {
-	res := global.DB.Model(&sysModel.SysUser{UserId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
-	return res.Error
+func (m *SysUserService) DeleteUser(ids []int64) error {
+	// 先删除user与role、post的关联关系，再删除user信息
+	err := global.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("user_id IN ?", ids).Delete(&sysModel.SysUserRole{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Where("user_id IN ?", ids).Delete(&sysModel.SysUserPost{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Model(&sysModel.SysUser{}).Where("user_id IN ?", ids).Update("del_flag", enmu.DelFlagDeleted.Value()).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
 
 func (m *SysUserService) GetUserById(id int64) (sysModel.SysUser, error) {
@@ -192,4 +208,12 @@ func (m *SysUserService) GetUserPage(params *sysDto.SysUserQueryDTO) (sysVo.Page
 	pageResult.Rows = users
 
 	return pageResult, res.Error
+}
+
+func (m *SysUserService) ChangeUserStatus(user sysModel.SysUser) error {
+	return global.DB.Model(&sysModel.SysUser{}).Where("user_id = ? AND del_flag = ?", user.UserId, enmu.DelFlagNormal.Value()).Update("status", user.Status).Error
+}
+
+func (m *SysUserService) ChangeUserPassword(user sysModel.SysUser) error {
+	return global.DB.Model(&sysModel.SysUser{}).Where("user_id = ? AND del_flag = ?", user.UserId, enmu.DelFlagNormal.Value()).Update("password", utils.EnPassword(user.Status)).Error
 }
