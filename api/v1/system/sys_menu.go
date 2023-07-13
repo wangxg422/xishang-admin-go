@@ -116,7 +116,7 @@ func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 	response.Ok(c)
 }
 
-func (m *SysMenuApi) GetMenuByUserId(c *gin.Context) {
+func (m *SysMenuApi) GetRouterByUserId(c *gin.Context) {
 	userId := jwt.GetUserID(c)
 	if userId == 0 {
 		response.FailWithMessage("请先登录", c)
