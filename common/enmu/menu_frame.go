@@ -1,32 +1,32 @@
 package enmu
 
-type MenuFrame int8
+type MenuFrame string
 
 const (
-	Menu_Frame     = 1
-	Menu_Not_Frame = 2
+	Menu_Frame     = "1"
+	Menu_Not_Frame = "2"
 )
 
-var menuFrameMap map[int]string
+var menuFrameMap map[string]string
 
 func init() {
-	menuFrameMap = make(map[int]string)
+	menuFrameMap = make(map[string]string)
 	menuFrameMap[Menu_Frame] = "是"
 	menuFrameMap[Menu_Not_Frame] = "否"
 }
 
 func (m MenuFrame) Desc() string {
-	return menuFrameMap[int(m)]
+	return menuFrameMap[m.Value()]
 }
 
-func (m MenuFrame) Value() int8 {
-	return int8(m)
+func (m MenuFrame) Value() string {
+	return string(m)
 }
 
 func (m MenuFrame) Size() int {
 	return len(menuFrameMap)
 }
 
-func (m MenuFrame) Equals(value int8) bool {
-	return int8(m) == value
+func (m MenuFrame) Equals(value string) bool {
+	return string(m) == value
 }

@@ -54,11 +54,11 @@ func (m *SysMenuService) GetMenuByUserId(userId int64) ([]sysModel.SysMenu, erro
 }
 
 func (m *SysMenuService) GetAllMenu() ([]sysModel.SysMenu, error) {
-	mc := []string{enmu.MenuTypeC.Value(), enmu.MenuTypeM.Value()}
+	arr := []string{enmu.MenuTypeMenu.Value(), enmu.MenuTypeDir.Value()}
 	var menus []sysModel.SysMenu
 	res := global.DB.
-		Where("menu_type IN ? and status = ?", mc, enmu.StatusNormal.Value()).
-		Order("parent_id, order_num").
+		Where("type IN ? and status = ?", arr, enmu.StatusNormal.Value()).
+		Order("parent_id, sort").
 		Find(&menus)
 	return menus, res.Error
 }

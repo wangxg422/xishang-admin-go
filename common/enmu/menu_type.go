@@ -3,18 +3,18 @@ package enmu
 type MenuType string
 
 const (
-	MenuType_M = "M"
-	MenuType_C = "C"
-	MenuType_F = "F"
+	MenuType_DIR  = "M"
+	MenuType_MENU = "C"
+	MenuType_BTN  = "F"
 )
 
 var menuTypeMap map[string]string
 
 func init() {
 	menuTypeMap = make(map[string]string)
-	menuTypeMap[MenuType_M] = "目录"
-	menuTypeMap[MenuType_C] = "菜单"
-	menuTypeMap[MenuType_F] = "按钮"
+	menuTypeMap[MenuType_DIR] = "目录"
+	menuTypeMap[MenuType_MENU] = "菜单"
+	menuTypeMap[MenuType_BTN] = "按钮"
 }
 
 func (m MenuType) Desc() string {

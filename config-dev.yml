@@ -6,12 +6,12 @@ app:
   use-multipoint: false
 
 mysql:
-  address: 192.168.100.20
-  port: 13306
+  address: 82.156.146.136
+  port: 13307
   conn-config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: xishang-admin
-  username: root
-  password: 123456
+  username: xishang
+  password: Xishang@dev66
   table-prefix: ""
   singular: true
   engine: InnoDB
@@ -41,9 +41,9 @@ captcha:
   pre-key: "SYS:CAPTCHA:" # 存储到redis的前缀
 
 redis:
-  address: 192.168.100.20
-  port: 6379
-  password: 123456
+  address: 82.156.146.136
+  port: 16377
+  password: Xishang@dev66
   db: 0
 
 jwt:
