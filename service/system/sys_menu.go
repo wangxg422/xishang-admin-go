@@ -6,15 +6,29 @@ import (
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	"backend/utils"
+	"errors"
 )
 
 type SysMenuService struct {
 }
 
-func (m *SysMenuService) CreateMenu(d *sysModel.SysMenu) error {
-	res := global.DB.Create(&d)
+func (m *SysMenuService) CreateMenu(menu *sysModel.SysMenu) error {
+	// 检查name是否已经存在
+	existMenu, err := m.GetMenuByName(menu.Name, menu.ParentId)
+	if err != nil {
+		return err
+	}
+	if existMenu.MenuId != 0 {
+		return errors.New("menu " + menu.Name + " exist")
+	}
 
-	return res.Error
+	return global.DB.Create(&menu).Error
+}
+
+func (m *SysMenuService) GetMenuByName(name string, parentId int64) (sysModel.SysMenu, error) {
+	var menu sysModel.SysMenu
+	err := global.DB.Where("parent_id = ? AND name = ?", parentId, name).Find(&menu).Limit(1).Error
+	return menu, err
 }
 
 func (m *SysMenuService) UpdateMenu(d *sysModel.SysMenu) error {

@@ -19,20 +19,22 @@ import (
 type SysMenuApi struct{}
 
 func (m *SysMenuApi) CreateMenu(c *gin.Context) {
-	menuDto := sysDto.SysCreateMenuDTO{}
+	menuDto := sysDto.SysMenuCreateDTO{}
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
-		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
 	menu := &sysModel.SysMenu{}
-	menuDto.Convert(menu)
+	err := menuDto.Convert(menu)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 
-	menu.Status = enmu.StatusNormal.Value()
+	menu.CreateBy = jwt.GetUserName(c)
 
 	if err := menuService.CreateMenu(menu); err != nil {
-		logger.Error("create menu failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
