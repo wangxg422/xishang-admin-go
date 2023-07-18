@@ -3,7 +3,9 @@ package system
 import (
 	"backend/common/enmu"
 	"backend/global"
+	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
+	"backend/utils"
 )
 
 type SysMenuService struct {
@@ -60,5 +62,22 @@ func (m *SysMenuService) GetAllMenu() ([]sysModel.SysMenu, error) {
 		Where("type IN ? and status = ?", arr, enmu.StatusNormal.Value()).
 		Order("parent_id, sort").
 		Find(&menus)
+	return menus, res.Error
+}
+
+func (m *SysMenuService) GetMenu(params *sysDto.SysMenuQuery) ([]sysModel.SysMenu, error) {
+	db := global.DB.Model(&sysModel.SysMenu{})
+
+	likeArr := []string{
+		"name",
+		"title",
+	}
+
+	utils.ConcatLikeWhereCondition(db, likeArr, params.Name, params.Title)
+	utils.ConcatOneEqualsStrWhereCondition(db, "status", params.Status)
+
+	var menus []sysModel.SysMenu
+	res := db.Order("parent_id, sort").Find(&menus)
+
 	return menus, res.Error
 }

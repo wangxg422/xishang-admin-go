@@ -89,3 +89,9 @@ func (m *SysUpdateMenuDTO) Convert(t *system.SysMenu) {
 	t.UpdateBy = m.UpdateBy
 	t.Remark = m.Remark
 }
+
+type SysMenuQuery struct {
+	Name   string `form:"name" json:"name"`
+	Title  string `form:"title" json:"title"`
+	Status string `form:"status" json:"status"`
+}

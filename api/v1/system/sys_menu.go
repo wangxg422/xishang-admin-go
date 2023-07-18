@@ -5,7 +5,7 @@ import (
 	"backend/common/enmu"
 	"backend/initial/logger"
 	"backend/model/common/response"
-	"backend/model/dto/system"
+	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
@@ -19,7 +19,7 @@ import (
 type SysMenuApi struct{}
 
 func (m *SysMenuApi) CreateMenu(c *gin.Context) {
-	menuDto := system.SysCreateMenuDTO{}
+	menuDto := sysDto.SysCreateMenuDTO{}
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -69,12 +69,26 @@ func (m *SysMenuApi) GetMenuById(c *gin.Context) {
 	response.OkWithData(user, c)
 }
 
-func (m *SysMenuApi) ListMenu(c *gin.Context) {
+func (m *SysMenuApi) GetMenu(c *gin.Context) {
+	params := &sysDto.SysMenuQuery{}
+	err := c.ShouldBind(params)
 
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	menus, err := menuService.GetMenu(params)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(menus, c)
 }
 
 func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
-	menuDto := system.SysUpdateMenuDTO{}
+	menuDto := sysDto.SysUpdateMenuDTO{}
 
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
@@ -119,7 +133,7 @@ func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 /*
 * 路由配置项
 *
-* alwaysShow: true                 // 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
+* alwaysShow: true                 // 当一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
 *                                  // 只有一个时，会将那个子路由当做根路由显示在侧边栏--如引导页面
 *                                  // 若你想不管路由下面的 children 声明的个数都显示你的根路由
 *                                  // 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
@@ -198,10 +212,10 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 			Component: getComponent(menu),
 			Query:     menu.Query,
 			MetaVo: sysVo.MetaVO{
-				Title:   menu.Title,
-				Icon:    menu.Icon,
-				NoCache: enmu.MenuIsNotCache.Equals(menu.Cached),
-				Link:    ifHttpLink(menu.Path),
+				Title:  menu.Title,
+				Icon:   menu.Icon,
+				Cached: enmu.MenuIsCache.Equals(menu.Cached),
+				Link:   ifHttpLink(menu.Path),
 			},
 		}
 
@@ -219,10 +233,10 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 				Path:      menu.Path,
 				Component: menu.Component,
 				MetaVo: sysVo.MetaVO{
-					Title:   menu.Title,
-					Icon:    menu.Icon,
-					NoCache: enmu.MenuIsCache.Equals(menu.Cached),
-					Link:    ifHttpLink(menu.Path),
+					Title:  menu.Title,
+					Icon:   menu.Icon,
+					Cached: enmu.MenuIsCache.Equals(menu.Cached),
+					Link:   ifHttpLink(menu.Path),
 				},
 				Query: menu.Query,
 			}

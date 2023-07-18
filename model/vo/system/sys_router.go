@@ -26,8 +26,8 @@ type MetaVO struct {
 	Title string `json:"title"`
 	// 路由的图标，对应路径src/assets/icons/svg
 	Icon string `json:"icon"`
-	// 设置为true，则不会被 <keep-alive>缓存
-	NoCache bool `json:"noCache"`
+	// 设置为true，则会被 <keep-alive>缓存
+	Cached bool `json:"cached"`
 	// 内链地址（http(s)://开头）
 	Link string `json:"link"`
 }
