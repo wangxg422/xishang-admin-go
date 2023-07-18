@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type SysMenuApi struct{}
@@ -90,21 +91,22 @@ func (m *SysMenuApi) GetMenu(c *gin.Context) {
 }
 
 func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
-	menuDto := sysDto.SysUpdateMenuDTO{}
+	menuDto := sysDto.SysMenuUpdateDTO{}
 
 	if err := c.ShouldBindJSON(&menuDto); err != nil {
-		logger.Error("parse param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	if menuDto.MenuId == 0 {
-		response.FailWithMessage("menu id can not be null", c)
+	menu := &sysModel.SysMenu{}
+	err := menuDto.Convert(menu)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	menu.UpdateBy = jwt.GetUserName(c)
+	menu.UpdateTime = time.Now()
 
-	menu := &sysModel.SysMenu{}
-	menuDto.Convert(menu)
 	if err := menuService.UpdateMenu(menu); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
