@@ -10,11 +10,10 @@ import (
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"backend/utils/jwt"
-	"strconv"
-	"strings"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
+	"strings"
 )
 
 type SysMenuApi struct{}
@@ -155,7 +154,6 @@ func (m *SysMenuApi) GetRouterByUserId(c *gin.Context) {
 	}
 
 	if err != nil {
-		logger.Error("get menus failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -169,79 +167,6 @@ func (m *SysMenuApi) GetRouterByUserId(c *gin.Context) {
 	m.buildMenuTree(menus, root)
 
 	response.OkWithData(m.buildMenus(root.Children), c)
-}
-
-func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
-	var routes []sysVo.RouterVO
-
-	if len(menus) == 0 {
-		return routes
-	}
-
-	for _, menu := range menus {
-		r := sysVo.RouterVO{
-			Name:      getRouterName(menu),
-			Path:      getRouterPath(menu),
-			Hidden:    enmu.MenuIsNotVisible.Equals(menu.Visible),
-			Component: getComponent(menu),
-			Query:     menu.Query,
-			MetaVo: sysVo.MetaVO{
-				Title:   menu.MenuName,
-				Icon:    menu.Icon,
-				NoCache: enmu.MenuIsNotCache.Equals(menu.IsCache),
-				Link:    ifHttpLink(menu.Path),
-			},
-		}
-
-		cMenus := menu.Children
-		if len(cMenus) > 0 && enmu.MenuTypeM.Equals(menu.MenuType) {
-			r.AlwaysShow = true
-			r.Redirect = "noRedirect"
-			r.Children = m.buildMenus(cMenus)
-		} else if isMenuFrame(menu) {
-			var childrenList []sysVo.RouterVO
-
-			r.MetaVo = sysVo.MetaVO{}
-			children := sysVo.RouterVO{
-				Path:      menu.Path,
-				Component: menu.Component,
-				Name:      strings.ToTitle(menu.Path),
-				MetaVo: sysVo.MetaVO{
-					Title:   menu.MenuName,
-					Icon:    menu.Icon,
-					NoCache: enmu.MenuIsCache.Equals(menu.IsCache),
-					Link:    ifHttpLink(menu.Path),
-				},
-				Query: menu.Query,
-			}
-			childrenList = append(childrenList, children)
-			r.Children = childrenList
-		} else if menu.ParentId == 0 && isInnerLink(menu) {
-			r.MetaVo = sysVo.MetaVO{
-				Title: menu.MenuName,
-				Icon:  menu.Icon,
-			}
-			r.Path = "/"
-
-			var childrenList []sysVo.RouterVO
-			routerPath := innerLinkReplaceEach(menu.Path)
-			children := sysVo.RouterVO{
-				Path:      routerPath,
-				Component: constant.INNER_LINK,
-				Name:      strings.ToTitle(routerPath),
-				MetaVo: sysVo.MetaVO{
-					Title: menu.MenuName,
-					Icon:  menu.Icon,
-					Link:  menu.Path,
-				},
-			}
-			childrenList = append(childrenList, children)
-			r.Children = childrenList
-		}
-		routes = append(routes, r)
-	}
-
-	return routes
 }
 
 func (m *SysMenuApi) buildMenuTree(menus []sysModel.SysMenu, menu *sysModel.SysMenu) {
@@ -271,13 +196,77 @@ func (m *SysMenuApi) getChildList(menus []sysModel.SysMenu, menu *sysModel.SysMe
 	return children
 }
 
-func ifHttpLink(link string) string {
-	var l string
-	if strings.HasPrefix(link, constant.HTTP) || strings.HasPrefix(link, constant.HTTPS) {
-		l = link
+func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
+	var routes []sysVo.RouterVO
+
+	if len(menus) == 0 {
+		return routes
 	}
 
-	return l
+	for _, menu := range menus {
+		r := sysVo.RouterVO{
+			Name:      menu.Name,
+			Path:      menu.Path,
+			Hidden:    enmu.MenuIsNotVisible.Equals(menu.Visible),
+			Component: getComponent(menu),
+			Query:     menu.Query,
+			MetaVo: sysVo.MetaVO{
+				Title:   menu.Name,
+				Icon:    menu.Icon,
+				NoCache: enmu.MenuIsNotCache.Equals(menu.Cached),
+				Link:    menu.Path,
+			},
+		}
+
+		cMenus := menu.Children
+		if len(cMenus) > 0 && enmu.MenuTypeDir.Equals(menu.Type) {
+			r.AlwaysShow = true
+			r.Redirect = "noRedirect"
+			r.Children = m.buildMenus(cMenus)
+		} else if isMenuFrame(menu) {
+			var childrenList []sysVo.RouterVO
+
+			r.MetaVo = sysVo.MetaVO{}
+			children := sysVo.RouterVO{
+				Path:      menu.Path,
+				Component: menu.Component,
+				Name:      strings.ToTitle(menu.Path),
+				MetaVo: sysVo.MetaVO{
+					Title:   menu.Name,
+					Icon:    menu.Icon,
+					NoCache: enmu.MenuIsCache.Equals(menu.Cached),
+					Link:    menu.Path,
+				},
+				Query: menu.Query,
+			}
+			childrenList = append(childrenList, children)
+			r.Children = childrenList
+		} else if menu.ParentId == 0 && isInnerLink(menu) {
+			r.MetaVo = sysVo.MetaVO{
+				Title: menu.Name,
+				Icon:  menu.Icon,
+			}
+			r.Path = "/"
+
+			var childrenList []sysVo.RouterVO
+			routerPath := menu.Path
+			children := sysVo.RouterVO{
+				Path:      routerPath,
+				Component: constant.INNER_LINK,
+				Name:      strings.ToTitle(routerPath),
+				MetaVo: sysVo.MetaVO{
+					Title: menu.Name,
+					Icon:  menu.Icon,
+					Link:  menu.Path,
+				},
+			}
+			childrenList = append(childrenList, children)
+			r.Children = childrenList
+		}
+		routes = append(routes, r)
+	}
+
+	return routes
 }
 
 func getComponent(menu sysModel.SysMenu) string {
@@ -295,7 +284,13 @@ func getComponent(menu sysModel.SysMenu) string {
 }
 
 func isParentView(menu sysModel.SysMenu) bool {
-	return menu.ParentId != 0 && enmu.MenuTypeM.Equals(menu.MenuType)
+	return menu.ParentId != 0 && enmu.MenuTypeDir.Equals(menu.Type)
+}
+
+func isInnerLink(menu sysModel.SysMenu) bool {
+	return enmu.MenuIsNotFrame.Equals(menu.Frame) &&
+		(strings.HasPrefix(menu.Path, constant.HTTP) ||
+			strings.HasPrefix(menu.Path, constant.HTTPS))
 }
 
 func getRouterPath(menu sysModel.SysMenu) string {
@@ -307,8 +302,8 @@ func getRouterPath(menu sysModel.SysMenu) string {
 	}
 
 	// 非外链并且是一级目录（类型为目录）
-	if menu.ParentId == 0 && enmu.MenuTypeM.Equals(menu.MenuType) &&
-		enmu.MenuIsNotFrame.Equals(menu.IsFrame) {
+	if menu.ParentId == 0 && enmu.MenuTypeDir.Equals(menu.Type) &&
+		enmu.MenuIsNotFrame.Equals(menu.Frame) {
 		routerPath = "/" + menu.Path
 	} else if isMenuFrame(menu) {
 		// 非外链并且是一级目录（类型为菜单）
@@ -324,12 +319,6 @@ func innerLinkReplaceEach(path string) string {
 	return r.Replace(path)
 }
 
-func isInnerLink(menu sysModel.SysMenu) bool {
-	return enmu.MenuIsNotFrame.Equals(menu.IsFrame) &&
-		(strings.HasPrefix(menu.Path, constant.HTTP) ||
-			strings.HasPrefix(menu.Path, constant.HTTPS))
-}
-
 func getRouterName(menu sysModel.SysMenu) string {
 	routerName := utils.FirstUpper(menu.Path)
 	// 非外链并且是一级目录（类型为目录）
@@ -341,6 +330,6 @@ func getRouterName(menu sysModel.SysMenu) string {
 
 func isMenuFrame(menu sysModel.SysMenu) bool {
 	return menu.ParentId == 0 &&
-		enmu.MenuTypeC.Equals(menu.MenuType) &&
-		enmu.MenuIsNotFrame.Equals(menu.IsFrame)
+		enmu.MenuTypeMenu.Equals(menu.Type) &&
+		enmu.MenuIsNotFrame.Equals(menu.Frame)
 }

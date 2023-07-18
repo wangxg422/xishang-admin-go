@@ -7,19 +7,20 @@ import (
 
 type SysCreateMenuDTO struct {
 	MenuId     int64     `json:"menuId,omitempty"`
-	MenuName   string    `json:"menuName,omitempty" binding:"required"`
-	ParentId   int64     `json:"parentId,omitempty"`
-	OrderNum   int8      `json:"order_num,omitempty"`
-	Path       string    `json:"leader,omitempty" binding:"required"`
+	ParentId   int64     `json:"parentId,omitempty" binding:"required"`
+	Name       string    `json:"name,omitempty" binding:"required"`
+	Ancestors  string    `json:"ancestors,omitempty"`
+	Sort       int8      `json:"sort,omitempty" binding:"required"`
+	Path       string    `json:"leader,omitempty"`
 	Component  string    `json:"component,omitempty"`
+	Icon       string    `json:"icon,omitempty"`
 	Query      string    `json:"query,omitempty"`
-	IsFrame    int8      `json:"isFrame,omitempty"`
-	IsCache    int8      `json:"isCache,omitempty"`
-	MenuType   string    `json:"menuType,omitempty" binding:"required"`
-	Visible    int8      `json:"visible,omitempty" binding:"required"`
+	Frame      string    `json:"frame,omitempty"`
+	Cached     string    `json:"cached,omitempty"`
+	Type       string    `json:"type,omitempty"`
+	Visible    string    `json:"visible,omitempty"`
 	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
-	Icon       string    `json:"icon,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`
@@ -29,15 +30,12 @@ type SysCreateMenuDTO struct {
 
 func (m *SysCreateMenuDTO) Convert(t *system.SysMenu) {
 	t.MenuId = m.MenuId
-	t.MenuName = m.MenuName
 	t.ParentId = m.ParentId
-	t.OrderNum = m.OrderNum
+	t.Name = m.Name
+	t.Ancestors = m.Ancestors
 	t.Path = m.Path
 	t.Component = m.Component
 	t.Query = m.Query
-	t.IsFrame = m.IsFrame
-	t.IsCache = m.IsCache
-	t.MenuType = m.MenuType
 	t.Visible = m.Visible
 	t.Status = m.Status
 	t.Perms = m.Perms
@@ -51,19 +49,20 @@ func (m *SysCreateMenuDTO) Convert(t *system.SysMenu) {
 
 type SysUpdateMenuDTO struct {
 	MenuId     int64     `json:"menuId,omitempty"`
-	MenuName   string    `json:"menuName,omitempty" binding:"required"`
-	ParentId   int64     `json:"parentId,omitempty"`
-	OrderNum   int8      `json:"order_num,omitempty"`
-	Path       string    `json:"leader,omitempty" binding:"required"`
+	ParentId   int64     `json:"parentId,omitempty" binding:"required"`
+	Name       string    `json:"name,omitempty" binding:"required"`
+	Ancestors  string    `json:"ancestors,omitempty"`
+	Sort       int8      `json:"sort,omitempty" binding:"required"`
+	Path       string    `json:"leader,omitempty"`
 	Component  string    `json:"component,omitempty"`
+	Icon       string    `json:"icon,omitempty"`
 	Query      string    `json:"query,omitempty"`
-	IsFrame    int8      `json:"isFrame,omitempty"`
-	IsCache    int8      `json:"isCache,omitempty"`
-	MenuType   string    `json:"menuType,omitempty" binding:"required"`
-	Visible    int8      `json:"visible,omitempty" binding:"required"`
+	Frame      string    `json:"frame,omitempty"`
+	Cached     string    `json:"cached,omitempty"`
+	Type       string    `json:"type,omitempty"`
+	Visible    string    `json:"visible,omitempty"`
 	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
-	Icon       string    `json:"icon,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
 	UpdateTime time.Time `json:"updateTime,omitempty"`
 	CreateBy   string    `json:"createBy,omitempty"`
@@ -73,15 +72,10 @@ type SysUpdateMenuDTO struct {
 
 func (m *SysUpdateMenuDTO) Convert(t *system.SysMenu) {
 	t.MenuId = m.MenuId
-	t.MenuName = m.MenuName
 	t.ParentId = m.ParentId
-	t.OrderNum = m.OrderNum
 	t.Path = m.Path
 	t.Component = m.Component
 	t.Query = m.Query
-	t.IsFrame = m.IsFrame
-	t.IsCache = m.IsCache
-	t.MenuType = m.MenuType
 	t.Visible = m.Visible
 	t.Status = m.Status
 	t.Perms = m.Perms

@@ -7,9 +7,9 @@ const (
 	StatusNormal   Status = Status(Status_Normal)
 	StatusDisabled Status = Status(Status_Disabled)
 
-	MenuTypeM MenuType = MenuType(MenuType_M)
-	MenuTypeC MenuType = MenuType(MenuType_C)
-	MenuTypeF MenuType = MenuType(MenuType_F)
+	MenuTypeDir  MenuType = MenuType(MenuType_DIR)
+	MenuTypeMenu MenuType = MenuType(MenuType_MENU)
+	MenuTypeBTN  MenuType = MenuType(MenuType_BTN)
 
 	MenuIsFrame    MenuFrame = MenuFrame(Menu_Frame)
 	MenuIsNotFrame MenuFrame = MenuFrame(Menu_Not_Frame)
