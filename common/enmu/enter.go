@@ -17,9 +17,6 @@ const (
 	MenuIsCache    MenuCache = MenuCache(Menu_Cache)
 	MenuIsNotCache MenuCache = MenuCache(Menu_Not_Cache)
 
-	MenuIsVisible    MenuVisible = MenuVisible(Menu_Visible)
-	MenuIsNotVisible MenuVisible = MenuVisible(Menu_Unvisible)
-
 	SexM = Sex(Sex_M)
 	SexF = Sex(Sex_F)
 	SexU = Sex(Sex_U)

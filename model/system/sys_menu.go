@@ -6,6 +6,7 @@ type SysMenu struct {
 	MenuId     int64     `gorm:"primaryKey;column:menu_id" json:"menuId,omitempty"`
 	ParentId   int64     `gorm:"column:parent_id" json:"parentId,omitempty"`
 	Name       string    `gorm:"column:name" json:"name,omitempty"`
+	Title      string    `gorm:"column:title" json:"title,omitempty"`
 	Ancestors  string    `gorm:"column:ancestors" json:"ancestors,omitempty"`
 	Sort       int8      `gorm:"column:sort" json:"sort,omitempty"`
 	Path       string    `gorm:"column:path" json:"leader,omitempty"`
@@ -15,7 +16,7 @@ type SysMenu struct {
 	Frame      string    `gorm:"column:frame" json:"frame,omitempty"`   // 是否为外链
 	Cached     string    `gorm:"column:cached" json:"cached,omitempty"` // 是否缓存
 	Type       string    `gorm:"column:type" json:"type,omitempty"`     // M目录 C菜单 F按钮
-	Visible    string    `gorm:"column:visible" json:"visible,omitempty"`
+	Hidden     string    `gorm:"column:hidden" json:"hidden,omitempty"`
 	Status     string    `gorm:"column:status;default:0" json:"status,omitempty"`
 	Perms      string    `gorm:"column:perms" json:"perms,omitempty"`
 	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime,omitempty"`

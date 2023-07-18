@@ -9,6 +9,7 @@ type SysCreateMenuDTO struct {
 	MenuId     int64     `json:"menuId,omitempty"`
 	ParentId   int64     `json:"parentId,omitempty" binding:"required"`
 	Name       string    `json:"name,omitempty" binding:"required"`
+	Title      string    `json:"title,omitempty" binding:"required"`
 	Ancestors  string    `json:"ancestors,omitempty"`
 	Sort       int8      `json:"sort,omitempty" binding:"required"`
 	Path       string    `json:"leader,omitempty"`
@@ -18,7 +19,7 @@ type SysCreateMenuDTO struct {
 	Frame      string    `json:"frame,omitempty"`
 	Cached     string    `json:"cached,omitempty"`
 	Type       string    `json:"type,omitempty"`
-	Visible    string    `json:"visible,omitempty"`
+	Hidden     string    `json:"hidden,omitempty"`
 	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
@@ -32,11 +33,12 @@ func (m *SysCreateMenuDTO) Convert(t *system.SysMenu) {
 	t.MenuId = m.MenuId
 	t.ParentId = m.ParentId
 	t.Name = m.Name
+	t.Title = m.Title
 	t.Ancestors = m.Ancestors
 	t.Path = m.Path
 	t.Component = m.Component
 	t.Query = m.Query
-	t.Visible = m.Visible
+	t.Hidden = m.Hidden
 	t.Status = m.Status
 	t.Perms = m.Perms
 	t.Icon = m.Icon
@@ -51,6 +53,7 @@ type SysUpdateMenuDTO struct {
 	MenuId     int64     `json:"menuId,omitempty"`
 	ParentId   int64     `json:"parentId,omitempty" binding:"required"`
 	Name       string    `json:"name,omitempty" binding:"required"`
+	Title      string    `json:"title,omitempty" binding:"required"`
 	Ancestors  string    `json:"ancestors,omitempty"`
 	Sort       int8      `json:"sort,omitempty" binding:"required"`
 	Path       string    `json:"leader,omitempty"`
@@ -60,7 +63,7 @@ type SysUpdateMenuDTO struct {
 	Frame      string    `json:"frame,omitempty"`
 	Cached     string    `json:"cached,omitempty"`
 	Type       string    `json:"type,omitempty"`
-	Visible    string    `json:"visible,omitempty"`
+	Hidden     string    `json:"hidden,omitempty"`
 	Status     string    `json:"status,omitempty"`
 	Perms      string    `json:"perms,omitempty"`
 	CreateTime time.Time `json:"createTime,omitempty"`
@@ -76,7 +79,7 @@ func (m *SysUpdateMenuDTO) Convert(t *system.SysMenu) {
 	t.Path = m.Path
 	t.Component = m.Component
 	t.Query = m.Query
-	t.Visible = m.Visible
+	t.Hidden = m.Hidden
 	t.Status = m.Status
 	t.Perms = m.Perms
 	t.Icon = m.Icon

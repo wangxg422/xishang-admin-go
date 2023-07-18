@@ -14,6 +14,8 @@ const (
 	// PARENT_VIEW ParentView组件标识
 	PARENT_VIEW = "ParentView"
 
+	NoRedirect = "noRedirect"
+
 	Comma = ","
 
 	PageNum  = "pageNum"
