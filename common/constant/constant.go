@@ -21,3 +21,5 @@ const (
 	PageNum  = "pageNum"
 	PageSize = "pageSize"
 )
+
+var UpdateOmit = []string{"create_time", "create_by"}

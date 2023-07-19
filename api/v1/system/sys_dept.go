@@ -24,13 +24,16 @@ func (m *SysDeptApi) CreateDept(c *gin.Context) {
 		return
 	}
 
-	dept := &sysModel.SysDept{}
-	deptDto.Convert(dept)
+	dept, err := deptDto.Convert()
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 
-	dept.DelFlag = enmu.DelFlagDeleted.Value()
-	dept.Status = enmu.StatusNormal.Value()
+	dept.DelFlag = enmu.DelFlagNormal.Value()
+	dept.CreateBy = jwt.GetUserName(c)
 
-	if err := deptService.CreateDept(dept); err != nil {
+	if err := deptService.CreateDept(&dept); err != nil {
 		logger.Error("create dept failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -96,14 +99,19 @@ func (m *SysDeptApi) UpdateDept(c *gin.Context) {
 		return
 	}
 
-	if deptDto.DeptId == 0 {
+	if deptDto.DeptId == "" {
 		response.FailWithMessage("dept id can not be null", c)
 		return
 	}
 
-	dept := &sysModel.SysDept{}
-	deptDto.Convert(dept)
-	if err := deptService.UpdateDept(dept); err != nil {
+	dept, err := deptDto.Convert()
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	dept.UpdateBy = jwt.GetUserName(c)
+
+	if err := deptService.UpdateDept(&dept); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -113,6 +121,11 @@ func (m *SysDeptApi) UpdateDept(c *gin.Context) {
 
 func (m *SysDeptApi) DeleteDept(c *gin.Context) {
 	id := c.Param("deptId")
+
+	if id == "" {
+		response.FailWithMessage("deptId is null", c)
+		return
+	}
 
 	deptId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {

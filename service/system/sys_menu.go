@@ -1,6 +1,7 @@
 package system
 
 import (
+	"backend/common/constant"
 	"backend/common/enmu"
 	"backend/global"
 	sysDto "backend/model/dto/system"
@@ -45,15 +46,12 @@ func (m *SysMenuService) UpdateMenu(menu *sysModel.SysMenu) error {
 		return errors.New("menu " + menu.Name + " exist")
 	}
 
-	menu.CreateTime = existMenu.CreateTime
-	menu.CreateBy = existMenu.CreateBy
-
-	return global.DB.Save(menu).Error
+	return global.DB.Omit(constant.UpdateOmit...).Save(menu).Error
 }
 
 func (m *SysMenuService) DeleteMenu(id int64) error {
 	// 含有子菜单禁止删除
-	count, err := GetChildCountById(id)
+	count, err := m.GetChildCountById(id)
 	if err != nil {
 		return err
 	}
@@ -66,7 +64,7 @@ func (m *SysMenuService) DeleteMenu(id int64) error {
 	return global.DB.Delete(&sysModel.SysMenu{MenuId: id}).Error
 }
 
-func GetChildCountById(id int64) (int64, error) {
+func (m *SysMenuService) GetChildCountById(id int64) (int64, error) {
 	var count int64 = 0
 	err := global.DB.Model(&sysModel.SysMenu{}).Where("parent_id = ?", id).Count(&count).Error
 	return count, err
