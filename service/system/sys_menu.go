@@ -86,7 +86,7 @@ func (m *SysMenuService) GetMenuByUserId(userId int64) ([]sysModel.SysMenu, erro
 	}
 
 	var menus []sysModel.SysMenu
-	res := global.DB.Find(&menus).Where(&user)
+	res := global.DB.Where(&user).Find(&menus)
 	return menus, res.Error
 }
 

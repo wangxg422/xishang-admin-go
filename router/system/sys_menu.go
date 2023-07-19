@@ -15,6 +15,8 @@ func (m *SysMenuRouter) AddSysMenuRouter(router *gin.RouterGroup) {
 		menuRouter.GET(":menuId", menuApi.GetMenuById)
 		menuRouter.PUT("", menuApi.UpdateMenu)
 		menuRouter.DELETE(":menuId", menuApi.DeleteMenu)
+
+		menuRouter.GET("tree", menuApi.GetMenuTree)
 	}
 
 	dynamicRouter := router.Group("router")

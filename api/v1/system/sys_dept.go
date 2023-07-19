@@ -6,7 +6,7 @@ import (
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
-	sysVo "backend/model/vo/system"
+	"backend/model/vo/common"
 	"backend/utils"
 	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
@@ -165,12 +165,12 @@ func (m *SysDeptApi) GetDeptTree(c *gin.Context) {
 	}
 
 	rootDept := &sysModel.SysDept{ParentId: 0}
-	rootDeptVo := &sysVo.SysDeptTreeVO{Id: 0}
+	rootDeptVo := &common.TreeSelectVO{Id: 0}
 	m.buildDeptTree(depts, rootDept, rootDeptVo)
 	response.OkWithData(rootDeptVo.Children, c)
 }
 
-func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysDept, tree *sysVo.SysDeptTreeVO) {
+func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysDept, tree *common.TreeSelectVO) {
 	children, voChildren := m.getChildren(depts, dept)
 
 	tree.Id = dept.DeptId
@@ -185,14 +185,14 @@ func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysD
 	}
 }
 
-func (m *SysDeptApi) getChildren(depts []sysModel.SysDept, dept *sysModel.SysDept) ([]sysModel.SysDept, []sysVo.SysDeptTreeVO) {
+func (m *SysDeptApi) getChildren(depts []sysModel.SysDept, dept *sysModel.SysDept) ([]sysModel.SysDept, []common.TreeSelectVO) {
 	var list []sysModel.SysDept
-	var voList []sysVo.SysDeptTreeVO
+	var voList []common.TreeSelectVO
 
 	for _, d := range depts {
 		if d.ParentId == dept.DeptId {
 			list = append(list, d)
-			voList = append(voList, sysVo.SysDeptTreeVO{
+			voList = append(voList, common.TreeSelectVO{
 				Id:    d.DeptId,
 				Label: d.DeptName,
 			})

@@ -67,7 +67,7 @@ func (m *LoginApi) GetInfo(c *gin.Context) {
 	roleSet := set.NewSet()
 	if len(userInfo.SysRoles) > 0 {
 		for _, r := range userInfo.SysRoles {
-			roleSet.Add(r.RoleKey)
+			roleSet.Add(r.RoleCode)
 		}
 	}
 

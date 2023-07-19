@@ -4,9 +4,9 @@ import (
 	"backend/common/enmu"
 	"backend/initial/logger"
 	"backend/model/common/response"
-	"backend/model/dto/system"
-	sysModel "backend/model/system"
+	sysDto "backend/model/dto/system"
 	"backend/utils"
+	"backend/utils/jwt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,20 +16,20 @@ import (
 type SysRoleApi struct{}
 
 func (m *SysRoleApi) CreateRole(c *gin.Context) {
-	roleDto := system.SysCreateRoleDTO{}
+	roleDto := sysDto.SysRoleCreateDTO{}
 	if err := c.ShouldBindJSON(&roleDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	role := &sysModel.SysRole{}
-	roleDto.Convert(role)
+	role := roleDto.Convert()
 
 	role.DelFlag = enmu.DelFlagDeleted.Value()
 	role.Status = enmu.StatusNormal.Value()
+	role.CreateBy = jwt.GetUserName(c)
 
-	if err := roleService.CreateRole(role); err != nil {
+	if err := roleService.CreateRole(&role); err != nil {
 		logger.Error("create role failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -66,12 +66,28 @@ func (m *SysRoleApi) GetRoleById(c *gin.Context) {
 	response.OkWithData(user, c)
 }
 
-func (m *SysRoleApi) ListRole(c *gin.Context) {
+func (m *SysRoleApi) GetRolePage(c *gin.Context) {
+	params := &sysDto.SysRoleQueryDTO{}
+	err := c.ShouldBind(params)
 
+	if err != nil {
+		logger.Error("参数解析失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	roles, err := roleService.GetRolePage(params)
+	if err != nil {
+		logger.Error("查询角色失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(roles, c)
 }
 
 func (m *SysRoleApi) UpdateRole(c *gin.Context) {
-	roleDto := system.SysUpdateRoleDTO{}
+	roleDto := sysDto.SysRoleUpdateDTO{}
 
 	if err := c.ShouldBindJSON(&roleDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
@@ -79,14 +95,17 @@ func (m *SysRoleApi) UpdateRole(c *gin.Context) {
 		return
 	}
 
-	if roleDto.RoleId == 0 {
+	if roleDto.RoleId == "" {
 		response.FailWithMessage("role id can not be null", c)
 		return
 	}
 
-	role := &sysModel.SysRole{}
-	roleDto.Convert(role)
-	if err := roleService.UpdateRole(role); err != nil {
+	role, err := roleDto.Convert()
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := roleService.UpdateRole(&role); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}

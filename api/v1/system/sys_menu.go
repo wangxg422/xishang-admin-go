@@ -7,6 +7,7 @@ import (
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
+	"backend/model/vo/common"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"backend/utils/jwt"
@@ -137,6 +138,50 @@ func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 	}
 
 	response.Ok(c)
+}
+
+func (m *SysMenuApi) GetMenuTree(c *gin.Context) {
+	menus, err := menuService.GetMenuByUserId(jwt.GetUserID(c))
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	root := &sysModel.SysMenu{ParentId: 0}
+	rootVo := &common.TreeSelectVO{Id: 0}
+	m.buildMenuSelectTree(menus, root, rootVo)
+}
+
+func (m *SysMenuApi) buildMenuSelectTree(menus []sysModel.SysMenu, menu *sysModel.SysMenu, tree *common.TreeSelectVO) {
+	children, voChildren := m.getMenuSelectChildren(menus, menu)
+
+	tree.Id = menu.MenuId
+	tree.Label = menu.MenuName
+	tree.Children = voChildren
+
+	length := len(children)
+	if length > 0 {
+		for i := 0; i < length; i++ {
+			m.buildMenuSelectTree(menus, &children[i], &voChildren[i])
+		}
+	}
+}
+
+func (m *SysMenuApi) getMenuSelectChildren(menus []sysModel.SysMenu, menu *sysModel.SysMenu) ([]sysModel.SysMenu, []common.TreeSelectVO) {
+	var list []sysModel.SysMenu
+	var voList []common.TreeSelectVO
+
+	for _, d := range menus {
+		if d.ParentId == menu.MenuId {
+			list = append(list, d)
+			voList = append(voList, common.TreeSelectVO{
+				Id:    d.MenuId,
+				Label: d.MenuName,
+			})
+		}
+	}
+
+	return list, voList
 }
 
 // GetRouterByUserId

@@ -11,9 +11,9 @@ func (m *SysRoleRouter) AddSysRoleRouter(route *gin.RouterGroup) {
 	router := route.Group("role")
 	{
 		router.POST("", roleApi.CreateRole)
-		router.GET("list", roleApi.ListRole)
+		router.GET("list", roleApi.GetRolePage)
 		router.GET(":roleId", roleApi.GetRoleById)
-		router.POST("update", roleApi.UpdateRole)
+		router.PUT("", roleApi.UpdateRole)
 		router.DELETE(":roleId", roleApi.DeleteRole)
 
 		router.GET("user/options", roleApi.GetAllRole)
