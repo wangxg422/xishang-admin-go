@@ -17,6 +17,12 @@ func ConcatLikeWhereCondition(db *gorm.DB, conditions []string, values ...string
 	}
 }
 
+func ConcatOneLikeWhereCondition(db *gorm.DB, condition string, value string) {
+	if value != "" {
+		db.Where(condition+" like ?", LikeQuery(value))
+	}
+}
+
 func ConcatEqualsStrWhereCondition(db *gorm.DB, conditions []string, values ...string) {
 	length := len(conditions)
 	if length == len(values) {

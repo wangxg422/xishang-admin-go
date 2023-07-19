@@ -4,7 +4,7 @@ import (
 	"backend/common/enmu"
 	"backend/initial/logger"
 	"backend/model/common/response"
-	"backend/model/dto/system"
+	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
@@ -17,7 +17,7 @@ import (
 type SysDeptApi struct{}
 
 func (m *SysDeptApi) CreateDept(c *gin.Context) {
-	deptDto := system.SysCreateDeptDTO{}
+	deptDto := sysDto.SysDeptCreateDTO{}
 	if err := c.ShouldBindJSON(&deptDto); err != nil {
 		logger.Error("param error", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -67,12 +67,28 @@ func (m *SysDeptApi) GetDeptById(c *gin.Context) {
 	response.OkWithData(user, c)
 }
 
-func (m *SysDeptApi) ListDept(c *gin.Context) {
+func (m *SysDeptApi) GetDept(c *gin.Context) {
+	params := &sysDto.SysDeptQueryDTO{}
+	err := c.ShouldBind(params)
 
+	if err != nil {
+		logger.Error("参数解析失败", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	depts, err := deptService.GetDept(params)
+	if err != nil {
+		logger.Error("", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(depts, c)
 }
 
 func (m *SysDeptApi) UpdateDept(c *gin.Context) {
-	deptDto := system.SysUpdateDeptDTO{}
+	deptDto := sysDto.SysDeptUpdateDTO{}
 
 	if err := c.ShouldBindJSON(&deptDto); err != nil {
 		logger.Error("parse param error", zap.Error(err))
