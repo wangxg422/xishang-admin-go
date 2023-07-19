@@ -41,9 +41,12 @@ func (m *SysMenuService) UpdateMenu(menu *sysModel.SysMenu) error {
 	if err != nil {
 		return err
 	}
-	if existMenu.MenuId != 0 {
+	if existMenu.MenuId != 0 && existMenu.MenuId != menu.MenuId {
 		return errors.New("menu " + menu.Name + " exist")
 	}
+
+	menu.CreateTime = existMenu.CreateTime
+	menu.CreateBy = existMenu.CreateBy
 
 	return global.DB.Save(menu).Error
 }
@@ -67,14 +70,6 @@ func GetChildCountById(id int64) (int64, error) {
 	var count int64 = 0
 	err := global.DB.Model(&sysModel.SysMenu{}).Where("parent_id = ?", id).Count(&count).Error
 	return count, err
-}
-
-func (m *SysMenuService) ListMenu() ([]sysModel.SysMenu, error) {
-	var list []sysModel.SysMenu
-
-	res := global.DB.Where("del_flag = ?", enmu.DelFlagNormal.Value()).Find(&list)
-
-	return list, res.Error
 }
 
 func (m *SysMenuService) GetMenuById(id int64) (sysModel.SysMenu, error) {
