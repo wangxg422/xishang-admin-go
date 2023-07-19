@@ -216,13 +216,13 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 
 	for _, menu := range menus {
 		r := sysVo.RouterVO{
-			Name:      menu.Name,
+			Name:      menu.MenuCode,
 			Path:      getRouterPath(menu),
 			Hidden:    menu.Hidden == "1",
 			Component: getComponent(menu),
 			Query:     menu.Query,
 			MetaVo: sysVo.MetaVO{
-				Title:  menu.Title,
+				Title:  menu.MenuName,
 				Icon:   menu.Icon,
 				Cached: enmu.MenuIsCache.Equals(menu.Cached),
 				Link:   ifHttpLink(menu.Path),
@@ -239,11 +239,11 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 
 			r.MetaVo = sysVo.MetaVO{}
 			children := sysVo.RouterVO{
-				Name:      menu.Name,
+				Name:      menu.MenuCode,
 				Path:      menu.Path,
 				Component: menu.Component,
 				MetaVo: sysVo.MetaVO{
-					Title:  menu.Title,
+					Title:  menu.MenuName,
 					Icon:   menu.Icon,
 					Cached: enmu.MenuIsCache.Equals(menu.Cached),
 					Link:   ifHttpLink(menu.Path),
@@ -254,18 +254,18 @@ func (m *SysMenuApi) buildMenus(menus []sysModel.SysMenu) []sysVo.RouterVO {
 			r.Children = childrenList
 		} else if menu.ParentId == 0 && isInnerLink(menu) {
 			r.MetaVo = sysVo.MetaVO{
-				Title: menu.Title,
+				Title: menu.MenuName,
 				Icon:  menu.Icon,
 			}
 			r.Path = "/"
 
 			var childrenList []sysVo.RouterVO
 			children := sysVo.RouterVO{
-				Name:      menu.Name,
+				Name:      menu.MenuCode,
 				Path:      innerLinkReplaceEach(menu.Path),
 				Component: constant.INNER_LINK,
 				MetaVo: sysVo.MetaVO{
-					Title: menu.Title,
+					Title: menu.MenuName,
 					Icon:  menu.Icon,
 					Link:  menu.Path,
 				},

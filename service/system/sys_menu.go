@@ -14,21 +14,21 @@ type SysMenuService struct {
 }
 
 func (m *SysMenuService) CreateMenu(menu *sysModel.SysMenu) error {
-	// 检查name是否已经存在
-	existMenu, err := m.GetMenuByName(menu.Name, menu.ParentId)
+	// 检查menuCode是否已经存在
+	existMenu, err := m.GetMenuByCode(menu.MenuCode, menu.ParentId)
 	if err != nil {
 		return err
 	}
 	if existMenu.MenuId != 0 {
-		return errors.New("menu " + menu.Name + " exist")
+		return errors.New("menu " + menu.MenuCode + " exist")
 	}
 
 	return global.DB.Create(&menu).Error
 }
 
-func (m *SysMenuService) GetMenuByName(name string, parentId int64) (sysModel.SysMenu, error) {
+func (m *SysMenuService) GetMenuByCode(code string, parentId int64) (sysModel.SysMenu, error) {
 	var menu sysModel.SysMenu
-	err := global.DB.Where("parent_id = ? AND name = ?", parentId, name).Find(&menu).Limit(1).Error
+	err := global.DB.Where("parent_id = ? AND menu_code = ?", parentId, code).Find(&menu).Limit(1).Error
 	return menu, err
 }
 
@@ -37,13 +37,13 @@ func (m *SysMenuService) UpdateMenu(menu *sysModel.SysMenu) error {
 		return errors.New("menuId is null")
 	}
 
-	// 检查更新的menu_name是否已经存在
-	existMenu, err := m.GetMenuByName(menu.Name, menu.ParentId)
+	// 检查更新的menu_code是否已经存在
+	existMenu, err := m.GetMenuByCode(menu.MenuCode, menu.ParentId)
 	if err != nil {
 		return err
 	}
 	if existMenu.MenuId != 0 && existMenu.MenuId != menu.MenuId {
-		return errors.New("menu " + menu.Name + " exist")
+		return errors.New("menu " + menu.MenuCode + " exist")
 	}
 
 	return global.DB.Omit(constant.UpdateOmit...).Save(menu).Error
@@ -104,11 +104,11 @@ func (m *SysMenuService) GetMenu(params *sysDto.SysMenuQuery) ([]sysModel.SysMen
 	db := global.DB.Model(&sysModel.SysMenu{})
 
 	likeArr := []string{
-		"name",
-		"title",
+		"menu_name",
+		"menu_code",
 	}
 
-	utils.ConcatLikeWhereCondition(db, likeArr, params.Name, params.Title)
+	utils.ConcatLikeWhereCondition(db, likeArr, params.MenuName, params.MenuCode)
 	utils.ConcatOneEqualsStrWhereCondition(db, "status", params.Status)
 
 	var menus []sysModel.SysMenu

@@ -5,8 +5,8 @@ import "time"
 type SysMenu struct {
 	MenuId     int64     `gorm:"primaryKey;column:menu_id" json:"menuId,string"`
 	ParentId   int64     `gorm:"column:parent_id" json:"parentId,string"`
-	Name       string    `gorm:"column:name" json:"name"`
-	Title      string    `gorm:"column:title" json:"title"`
+	MenuCode   string    `gorm:"column:menu_code" json:"menuCode"`
+	MenuName   string    `gorm:"column:menu_name" json:"menuName"`
 	Ancestors  string    `gorm:"column:ancestors" json:"ancestors"`
 	Sort       int8      `gorm:"column:sort" json:"sort"`
 	Path       string    `gorm:"column:path" json:"path"`

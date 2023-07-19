@@ -7,8 +7,8 @@ import (
 
 type SysMenuCreateDTO struct {
 	ParentId  string `json:"parentId" binding:"required"`
-	Name      string `json:"name" binding:"required"`
-	Title     string `json:"title" binding:"required"`
+	MenuName  string `json:"menuName" binding:"required"`
+	MenuCode  string `json:"menuCode" binding:"required"`
 	Sort      int8   `json:"sort" binding:"required"`
 	Path      string `json:"path" binding:"required"`
 	Component string `json:"component"`
@@ -30,8 +30,8 @@ func (m *SysMenuCreateDTO) Convert(t *system.SysMenu) error {
 	}
 
 	t.ParentId = id
-	t.Name = m.Name
-	t.Title = m.Title
+	t.MenuName = m.MenuName
+	t.MenuCode = m.MenuCode
 	t.Sort = m.Sort
 	t.Path = m.Path
 	t.Component = m.Component
@@ -50,8 +50,8 @@ func (m *SysMenuCreateDTO) Convert(t *system.SysMenu) error {
 type SysMenuUpdateDTO struct {
 	MenuId    string `json:"menuId" binding:"required"`
 	ParentId  string `json:"parentId" binding:"required"`
-	Name      string `json:"name" binding:"required"`
-	Title     string `json:"title" binding:"required"`
+	MenuName  string `json:"menuName" binding:"required"`
+	MenuCode  string `json:"menuCode" binding:"required"`
 	Sort      int8   `json:"sort"`
 	Path      string `json:"path"`
 	Component string `json:"component"`
@@ -79,8 +79,8 @@ func (m *SysMenuUpdateDTO) Convert(t *system.SysMenu) error {
 
 	t.MenuId = mId
 	t.ParentId = pId
-	t.Name = m.Name
-	t.Title = m.Title
+	t.MenuCode = m.MenuCode
+	t.MenuName = m.MenuName
 	t.Sort = m.Sort
 	t.Path = m.Path
 	t.Component = m.Component
@@ -97,7 +97,7 @@ func (m *SysMenuUpdateDTO) Convert(t *system.SysMenu) error {
 }
 
 type SysMenuQuery struct {
-	Name   string `form:"name" json:"name"`
-	Title  string `form:"title" json:"title"`
-	Status string `form:"status" json:"status"`
+	MenuName string `form:"menuName" json:"menuName"`
+	MenuCode string `form:"menuCode" json:"menuCode"`
+	Status   string `form:"status" json:"status"`
 }
