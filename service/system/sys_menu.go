@@ -31,14 +31,42 @@ func (m *SysMenuService) GetMenuByName(name string, parentId int64) (sysModel.Sy
 	return menu, err
 }
 
-func (m *SysMenuService) UpdateMenu(d *sysModel.SysMenu) error {
-	res := global.DB.Model(&sysModel.SysMenu{MenuId: d.MenuId}).Updates(&d)
-	return res.Error
+func (m *SysMenuService) UpdateMenu(menu *sysModel.SysMenu) error {
+	if menu.MenuId == 0 {
+		return errors.New("menuId is null")
+	}
+
+	// 检查更新的menu_name是否已经存在
+	existMenu, err := m.GetMenuByName(menu.Name, menu.ParentId)
+	if err != nil {
+		return err
+	}
+	if existMenu.MenuId != 0 {
+		return errors.New("menu " + menu.Name + " exist")
+	}
+
+	return global.DB.Save(menu).Error
 }
 
 func (m *SysMenuService) DeleteMenu(id int64) error {
-	res := global.DB.Model(&sysModel.SysMenu{MenuId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
-	return res.Error
+	// 含有子菜单禁止删除
+	count, err := GetChildCountById(id)
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("该菜单含有子菜单，禁止删除")
+	}
+
+	// TODO 有角色绑定禁止删除
+
+	return global.DB.Delete(&sysModel.SysMenu{MenuId: id}).Error
+}
+
+func GetChildCountById(id int64) (int64, error) {
+	var count int64 = 0
+	err := global.DB.Model(&sysModel.SysMenu{}).Where("parent_id = ?", id).Count(&count).Error
+	return count, err
 }
 
 func (m *SysMenuService) ListMenu() ([]sysModel.SysMenu, error) {

@@ -52,16 +52,16 @@ type SysMenuUpdateDTO struct {
 	ParentId  string `json:"parentId" binding:"required"`
 	Name      string `json:"name" binding:"required"`
 	Title     string `json:"title" binding:"required"`
-	Sort      int8   `json:"sort" binding:"required"`
-	Path      string `json:"path" binding:"required"`
+	Sort      int8   `json:"sort"`
+	Path      string `json:"path"`
 	Component string `json:"component"`
 	Icon      string `json:"icon"`
 	Query     string `json:"query"`
-	Frame     string `json:"frame" binding:"required"`
-	Cached    string `json:"cached" binding:"required"`
+	Frame     string `json:"frame"`
+	Cached    string `json:"cached"`
 	Type      string `json:"type" binding:"required"`
-	Hidden    string `json:"hidden" binding:"required"`
-	Status    string `json:"status" binding:"required"`
+	Hidden    string `json:"hidden"`
+	Status    string `json:"status"`
 	Perms     string `json:"perms"`
 	Remark    string `json:"remark"`
 }

@@ -108,6 +108,7 @@ func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
 	menu.UpdateTime = time.Now()
 
 	if err := menuService.UpdateMenu(menu); err != nil {
+		logger.Error(err.Error())
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -118,9 +119,14 @@ func (m *SysMenuApi) UpdateMenu(c *gin.Context) {
 func (m *SysMenuApi) DeleteMenu(c *gin.Context) {
 	id := c.Param("menuId")
 
+	if id == "" {
+		response.FailWithMessage("menuId is null", c)
+		return
+	}
+
 	menuId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
-		response.FailWithMessage("menu id convert failed", c)
+		response.FailWithMessage("menuId convert failed", c)
 		return
 	}
 
