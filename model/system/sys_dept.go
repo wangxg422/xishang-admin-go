@@ -18,4 +18,6 @@ type SysDept struct {
 	UpdateTime  time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime"`
 	CreateBy    string    `gorm:"column:create_by" json:"createBy"`
 	UpdateBy    string    `gorm:"column:update_by" json:"updateBy"`
+
+	SysRoles []SysRole `gorm:"many2many:sys_role_dept;foreignKey:DeptId;joinForeignKey:DeptId;references:RoleId;joinReferences:RoleId;" json:"roles,omitempty"`
 }

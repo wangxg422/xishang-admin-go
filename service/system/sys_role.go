@@ -8,6 +8,8 @@ import (
 	sysModel "backend/model/system"
 	sysVo "backend/model/vo/system"
 	"backend/utils"
+	"github.com/pkg/errors"
+	"strconv"
 )
 
 type SysRoleService struct {
@@ -20,10 +22,53 @@ func (m *SysRoleService) GetRolesByUserId(id int64) ([]sysModel.SysRole, error) 
 	return list, res.Error
 }
 
-func (m *SysRoleService) CreateRole(role *sysModel.SysRole) error {
-	res := global.DB.Create(&role)
+func (m *SysRoleService) CreateRole(roleDto *sysDto.SysRoleCreateDTO) error {
+	var existRole sysModel.SysRole
+	err := global.DB.
+		Where("role_code = ? AND del_flag = ?", roleDto.RoleCode, enmu.DelFlagNormal.Value()).
+		Find(&existRole).Limit(1).Error
+	if err != nil {
+		return err
+	}
 
-	return res.Error
+	if existRole.RoleId != 0 {
+		return errors.New("角色编码 " + roleDto.RoleCode + " 已经存在")
+	}
+
+	role := roleDto.Convert()
+	role.DelFlag = enmu.DelFlagNormal.Value()
+
+	// 角色关联的菜单列表
+	if roleDto.MenuIds != nil && len(roleDto.MenuIds) > 0 {
+		var list []sysModel.SysMenu
+		for _, m := range roleDto.MenuIds {
+			if m != "" {
+				id, err := strconv.ParseInt(m, 10, 64)
+				if err != nil {
+					return err
+				}
+				list = append(list, sysModel.SysMenu{MenuId: id})
+			}
+		}
+		role.SysMenus = list
+	}
+
+	// 如果自定义数据权限
+	if roleDto.DataScope == "2" && roleDto.DeptIds != nil && len(roleDto.DeptIds) > 0 {
+		var list []sysModel.SysDept
+		for _, m := range roleDto.DeptIds {
+			if m != "" {
+				id, err := strconv.ParseInt(m, 10, 64)
+				if err != nil {
+					return err
+				}
+				list = append(list, sysModel.SysDept{DeptId: id})
+			}
+		}
+		role.SysDepts = list
+	}
+	
+	return global.DB.Create(&role).Error
 }
 
 func (m *SysRoleService) UpdateRole(role *sysModel.SysRole) error {

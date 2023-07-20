@@ -11,11 +11,16 @@ type SysRoleCreateDTO struct {
 	RoleCode          string `json:"roleCode" binding:"required"`
 	RolePerms         string `json:"rolePerms"`
 	Sort              int64  `json:"roleSort"`
-	DataScope         int8   `json:"dataScope"`
-	MenuCheckStrictly int8   `json:"menuCheckStrictly"`
-	DeptCheckStrictly int8   `json:"deptCheckStrictly"`
+	DataScope         string `json:"dataScope"`
+	MenuCheckStrictly bool   `json:"menuCheckStrictly"`
+	DeptCheckStrictly bool   `json:"deptCheckStrictly"`
 	Status            string `json:"status"`
 	Remark            string `json:"remark"`
+
+	CreateBy string `json:"createBy"`
+
+	MenuIds []string `json:"menuIds"`
+	DeptIds []string `json:"deptIds"`
 }
 
 func (m *SysRoleCreateDTO) Convert() system.SysRole {
@@ -26,10 +31,20 @@ func (m *SysRoleCreateDTO) Convert() system.SysRole {
 	t.RolePerms = m.RolePerms
 	t.Sort = m.Sort
 	t.DataScope = m.DataScope
-	t.MenuCheckStrictly = m.MenuCheckStrictly
-	t.DeptCheckStrictly = m.DeptCheckStrictly
 	t.Status = m.Status
 	t.Remark = m.Remark
+	t.CreateBy = m.CreateBy
+
+	if m.MenuCheckStrictly {
+		t.MenuCheckStrictly = 1
+	} else {
+		t.MenuCheckStrictly = 2
+	}
+	if m.DeptCheckStrictly {
+		t.DeptCheckStrictly = 1
+	} else {
+		t.DeptCheckStrictly = 2
+	}
 
 	return t
 }
@@ -40,11 +55,13 @@ type SysRoleUpdateDTO struct {
 	RoleCode          string `json:"roleCode" binding:"required"`
 	RolePerms         string `json:"rolePerms"`
 	Sort              int64  `json:"sort"`
-	DataScope         int8   `json:"dataScope"`
-	MenuCheckStrictly int8   `json:"menuCheckStrictly"`
-	DeptCheckStrictly int8   `json:"deptCheckStrictly"`
+	DataScope         string `json:"dataScope"`
+	MenuCheckStrictly bool   `json:"menuCheckStrictly"`
+	DeptCheckStrictly bool   `json:"deptCheckStrictly"`
 	Status            string `json:"status"`
 	Remark            string `json:"remark"`
+
+	MenuIds []string `json:"menuIds"`
 }
 
 func (m *SysRoleUpdateDTO) Convert() (system.SysRole, error) {
@@ -60,10 +77,19 @@ func (m *SysRoleUpdateDTO) Convert() (system.SysRole, error) {
 	t.RolePerms = m.RolePerms
 	t.Sort = m.Sort
 	t.DataScope = m.DataScope
-	t.MenuCheckStrictly = m.MenuCheckStrictly
-	t.DeptCheckStrictly = m.DeptCheckStrictly
 	t.Status = m.Status
 	t.Remark = m.Remark
+
+	if m.MenuCheckStrictly {
+		t.MenuCheckStrictly = 1
+	} else {
+		t.MenuCheckStrictly = 2
+	}
+	if m.DeptCheckStrictly {
+		t.DeptCheckStrictly = 1
+	} else {
+		t.DeptCheckStrictly = 2
+	}
 
 	return t, nil
 }

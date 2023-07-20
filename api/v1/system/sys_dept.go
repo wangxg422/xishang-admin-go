@@ -6,7 +6,6 @@ import (
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	sysModel "backend/model/system"
-	"backend/model/vo/common"
 	"backend/utils"
 	"backend/utils/jwt"
 	"github.com/gin-gonic/gin"
@@ -164,11 +163,16 @@ func (m *SysDeptApi) GetDeptTree(c *gin.Context) {
 		//}
 	}
 
-	rootDept := &sysModel.SysDept{ParentId: 0}
-	rootDeptVo := &common.TreeSelectVO{Id: "0"}
-	m.buildDeptTree(depts, rootDept, rootDeptVo)
-	response.OkWithData(rootDeptVo.Children, c)
+	vo, err := utils.ListToSelectTree(depts, "parentId", "children", "deptId", "deptName")
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OkWithData(vo.Children, c)
 }
+
+/**
 
 func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysDept, tree *common.TreeSelectVO) {
 	children, voChildren := m.getChildren(depts, dept)
@@ -201,3 +205,5 @@ func (m *SysDeptApi) getChildren(depts []sysModel.SysDept, dept *sysModel.SysDep
 
 	return list, voList
 }
+
+*/

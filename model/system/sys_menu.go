@@ -25,7 +25,7 @@ type SysMenu struct {
 	UpdateBy   string    `gorm:"column:update_by" json:"updateBy"`
 	Remark     string    `gorm:"column:remark" json:"remark"`
 
-	SysRoles []SysRole `gorm:"many2many:sys_menu_role;foreignKey:MenuId;joinForeignKey:menu_id;references:RoleId;joinReferences:role_id;" json:"roles,omitempty"`
+	SysRoles []SysRole `gorm:"many2many:sys_role_menu;foreignKey:MenuId;joinForeignKey:MenuId;references:RoleId;joinReferences:RoleId;" json:"roles,omitempty"`
 	// 子菜单
 	Children []SysMenu `gorm:"-" json:"children,omitempty"`
 }

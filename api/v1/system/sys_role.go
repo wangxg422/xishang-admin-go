@@ -1,7 +1,6 @@
 package system
 
 import (
-	"backend/common/enmu"
 	"backend/initial/logger"
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
@@ -23,13 +22,9 @@ func (m *SysRoleApi) CreateRole(c *gin.Context) {
 		return
 	}
 
-	role := roleDto.Convert()
+	roleDto.CreateBy = jwt.GetUserName(c)
 
-	role.DelFlag = enmu.DelFlagDeleted.Value()
-	role.Status = enmu.StatusNormal.Value()
-	role.CreateBy = jwt.GetUserName(c)
-
-	if err := roleService.CreateRole(&role); err != nil {
+	if err := roleService.CreateRole(&roleDto); err != nil {
 		logger.Error("create role failed", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
 		return
