@@ -80,17 +80,25 @@ func (m *SysMenuService) GetMenuById(id int64) (sysModel.SysMenu, error) {
 }
 
 func (m *SysMenuService) GetMenuByUserId(userId int64) ([]sysModel.SysMenu, error) {
-	user := sysModel.SysMenu{
-		MenuId: userId,
-		Status: enmu.StatusNormal.Value(),
+	// TODO 根据用户角色获取有权限的菜单
+	if userId == 1 {
+		return m.GetAllMenu()
 	}
 
 	var menus []sysModel.SysMenu
-	res := global.DB.Where(&user).Find(&menus)
-	return menus, res.Error
+	err := global.DB.Find(&menus).Error
+	return menus, err
 }
 
 func (m *SysMenuService) GetAllMenu() ([]sysModel.SysMenu, error) {
+	var menus []sysModel.SysMenu
+	res := global.DB.
+		Order("parent_id, sort").
+		Find(&menus)
+	return menus, res.Error
+}
+
+func (m *SysMenuService) GetAllDirMenuNormal() ([]sysModel.SysMenu, error) {
 	arr := []string{enmu.MenuTypeMenu.Value(), enmu.MenuTypeDir.Value()}
 	var menus []sysModel.SysMenu
 	res := global.DB.
@@ -98,6 +106,20 @@ func (m *SysMenuService) GetAllMenu() ([]sysModel.SysMenu, error) {
 		Order("parent_id, sort").
 		Find(&menus)
 	return menus, res.Error
+}
+
+func (m *SysMenuService) GetDirMenuNormalByUserId(userId int64) ([]sysModel.SysMenu, error) {
+	if userId == 1 {
+		return m.GetAllDirMenuNormal()
+	}
+
+	var menus []sysModel.SysMenu
+	err := global.DB.
+		Where("status = ?", enmu.StatusNormal.Value()).
+		Order("parent_id, sort").
+		Find(&menus).Error
+
+	return menus, err
 }
 
 func (m *SysMenuService) GetMenu(params *sysDto.SysMenuQuery) ([]sysModel.SysMenu, error) {

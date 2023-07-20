@@ -165,7 +165,7 @@ func (m *SysDeptApi) GetDeptTree(c *gin.Context) {
 	}
 
 	rootDept := &sysModel.SysDept{ParentId: 0}
-	rootDeptVo := &common.TreeSelectVO{Id: 0}
+	rootDeptVo := &common.TreeSelectVO{Id: "0"}
 	m.buildDeptTree(depts, rootDept, rootDeptVo)
 	response.OkWithData(rootDeptVo.Children, c)
 }
@@ -173,7 +173,7 @@ func (m *SysDeptApi) GetDeptTree(c *gin.Context) {
 func (m *SysDeptApi) buildDeptTree(depts []sysModel.SysDept, dept *sysModel.SysDept, tree *common.TreeSelectVO) {
 	children, voChildren := m.getChildren(depts, dept)
 
-	tree.Id = dept.DeptId
+	tree.Id = strconv.FormatInt(dept.DeptId, 10)
 	tree.Label = dept.DeptName
 	tree.Children = voChildren
 
@@ -193,7 +193,7 @@ func (m *SysDeptApi) getChildren(depts []sysModel.SysDept, dept *sysModel.SysDep
 		if d.ParentId == dept.DeptId {
 			list = append(list, d)
 			voList = append(voList, common.TreeSelectVO{
-				Id:    d.DeptId,
+				Id:    strconv.FormatInt(d.DeptId, 10),
 				Label: d.DeptName,
 			})
 		}
