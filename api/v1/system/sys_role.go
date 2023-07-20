@@ -1,12 +1,14 @@
 package system
 
 import (
+	"backend/common/constant"
 	"backend/initial/logger"
 	"backend/model/common/response"
 	sysDto "backend/model/dto/system"
 	"backend/utils"
 	"backend/utils/jwt"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -109,16 +111,21 @@ func (m *SysRoleApi) UpdateRole(c *gin.Context) {
 }
 
 func (m *SysRoleApi) DeleteRole(c *gin.Context) {
-	id := c.Param("roleId")
-
-	roleId, err := strconv.ParseInt(id, 10, 64)
-	if err != nil {
-		response.FailWithMessage("role id convert failed", c)
+	idsStr := c.Param("roleId")
+	if idsStr == "" {
+		response.FailWithMessage("roleId is null", c)
 		return
 	}
 
-	if err := roleService.DeleteRole(roleId); err != nil {
-		logger.Error("delete role failed", zap.Error(err))
+	ids := strings.Split(idsStr, constant.Comma)
+	roleIds, err := utils.StrToInt64Array(ids)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = roleService.DeleteRole(roleIds)
+	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}

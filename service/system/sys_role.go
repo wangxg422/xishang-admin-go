@@ -67,7 +67,7 @@ func (m *SysRoleService) CreateRole(roleDto *sysDto.SysRoleCreateDTO) error {
 		}
 		role.SysDepts = list
 	}
-	
+
 	return global.DB.Create(&role).Error
 }
 
@@ -76,9 +76,21 @@ func (m *SysRoleService) UpdateRole(role *sysModel.SysRole) error {
 	return res.Error
 }
 
-func (m *SysRoleService) DeleteRole(id int64) error {
-	res := global.DB.Model(&sysModel.SysRole{RoleId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
-	return res.Error
+func (m *SysRoleService) DeleteRole(ids []int64) error {
+	//res := global.DB.Model(&sysModel.SysRole{RoleId: id}).Update("del_flag", enmu.DelFlagDeleted.Value())
+	// 角色如果有用户关联，禁止删除
+	var count int64
+	err := global.DB.Model(sysModel.SysUserRole{}).Where("user_id IN ?", ids).Count(&count).Error
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("存在用户绑定该角色，禁止删除，请先解除绑定")
+	}
+
+	// 删除角色与用户，角色与部门，角色与菜单关联关系
+
+	return nil
 }
 
 func (m *SysRoleService) GetRoleById(id int64) (sysModel.SysRole, error) {
