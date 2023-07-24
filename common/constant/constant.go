@@ -22,6 +22,8 @@ const (
 	PageSize = "pageSize"
 
 	DelFlag = "del_flag"
+
+	TokenName = "X-ACCESS-TOKEN"
 )
 
 var UpdateOmit = []string{"create_time", "create_by"}

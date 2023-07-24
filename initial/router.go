@@ -3,6 +3,7 @@ package initial
 import (
 	"backend/global"
 	"backend/middleware"
+	"backend/middleware/permission"
 	"backend/router/public"
 	"backend/router/system"
 	"strings"
@@ -28,7 +29,7 @@ func InitRouter() {
 	}
 
 	authGroup := r.Group("")
-	authGroup.Use(middleware.JWTAuth())
+	authGroup.Use(middleware.JWTAuth()).Use(permission.CasbinPermCheck())
 
 	sysGroup := authGroup.Group("sys")
 	{

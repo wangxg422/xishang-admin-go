@@ -9,6 +9,7 @@ import (
 	sysVo "backend/model/vo/system"
 	"backend/utils"
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
 	"strconv"
 )
 
@@ -89,8 +90,27 @@ func (m *SysRoleService) DeleteRole(ids []int64) error {
 	}
 
 	// 删除角色与用户，角色与部门，角色与菜单关联关系
+	err = global.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("role_id IN ?", ids).Delete(&sysModel.SysUserRole{}).Error; err != nil {
+			return err
+		}
 
-	return nil
+		if err := tx.Where("role_id IN ?", ids).Delete(&sysModel.SysRoleMenu{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Where("role_id IN ?", ids).Delete(&sysModel.SysRoleDept{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Model(&sysModel.SysRole{}).Where("role_id IN ?", ids).Update("del_flag", enmu.DelFlagDeleted.Value()).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
 
 func (m *SysRoleService) GetRoleById(id int64) (sysModel.SysRole, error) {

@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"backend/common/constant"
 	"backend/initial/logger"
 	"backend/model/common/request"
 	"backend/utils"
@@ -9,11 +10,11 @@ import (
 )
 
 func GetClaims(c *gin.Context) (*request.CustomClaims, error) {
-	token := c.Request.Header.Get("x-token")
+	token := c.Request.Header.Get(constant.TokenName)
 	j := utils.NewJWT()
 	claims, err := j.ParseToken(token)
 	if err != nil {
-		logger.Error("从Gin的Context中获取从jwt解析信息失败, 请检查请求头是否存在x-token且claims是否为规定结构")
+		logger.Error("从Gin的Context中获取从jwt解析信息失败, 请检查请求头是否存在token且claims是否为规定结构")
 	}
 	return claims, err
 }
