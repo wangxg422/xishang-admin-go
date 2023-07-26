@@ -7,7 +7,6 @@ import (
 	"backend/utils/jwt"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
-	dbAdapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
@@ -38,7 +37,7 @@ func InitAdapter() (*casbin.Enforcer, error) {
 		return nil, err
 	}
 
-	a, err := dbAdapter.NewAdapterByDB(global.DB)
+	a := &CachedAdapter{}
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +66,9 @@ func CasbinPermCheck() gin.HandlerFunc {
 				logger.Error("", zap.Error(err))
 			}
 
-			success, err := e.Enforce(sub, obj, nil)
+			mod := "sys"
+			act := "all"
+			success, err := e.Enforce(sub, mod, obj, act)
 			if err != nil {
 				logger.Error("", zap.Error(err))
 				response.FailWithMessage(err.Error(), c)
