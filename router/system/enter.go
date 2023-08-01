@@ -22,4 +22,5 @@ var (
 	menuApi   = system.SysMenuApi{}
 	dictApi   = system.SysDictApi{}
 	configApi = system.SysConfigApi{}
+	moduleApi = system.SysModuleApi{}
 )

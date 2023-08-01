@@ -10,4 +10,5 @@ var (
 	menuService   = system.SysMenuService{}
 	dictService   = system.SysDictService{}
 	configService = system.SysConfigService{}
+	moduleService = system.SysModuleService{}
 )
