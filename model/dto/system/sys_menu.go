@@ -19,7 +19,6 @@ type SysMenuCreateDTO struct {
 	Type      string `json:"type" binding:"required"`
 	Hidden    string `json:"hidden" binding:"required"`
 	Status    string `json:"status" binding:"required"`
-	Perms     string `json:"perms"`
 	Remark    string `json:"remark"`
 }
 
@@ -42,7 +41,6 @@ func (m *SysMenuCreateDTO) Convert(t *system.SysMenu) error {
 	t.Type = m.Type
 	t.Hidden = m.Hidden
 	t.Status = m.Status
-	t.Perms = m.Perms
 	t.Remark = m.Remark
 	return nil
 }
@@ -62,7 +60,6 @@ type SysMenuUpdateDTO struct {
 	Type      string `json:"type" binding:"required"`
 	Hidden    string `json:"hidden"`
 	Status    string `json:"status"`
-	Perms     string `json:"perms"`
 	Remark    string `json:"remark"`
 }
 
@@ -91,7 +88,6 @@ func (m *SysMenuUpdateDTO) Convert(t *system.SysMenu) error {
 	t.Type = m.Type
 	t.Hidden = m.Hidden
 	t.Status = m.Status
-	t.Perms = m.Perms
 	t.Remark = m.Remark
 	return nil
 }

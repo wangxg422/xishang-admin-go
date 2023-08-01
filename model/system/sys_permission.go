@@ -4,8 +4,8 @@ import "time"
 
 type SysPermission struct {
 	PermId     int64     `gorm:"primaryKey;column:perm_id" json:"permId,string"`
-	ParentId   string    `gorm:"column:parent_id" json:"parentId,string"`
-	ModuleId   string    `gorm:"column:module_id" json:"moduleId,string"`
+	ParentId   int64     `gorm:"column:parent_id" json:"parentId,string"`
+	ModuleId   int64     `gorm:"column:module_id" json:"moduleId,string"`
 	PermName   string    `gorm:"column:perm_name" json:"permName"`
 	PermCode   string    `gorm:"column:post_code" json:"postCode"`
 	Status     string    `gorm:"column:status" json:"status"`
