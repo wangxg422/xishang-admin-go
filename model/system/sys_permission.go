@@ -3,8 +3,9 @@ package system
 import "time"
 
 type SysPermission struct {
-	PermId     int64     `gorm:"primaryKey;column:perm_id" json:"permId"`
-	ModuleId   string    `gorm:"column:module_id" json:"moduleId"`
+	PermId     int64     `gorm:"primaryKey;column:perm_id" json:"permId,string"`
+	ParentId   string    `gorm:"column:parent_id" json:"parentId,string"`
+	ModuleId   string    `gorm:"column:module_id" json:"moduleId,string"`
 	PermName   string    `gorm:"column:perm_name" json:"permName"`
 	PermCode   string    `gorm:"column:post_code" json:"postCode"`
 	Status     string    `gorm:"column:status" json:"status"`
@@ -13,4 +14,6 @@ type SysPermission struct {
 	CreateBy   string    `gorm:"column:create_by" json:"createBy"`
 	UpdateBy   string    `gorm:"column:update_by" json:"updateBy"`
 	Remark     string    `gorm:"column:remark" json:"remark"`
+
+	SysRoles []SysRole `gorm:"many2many:sys_role_permission;foreignKey:PermId;joinForeignKey:PermId;references:RoleId;joinReferences:RoleId;" json:"roles,omitempty"`
 }

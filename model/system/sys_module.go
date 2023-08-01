@@ -3,7 +3,7 @@ package system
 import "time"
 
 type SysModule struct {
-	ModuleId   int64     `gorm:"primaryKey;column:module_id" json:"moduleId"`
+	ModuleId   int64     `gorm:"primaryKey;column:module_id" json:"moduleId,string"`
 	ModuleName string    `gorm:"column:module_name" json:"moduleName"`
 	ModuleCode string    `gorm:"column:module_Code" json:"moduleCode"`
 	Status     string    `gorm:"column:status" json:"status"`
