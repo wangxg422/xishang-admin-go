@@ -66,7 +66,7 @@ func (m *SysModuleApi) GetModuleById(c *gin.Context) {
 func (m *SysModuleApi) DeleteModule(c *gin.Context) {
 	id := c.Param("moduleId")
 	if id == "" {
-		response.FailWithMessage("module is null", c)
+		response.FailWithMessage("moduleId is null", c)
 		return
 	}
 

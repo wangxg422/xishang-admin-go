@@ -5,7 +5,7 @@ import "github.com/gin-gonic/gin"
 type SysModuleRouter struct {
 }
 
-func (m *SysConfigRouter) AddSysModuleRouter(route *gin.RouterGroup) {
+func (m *SysModuleRouter) AddSysModuleRouter(route *gin.RouterGroup) {
 	router := route.Group("module")
 	{
 		router.POST("", moduleApi.CreateModule)
